@@ -13,7 +13,7 @@ import Notifications from './pages/Notifications';
 function App() {
   return (
     <Router>
-      <div className="flex flex-col min-h-screen font-open-sans">
+      <div className="flex flex-col min-h-screen font-system bg-cyber-black text-cyber-text">
         <Header />
         <main className="flex-grow">
           <Routes>

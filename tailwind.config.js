@@ -1,22 +1,27 @@
 // tailwind.config.js
 module.exports = {
   content: [
-    "./src/**/*.{js,jsx,ts,tsx}", // Ensures Tailwind processes all your files
+    "./src/**/*.{js,jsx,ts,tsx}",
   ],
   theme: {
     extend: {
       colors: {
-        'forest-green': '#2E8B57',
-        'deep-blue': '#1F3A93',
-        'light-gray': '#F5F5F5',
-        'bright-lime': '#A8E10C',
-        'dark-charcoal': '#333333',
-        'medium-gray': '#666666',
-        'crimson-red': '#E74C3C',
+        'cyber-black': '#0D1117',
+        'cyber-darker': '#161B22',
+        'cyber-dark': '#21262D',
+        'cyber-green': '#39D353',
+        'cyber-blue': '#58A6FF',
+        'cyber-purple': '#8957E5',
+        'cyber-pink': '#FF3366',
+        'cyber-gray': '#8B949E',
+        'cyber-text': '#C9D1D9',
       },
       fontFamily: {
-        'open-sans': ['Open Sans', 'sans-serif'],
-        'montserrat': ['Montserrat', 'sans-serif'],
+        'code': ['Fira Code', 'monospace'],
+        'system': ['system-ui', 'sans-serif'],
+      },
+      boxShadow: {
+        'neon': '0 0 5px theme(colors.cyber-green), 0 0 20px theme(colors.cyber-green.500)',
       },
     },
   },

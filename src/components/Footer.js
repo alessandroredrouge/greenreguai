@@ -73,19 +73,21 @@ export default function Footer() {
             <h4 className="font-code text-eco-text font-semibold mb-4">Legal</h4>
             <ul className="space-y-2">
               <li>
-                <Link to="/privacy" className="text-eco-gray hover:text-eco-green transition-colors">
+                {/* TODO: Placeholder, create related pages in the future */}
+                <Link to="/" className="text-eco-gray hover:text-eco-green transition-colors">
                   ~/privacy
                 </Link>
               </li>
               <li>
-                <Link to="/terms" className="text-eco-gray hover:text-eco-green transition-colors">
+                {/* TODO: Placeholder, create related pages in the future */}
+                <Link to="/" className="text-eco-gray hover:text-eco-green transition-colors">
                   ~/terms
                 </Link>
               </li>
             </ul>
           </div>
           <div>
-            <h4 className="font-code text-eco-text font-semibold mb-4">Newsletter</h4>
+            <h4 className="font-code text-eco-text font-semibold mb-4">Stay in the loop()</h4>
             <form className="flex flex-col space-y-2">
               <input
                 type="email"

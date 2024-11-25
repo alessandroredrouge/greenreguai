@@ -329,17 +329,17 @@ export default function LandingPage() {
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12">
               {/* Social Links */}
               <a 
-                href="#" 
+                href="https://x.com/aleredrouge" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="p-4 border border-eco-dark rounded-lg bg-eco-black/50 hover:border-eco-green transition-colors group"
               >
                 <div className="text-eco-green text-2xl mb-2">𝕏</div>
-                <div className="text-eco-gray group-hover:text-eco-green transition-colors">Follow us</div>
+                <div className="text-eco-gray group-hover:text-eco-green transition-colors">Follow</div>
               </a>
 
               <a 
-                href="#" 
+                href="https://www.linkedin.com/in/alessandro-rossi1/" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="p-4 border border-eco-dark rounded-lg bg-eco-black/50 hover:border-eco-green transition-colors group"
@@ -349,7 +349,7 @@ export default function LandingPage() {
               </a>
 
               <a 
-                href="#" 
+                href="https://github.com/alessandroredrouge" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="p-4 border border-eco-dark rounded-lg bg-eco-black/50 hover:border-eco-green transition-colors group"
@@ -361,20 +361,12 @@ export default function LandingPage() {
               </a>
 
               <a 
-                href="mailto:contact@greenreguai.com"
+                href="mailto:SixCleantechAIStartupsinSixMonths@outlook.com"
                 className="p-4 border border-eco-dark rounded-lg bg-eco-black/50 hover:border-eco-green transition-colors group"
               >
                 <div className="text-eco-green text-2xl mb-2">@</div>
                 <div className="text-eco-gray group-hover:text-eco-green transition-colors">Email us</div>
               </a>
-            </div>
-
-            {/* Contact Form Placeholder */}
-            <div className="bg-eco-black border border-eco-dark rounded-lg p-8">
-              <p className="text-eco-gray font-code">
-                Contact form coming soon...
-                <span className="text-eco-green animate-pulse">_</span>
-              </p>
             </div>
           </div>
         </div>

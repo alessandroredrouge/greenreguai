@@ -61,19 +61,24 @@ export default function LandingPage() {
               AI-powered platform for navigating renewable energy regulations.
               <span className="text-eco-green">_</span>
             </p>
-            <div className="flex justify-center gap-4">
+            <div className="flex justify-center gap-6">
               <Link
                 to="/signup"
-                className="bg-gradient-to-r from-eco-green/20 to-eco-blue/20 text-eco-green font-code py-3 px-8 rounded-lg inline-flex items-center hover:from-eco-green/30 hover:to-eco-blue/30 transition-all border border-eco-green group"
+                className="bg-eco-green/10 text-eco-green font-code py-3 px-8 rounded-lg inline-flex items-center hover:bg-eco-green/20 transition-all border border-eco-green group min-w-[200px]"
               >
-                Start Free Trial
-                <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                <span className="mx-auto flex items-center">
+                  Start Free Trial
+                  <ArrowRight className="ml-2 h-5 w-5 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
+                </span>
               </Link>
               <Link
-                to="/about"
-                className="text-eco-gray font-code py-3 px-8 rounded-lg inline-flex items-center hover:text-eco-text transition-all border border-eco-gray hover:border-eco-text"
+                to="/login"
+                className="bg-eco-green/10 text-eco-green font-code py-3 px-8 rounded-lg inline-flex items-center hover:bg-eco-green/20 transition-all border border-eco-green group min-w-[200px]"
               >
-                Learn More
+                <span className="mx-auto flex items-center">
+                  User Login
+                  <ArrowRight className="ml-2 h-5 w-5 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
+                </span>
               </Link>
             </div>
           </div>
@@ -107,7 +112,7 @@ export default function LandingPage() {
           <p className="text-center font-code text-eco-gray mb-8">
             <span className="text-matrix-green">&gt;</span> Credit Usage:{" "}
             <span className="text-eco-green">1 credit</span> = Basic AI Query •{" "}
-            <span className="text-eco-green">2 credits</span> = Advanced AI Query
+            <span className="text-eco-green">2 credits</span> = Advanced AI Query (soon available)
           </p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
             {pricingPlans.map((plan, index) => (

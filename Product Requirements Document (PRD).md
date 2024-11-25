@@ -82,21 +82,28 @@ GreenReguAI aims to solve this problem by providing a centralized, continually u
 1. **AI-Powered Chat Interface:**
     - Users can input natural language queries.
     - The system responds with relevant information and links to sources.
+    - Each query consumes credits from the user's balance.
 2. **Document Repository:**
     - Store and manage laws and regulations from all countries.
-    - Provide documents in both English and original languages.
 3. **Search Functionality:**
     - Users can search for documents manually using keywords, filters, and categories.
 4. **Direct Linking:**
     - Responses include links to specific sections of official documents.
-5. **Multi-Language Support:**
-    - Interface supports multiple languages for international users.
-6. **User Authentication (Optional for MVP):**
-    - Allow users to create accounts and save queries or documents.
-7. **Automated Data Ingestion:**
-    - Use n8n workflows to automatically update the database with new regulations.
-8. **API Access (Future Scope):**
-    - Provide API endpoints for enterprise users to integrate with their systems.
+5. **User Authentication and Management:**
+    - Required user registration and login.
+    - User profile management.
+    - Credit balance tracking.
+6. **Payment System:**
+    - Integration with Stripe for credit purchases.
+    - Initial 50 free credits for new users.
+    - Credit consumption tracking.
+    - Feedback system with credit rewards.
+    - Refund request system for unsatisfactory responses.
+7. **Multi-Language Support (Future Scope):**
+    - Interface support for multiple languages.
+    - Document translation capabilities.
+8. **Automated Data Ingestion (Future Scope):**
+    - Automated collection of regulations from official sources.
 
 ### Non-functional Requirements
 
@@ -123,23 +130,51 @@ GreenReguAI aims to solve this problem by providing a centralized, continually u
 - **Frontend:**
     - **Language:** JavaScript
     - **Framework:** React.js
-    - **Libraries:** Redux or Context API for state management, react-i18next for internationalization
+    - **Libraries:** Redux or Context API for state management
 - **Backend:**
     - **Language:** Python
     - **Framework:** FastAPI
-    - **Libraries:** Pydantic for data validation, Asyncio for asynchronous operations
+    - **Libraries:**
+        - Pydantic for data validation
+        - Asyncio for asynchronous operations
+        - Langchain for LLM integration and PDF processing
+        - Unstructured API for PDF parsing
 - **Database:**
     - **Primary Database:** Supabase
     - **Vector Database:** Pinecone for semantic search
 - **Authentication:**
     - **Authentication tool:** Supabase
-- **Workflow Automation:**
-    - **Tool:** n8n
-- **AI Language Model:**
-    - **Service:** LLama 3 7B model used with Hugging Face Inference API (cheaper → preferred), or OpenAI's GPT-4 via API (more expensive)
-- **Containerization and Deployment:**
-    - **Tool:** Docker
-    - **Platform:** Render for MVP deployment
+- **Payment Processing:**
+    - **Service:** Stripe
+- **AI Integration:**
+    - **Framework:** Langchain
+    - **LLM Options:** OpenAI GPT-4, Anthropic Claude, or Meta Llama
+    - **Embedding:** OpenAI Ada Embedding Model
+
+### Payment and Credit System
+
+1. **Credit System:**
+    - 1 credit = 1 standard LLM query
+    - New users receive 50 free credits
+    - Premium features (future scope) may cost additional credits
+    - Competitive pricing strategy to balance accessibility and profitability
+
+2. **Feedback and Refund System:**
+    - Users earn 5 credits for providing detailed feedback
+    - Feedback includes:
+        - Numerical rating (1-5)
+        - Brief explanation of rating
+    - Refund requests due to significant bugs / useless answers require:
+        - Detailed explanation of issue
+        - Specific chat thread reference
+        - Human review process for approval
+        - Partial or full credit refund based on review
+
+3. **Payment Processing:**
+    - Secure credit purchase through Stripe
+    - Multiple credit package options
+    - Automated credit balance updates
+    - Transaction history tracking
 
 ### System Architecture
 
@@ -198,10 +233,9 @@ GreenReguAI aims to solve this problem by providing a centralized, continually u
 - **Assumptions:**
     - Users have internet access and modern web browsers.
     - Official documents are accessible for scraping or API retrieval.
-    - Hugging Face Inference API access remains available and affordable.
+    - Langchain access remains available and affordable.
 - **Dependencies:**
-    - Reliability of Hugging Face Inference API.
-    - n8n's ability to access and process external data sources.
+    - Reliability of Langchain.
     - Availability of translation services or multilingual documents.
 
 ---

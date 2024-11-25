@@ -6,23 +6,27 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        'cyber-black': '#0D1117',
-        'cyber-darker': '#161B22',
-        'cyber-dark': '#21262D',
-        'cyber-green': '#39D353',
-        'cyber-blue': '#58A6FF',
-        'cyber-purple': '#8957E5',
-        'cyber-pink': '#FF3366',
-        'cyber-gray': '#8B949E',
-        'cyber-text': '#C9D1D9',
+        'eco-dark': '#0A2F2F',
+        'eco-darker': '#0D1F1F',
+        'eco-black': '#081616',
+        'eco-green': '#00CF91',
+        'eco-blue': '#00B4D8',
+        'eco-yellow': '#FFD60A',
+        'eco-leaf': '#4CAF50',
+        'matrix-green': '#00FF41',
+        'eco-gray': '#7A8F8F',
+        'eco-text': '#E0F2F1',
       },
       fontFamily: {
         'code': ['Fira Code', 'monospace'],
         'system': ['system-ui', 'sans-serif'],
       },
       boxShadow: {
-        'neon': '0 0 5px theme(colors.cyber-green), 0 0 20px theme(colors.cyber-green.500)',
+        'eco-glow': '0 0 5px theme(colors.eco-green), 0 0 20px theme(colors.eco-green)',
       },
+      // backgroundImage: {
+      //   'circuit-pattern': "url('/src/assets/circuit-pattern.svg')",
+      // }
     },
   },
   plugins: [],

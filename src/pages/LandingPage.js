@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { ArrowRight, Search, Shield, Zap, Globe, CreditCard } from 'lucide-react'
+import { ArrowRight, Search, Shield, Zap, Globe, CreditCard, RefreshCw } from 'lucide-react'
 
 export default function LandingPage() {
   const features = [
@@ -11,18 +11,18 @@ export default function LandingPage() {
     },
     {
       icon: <Shield className="h-6 w-6 text-eco-green" />,
-      title: "Verified Sources",
-      description: "Access official documents with direct links to regulatory sources."
+      title: "Verify Sources In A Click",
+      description: "Instantly verify AI responses by accessing source documents with direct links to relevant regulatory sections."
     },
     {
       icon: <Globe className="h-6 w-6 text-eco-green" />,
-      title: "Global Coverage",
-      description: "Comprehensive database of renewable energy regulations worldwide."
+      title: "Wide Coverage",
+      description: "Comprehensive database of renewable energy regulations, starting with EU coverage and expanding worldwide."
     },
     {
       icon: <CreditCard className="h-6 w-6 text-eco-green" />,
-      title: "Flexible Credits",
-      description: "Start with 50 free credits and purchase more as needed."
+      title: "Pay As You Go",
+      description: "Start with 50 free credits and purchase more as needed. No annoying subscription fees for things you don't need."
     }
   ]
 
@@ -31,15 +31,32 @@ export default function LandingPage() {
       name: "Starter Pack",
       credits: "100",
       price: "19",
-      features: ["Basic & Advanced AI queries", "Document access", "Email support"]
+      pricePerCredit: "0.19",
+      features: ["Basic & Advanced AI queries", "Access to all the official documents", "Email support"]
     },
     {
-      name: "Professional Pack",
+      name: "Professional Pack", 
       credits: "500",
       price: "79",
-      features: ["Everything in Starter Pack", "Discounted Credits", "Priority support"]
+      pricePerCredit: "0.158", // 20% discount per credit
+      features: ["Everything in Starter Pack", "20% discount on credit price", "Priority support"]
     }
   ]
+
+  // Add state for price display mode for each plan
+  const [priceDisplayModes, setPriceDisplayModes] = useState({
+    "Starter Pack": 'bundle',
+    "Professional Pack": 'bundle'
+  });
+
+  const [showTooltip, setShowTooltip] = useState({});
+
+  const togglePriceMode = (planName) => {
+    setPriceDisplayModes(prev => ({
+      ...prev,
+      [planName]: prev[planName] === 'bundle' ? 'per-credit' : 'bundle'
+    }));
+  };
 
   return (
     <div className="bg-eco-black min-h-screen pt-32">
@@ -107,21 +124,49 @@ export default function LandingPage() {
       <section id="pricing" className="py-20 scroll-mt-32">
         <div className="container mx-auto px-4">
           <h2 className="text-center font-code text-3xl mb-12 text-eco-text">
-            <span className="text-matrix-green">&gt;</span> Pricing Plans
+            <span className="text-matrix-green">&gt;</span> Pricing Packs
           </h2>
-          <p className="text-center font-code text-eco-gray mb-8">
-            <span className="text-matrix-green">&gt;</span> Credit Usage:{" "}
-            <span className="text-eco-green">1 credit</span> = Basic AI Query •{" "}
-            <span className="text-eco-green">2 credits</span> = Advanced AI Query (soon available)
-          </p>
+          <div className="text-center mb-12">
+            <p className="font-code text-2xl text-eco-text">
+              <span className="text-matrix-green">&gt;</span>{" "}
+              <span className="text-eco-green font-bold">50 FREE CREDITS</span> for your first try, and then
+            </p>
+            <div className="text-eco-green text-4xl mt-2 animate-bounce">↓</div>
+          </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
             {pricingPlans.map((plan, index) => (
-              <div key={index} className="p-6 border border-eco-dark rounded-lg bg-eco-darker hover:border-eco-green transition-colors">
-                <h3 className="font-code text-eco-text text-2xl mb-2">{plan.name}</h3>
-                <div className="text-eco-green text-4xl font-code mb-4">
-                  ${plan.price}
-                  <span className="text-eco-gray text-sm">/ {plan.credits} credits</span>
+              <div key={index} className="relative p-6 border border-eco-dark rounded-lg bg-eco-darker hover:border-eco-green transition-colors">
+                {/* Toggle Button with Tooltip */}
+                <div className="absolute top-4 right-4 group">
+                  <button
+                    onClick={() => togglePriceMode(plan.name)}
+                    onMouseEnter={() => setShowTooltip({...showTooltip, [plan.name]: true})}
+                    onMouseLeave={() => setShowTooltip({...showTooltip, [plan.name]: false})}
+                    className="text-eco-green hover:text-eco-text transition-colors p-1 border border-eco-green/0 hover:border-eco-green/50 rounded-lg group-hover:bg-eco-green/5 flex items-center gap-1"
+                  >
+                    <span className="text-base font-code font-bold text-[1.25rem]">$</span>
+                    <RefreshCw className="h-5 w-5" />
+                  </button>
+                  
+                  {/* Tooltip */}
+                  <div className={`absolute right-0 mt-2 w-48 bg-eco-darker border border-eco-green p-2 rounded-lg text-eco-gray text-xs font-code ${showTooltip[plan.name] ? 'opacity-100' : 'opacity-0'} transition-opacity duration-200 pointer-events-none z-10`}>
+                    Click to switch to {priceDisplayModes[plan.name] === 'bundle' ? 'price per credit' : 'bundle price'}
+                  </div>
                 </div>
+                
+                {/* Price Display with Label */}
+                <h3 className="font-code text-eco-text text-2xl mb-2">{plan.name}</h3>
+                <div className="mb-4">
+                  <div className="text-eco-green text-4xl font-code">
+                    ${priceDisplayModes[plan.name] === 'bundle' ? plan.price : plan.pricePerCredit}
+                  </div>
+                  <div className="text-eco-gray text-sm font-code mt-1">
+                    {priceDisplayModes[plan.name] === 'bundle' 
+                      ? `Bundle price for ${plan.credits} credits` 
+                      : 'Price per individual credit'}
+                  </div>
+                </div>
+                
                 <ul className="space-y-2 mb-6">
                   {plan.features.map((feature, fIndex) => (
                     <li key={fIndex} className="text-eco-gray flex items-center">
@@ -132,13 +177,18 @@ export default function LandingPage() {
                 </ul>
                 <Link
                   to="/signup"
-                  className="w-full bg-gradient-to-r from-eco-green/20 to-eco-blue/20 text-eco-green font-code py-2 px-4 rounded-lg inline-flex items-center justify-center hover:from-eco-green/30 hover:to-eco-blue/30 transition-all border border-eco-green"
+                  className="w-full bg-eco-green/10 text-eco-green font-code py-2 px-4 rounded-lg inline-flex items-center justify-center hover:bg-eco-green/20 transition-all border border-eco-green"
                 >
                   Select Plan
                 </Link>
               </div>
             ))}
           </div>
+          <p className="text-center font-code text-eco-gray mb-8 mt-12">
+            <span className="text-matrix-green">&gt;</span> Credit Usage:{" "}
+            <span className="text-eco-green">1 credit</span> = 1 Basic AI Query •{" "}
+            <span className="text-eco-green">2 credits</span> = 1 Advanced AI Query (soon available)
+          </p>
         </div>
       </section>
     </div>

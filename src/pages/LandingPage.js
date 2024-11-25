@@ -42,7 +42,7 @@ export default function LandingPage() {
   ]
 
   return (
-    <div className="bg-eco-black min-h-screen">
+    <div className="bg-eco-black min-h-screen pt-32">
       {/* Hero Section */}
       <section className="relative py-20 overflow-hidden">
         <div className="absolute inset-0 bg-circuit-pattern opacity-5"></div>
@@ -81,7 +81,7 @@ export default function LandingPage() {
       </section>
 
       {/* Features Section */}
-      <section className="py-20 bg-eco-darker">
+      <section id="features" className="py-20 bg-eco-darker scroll-mt-32">
         <div className="container mx-auto px-4">
           <h2 className="text-center font-code text-3xl mb-12 text-eco-text">
             <span className="text-matrix-green">&gt;</span> Key Features
@@ -99,7 +99,7 @@ export default function LandingPage() {
       </section>
 
       {/* Pricing Section */}
-      <section className="py-20">
+      <section id="pricing" className="py-20 scroll-mt-32">
         <div className="container mx-auto px-4">
           <h2 className="text-center font-code text-3xl mb-12 text-eco-text">
             <span className="text-matrix-green">&gt;</span> Pricing Plans

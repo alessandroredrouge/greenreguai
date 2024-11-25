@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { ArrowRight, Search, Shield, Zap, Globe, CreditCard, RefreshCw } from 'lucide-react'
+import { ArrowRight, Search, Shield, Zap, Globe, CreditCard, RefreshCw, Target, Clock, Users } from 'lucide-react'
 
 export default function LandingPage() {
   const features = [
@@ -57,6 +57,29 @@ export default function LandingPage() {
       [planName]: prev[planName] === 'bundle' ? 'per-credit' : 'bundle'
     }));
   };
+
+  const challenges = [
+    {
+      icon: <Target className="h-6 w-6 text-eco-green" />,
+      title: "Complex Regulations",
+      description: "Companies struggle with diverse legal frameworks across countries in renewable energy."
+    },
+    {
+      icon: <Clock className="h-6 w-6 text-eco-green" />,
+      title: "Time-Consuming",
+      description: "Monitoring and staying compliant requires continuous effort and large legal teams."
+    },
+    {
+      icon: <Users className="h-6 w-6 text-eco-green" />,
+      title: "Resource Intensive",
+      description: "Companies often need large teams of legal experts, which is both costly and inefficient."
+    },
+    {
+      icon: <Zap className="h-6 w-6 text-eco-green" />,
+      title: "Our Solution",
+      description: "AI-powered platform providing instant access to relevant regulations and compliance guidance."
+    }
+  ]
 
   return (
     <div className="bg-eco-black min-h-screen pt-32">
@@ -189,6 +212,171 @@ export default function LandingPage() {
             <span className="text-eco-green">1 credit</span> = 1 Basic AI Query •{" "}
             <span className="text-eco-green">2 credits</span> = 1 Advanced AI Query (soon available)
           </p>
+        </div>
+      </section>
+
+      {/* About Section */}
+      <section id="about" className="py-20 bg-eco-darker scroll-mt-32">
+        <div className="container mx-auto px-4">
+          <h2 className="text-center font-code text-3xl mb-12 text-eco-text">
+            <span className="text-matrix-green">&gt;</span> About GreenReguAI
+          </h2>
+          
+          {/* Mission Statement */}
+          <div className="max-w-3xl mx-auto text-center mb-16">
+            <div className="inline-block mb-6 bg-eco-green/10 px-3 py-1 rounded-full">
+              <code className="text-eco-green font-code text-sm">
+                $ ./mission_statement.sh
+              </code>
+            </div>
+            <p className="font-code text-xl text-eco-gray">
+              Making global renewable energy regulations accessible and actionable through AI.
+              <span className="text-eco-green">_</span>
+            </p>
+          </div>
+
+          {/* Challenges Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
+            {challenges.map((challenge, index) => (
+              <div key={index} className="p-6 border border-eco-dark rounded-lg bg-eco-black/50 hover:border-eco-green transition-colors">
+                <div className="mb-4">{challenge.icon}</div>
+                <h3 className="font-code text-eco-text text-xl mb-2">{challenge.title}</h3>
+                <p className="text-eco-gray">{challenge.description}</p>
+              </div>
+            ))}
+          </div>
+
+          {/* Initiative Section */}
+          <div className="max-w-4xl mx-auto text-center">
+            <h3 className="font-code text-2xl mb-6 text-eco-text">
+              <span className="text-matrix-green">&gt;</span> Part of Something Bigger
+            </h3>
+            <p className="text-eco-gray mb-8">
+              GreenReguAI is part of the "<a href="https://6cleantechaistartupsin6months.com/" className="text-eco-blue hover:underline font-bold">6 Cleantech AI Startups in 6 Months</a>" initiative, which aims to accelerate the development of AI solutions for environmental challenges,
+              pushing the boundaries of AI applications in sustainable technology.
+            </p>
+            
+            {/* Challenge Logo Placeholder */}
+            <div className="bg-eco-black border border-eco-dark rounded-lg p-8 mb-8 mx-auto max-w-2xl">
+              <div className="h-40 w-full flex items-center justify-center text-eco-gray bg-white">
+                <img 
+                  src="/Horizontal Logo with writing 6 Cleantech AI Startups in 6 Months.svg"
+                  alt="6 Cleantech AI Startups in 6 Months"
+                  className="h-full w-full object-contain"
+                />
+              </div>
+            </div>
+
+            {/* Timeline */}
+            <div className="max-w-3xl mx-auto mt-16">
+              <h3 className="font-code text-2xl mb-8 text-eco-text">
+                <span className="text-matrix-green">&gt;</span> Development Timeline
+              </h3>
+              <div className="relative border-l-2 border-eco-green pl-8 ml-4 text-left">
+                {/* MVP Development */}
+                <div className="mb-8">
+                  <div className="absolute w-4 h-4 bg-eco-green rounded-full -left-[9px]"></div>
+                  <h4 className="font-code text-eco-text text-xl mb-2">MVP Development</h4>
+                  <p className="text-eco-gray">One-month intensive development focusing on core features and EU regulations coverage.</p>
+                </div>
+
+                {/* Conditional Transition */}
+                <div className="mb-8 -ml-8 pl-8 border-l-2 border-dashed border-eco-green/50">
+                  <div className="flex items-center gap-2 text-eco-green/70 font-code text-sm italic">
+                    <span className="animate-pulse">if</span>
+                    <code className="bg-eco-green/10 px-2 py-1 rounded">GreenReguAI.getTraction() {'>='} THRESHOLD</code>
+                    <span className="animate-pulse">then</span>
+                  </div>
+                </div>
+
+                {/* Global Expansion */}
+                <div className="mb-12">
+                  <div className="absolute w-4 h-4 bg-eco-green rounded-full -left-[9px]"></div>
+                  <h4 className="font-code text-eco-text text-xl mb-2">Global Expansion</h4>
+                  <p className="text-eco-gray">Extending coverage to include renewable energy regulations worldwide.</p>
+                </div>
+
+                {/* Advanced Features */}
+                <div>
+                  <div className="absolute w-4 h-4 bg-eco-green rounded-full -left-[9px]"></div>
+                  <h4 className="font-code text-eco-text text-xl mb-2">Advanced Features</h4>
+                  <p className="text-eco-gray">Implementation of premium features and enhanced AI capabilities.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Contact Section */}
+      <section id="contact" className="py-20 scroll-mt-32">
+        <div className="container mx-auto px-4">
+          <h2 className="text-center font-code text-3xl mb-12 text-eco-text">
+            <span className="text-matrix-green">&gt;</span> Contact Us
+          </h2>
+          
+          <div className="max-w-3xl mx-auto text-center">
+            <div className="inline-block mb-6 bg-eco-green/10 px-3 py-1 rounded-full">
+              <code className="text-eco-green font-code text-sm">
+                $ ./connect_with_us.sh
+              </code>
+            </div>
+            
+            <p className="font-code text-xl text-eco-gray mb-8">
+              Let's discuss how GreenReguAI can help your business navigate renewable energy regulations.
+            </p>
+
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12">
+              {/* Social Links */}
+              <a 
+                href="#" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="p-4 border border-eco-dark rounded-lg bg-eco-black/50 hover:border-eco-green transition-colors group"
+              >
+                <div className="text-eco-green text-2xl mb-2">𝕏</div>
+                <div className="text-eco-gray group-hover:text-eco-green transition-colors">Follow us</div>
+              </a>
+
+              <a 
+                href="#" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="p-4 border border-eco-dark rounded-lg bg-eco-black/50 hover:border-eco-green transition-colors group"
+              >
+                <div className="text-eco-green text-2xl mb-2">in</div>
+                <div className="text-eco-gray group-hover:text-eco-green transition-colors">Connect</div>
+              </a>
+
+              <a 
+                href="#" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="p-4 border border-eco-dark rounded-lg bg-eco-black/50 hover:border-eco-green transition-colors group"
+              >
+                <div className="text-eco-green text-2xl mb-2">
+                  <span className="font-code">&lt;/&gt;</span>
+                </div>
+                <div className="text-eco-gray group-hover:text-eco-green transition-colors">GitHub</div>
+              </a>
+
+              <a 
+                href="mailto:contact@greenreguai.com"
+                className="p-4 border border-eco-dark rounded-lg bg-eco-black/50 hover:border-eco-green transition-colors group"
+              >
+                <div className="text-eco-green text-2xl mb-2">@</div>
+                <div className="text-eco-gray group-hover:text-eco-green transition-colors">Email us</div>
+              </a>
+            </div>
+
+            {/* Contact Form Placeholder */}
+            <div className="bg-eco-black border border-eco-dark rounded-lg p-8">
+              <p className="text-eco-gray font-code">
+                Contact form coming soon...
+                <span className="text-eco-green animate-pulse">_</span>
+              </p>
+            </div>
+          </div>
         </div>
       </section>
     </div>

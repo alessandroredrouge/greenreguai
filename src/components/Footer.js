@@ -52,14 +52,20 @@ export default function Footer() {
                 </button>
               </li>
               <li>
-                <Link to="/about" className="text-eco-gray hover:text-eco-green transition-colors">
+                <button 
+                  onClick={() => scrollToSection('about')} 
+                  className="text-eco-gray hover:text-eco-green transition-colors cursor-pointer"
+                >
                   ~/about
-                </Link>
+                </button>
               </li>
               <li>
-                <Link to="/contact" className="text-eco-gray hover:text-eco-green transition-colors">
+                <button 
+                  onClick={() => scrollToSection('contact')} 
+                  className="text-eco-gray hover:text-eco-green transition-colors cursor-pointer"
+                >
                   ~/contact
-                </Link>
+                </button>
               </li>
             </ul>
           </div>

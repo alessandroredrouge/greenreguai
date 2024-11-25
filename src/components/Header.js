@@ -58,12 +58,18 @@ export default function Header() {
           >
             <DollarSign className="w-4 h-4 mr-1" />~/pricing
           </button>
-          <Link to="/about" className="font-code text-eco-text hover:text-eco-green transition-colors inline-flex items-center">
+          <button 
+            onClick={() => scrollToSection('about')} 
+            className="font-code text-eco-text hover:text-eco-green transition-colors cursor-pointer inline-flex items-center"
+          >
             <Info className="w-4 h-4 mr-1" />~/about
-          </Link>
-          <Link to="/contact" className="font-code text-eco-text hover:text-eco-green transition-colors inline-flex items-center">
+          </button>
+          <button 
+            onClick={() => scrollToSection('contact')} 
+            className="font-code text-eco-text hover:text-eco-green transition-colors cursor-pointer inline-flex items-center"
+          >
             <MessageSquare className="w-4 h-4 mr-1" />~/contact
-          </Link>
+          </button>
           <Link 
             to="/login" 
             className="font-code bg-eco-green/10 text-eco-green px-4 py-2 rounded hover:bg-eco-green/20 transition-colors border border-eco-green whitespace-nowrap inline-flex items-center"
@@ -111,20 +117,18 @@ export default function Header() {
               >
                 <DollarSign className="w-4 h-4 mr-1" />~/pricing
               </button>
-              <Link 
-                to="/about" 
-                className="font-code text-eco-text hover:text-eco-green transition-colors inline-flex items-center justify-center w-full"
-                onClick={() => setIsMobileMenuOpen(false)}
+              <button 
+                onClick={() => scrollToSection('about')} 
+                className="font-code text-eco-text hover:text-eco-green transition-colors cursor-pointer inline-flex items-center justify-center w-full"
               >
                 <Info className="w-4 h-4 mr-1" />~/about
-              </Link>
-              <Link 
-                to="/contact" 
-                className="font-code text-eco-text hover:text-eco-green transition-colors inline-flex items-center justify-center w-full"
-                onClick={() => setIsMobileMenuOpen(false)}
+              </button>
+              <button 
+                onClick={() => scrollToSection('contact')} 
+                className="font-code text-eco-text hover:text-eco-green transition-colors cursor-pointer inline-flex items-center justify-center w-full"
               >
                 <MessageSquare className="w-4 h-4 mr-1" />~/contact
-              </Link>
+              </button>
               <Link 
                 to="/login" 
                 className="font-code bg-eco-green/10 text-eco-green px-4 py-2 rounded hover:bg-eco-green/20 transition-colors border border-eco-green inline-flex items-center justify-center w-full"

@@ -97,7 +97,7 @@ export default function Dashboard() {
               Welcome back, <span className="text-eco-green">{userData.name}</span>
             </h1>
             <p className="font-code text-eco-gray">
-              &gt; Ready for your next query
+              &gt; Ready for your next query? :)
             </p>
           </div>
           <UserMenu credits={userData.credits} />
@@ -112,7 +112,7 @@ export default function Dashboard() {
             <Bot className="h-12 w-12 text-eco-green" />
           </div>
           <h2 className="font-code text-xl text-center text-eco-text mb-3">
-            New AI Query
+            Ask the AI Assistant
           </h2>
           <p className="text-eco-gray text-center mb-6">
             Get instant AI-powered analysis of renewable energy regulations
@@ -131,18 +131,17 @@ export default function Dashboard() {
             <Search className="h-12 w-12 text-eco-green" />
           </div>
           <h2 className="font-code text-xl text-center text-eco-text mb-3">
-            Search Regulations
+            Consult the Document Library
           </h2>
           <p className="text-eco-gray text-center mb-6">
             Browse and search through our comprehensive regulation database
           </p>
-          <div className="relative">
-            <input
-              type="text"
-              placeholder="Search regulations..."
-              className="w-full bg-eco-black border border-eco-dark rounded-lg py-3 px-4 text-eco-text placeholder-eco-gray focus:outline-none focus:border-eco-green"
-            />
-          </div>
+          <Link 
+            to="/document-library"
+            className="block text-center bg-eco-green/10 text-eco-green font-code py-3 px-4 rounded-lg hover:bg-eco-green/20 transition-all border border-eco-green group"
+          >
+            Search Official Documents <ArrowRight className="inline ml-2 group-hover:translate-x-1 transition-transform" />
+          </Link>
         </div>
       </div>
 

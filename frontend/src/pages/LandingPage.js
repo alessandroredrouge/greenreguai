@@ -103,7 +103,7 @@ export default function LandingPage() {
             </p>
             <div className="flex justify-center gap-6">
               <Link
-                to="/signup"
+                to="/auth"
                 className="bg-eco-green/10 text-eco-green font-code py-3 px-8 rounded-lg inline-flex items-center hover:bg-eco-green/20 transition-all border border-eco-green group min-w-[200px]"
               >
                 <span className="mx-auto flex items-center">
@@ -112,7 +112,7 @@ export default function LandingPage() {
                 </span>
               </Link>
               <Link
-                to="/login"
+                to="/auth"
                 className="bg-eco-green/10 text-eco-green font-code py-3 px-8 rounded-lg inline-flex items-center hover:bg-eco-green/20 transition-all border border-eco-green group min-w-[200px]"
               >
                 <span className="mx-auto flex items-center">

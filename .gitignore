@@ -11,19 +11,20 @@
 # production
 /build
 
-# misc
-.DS_Store
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
-
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
 # env
 .env
+.env.local
+.env.development
+.env.production
+.DS_Store
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
 
 # virtual environment
 # Python virtual environment
@@ -96,9 +97,3 @@ backend/*.egg-info/
 backend/.installed.cfg
 backend/*.egg
 
-# General
-.DS_Store
-.env
-.idea/
-.vscode/
-*.log

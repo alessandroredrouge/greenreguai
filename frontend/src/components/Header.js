@@ -71,7 +71,7 @@ export default function Header() {
             <MessageSquare className="w-4 h-4 mr-1" />~/contact
           </button>
           <Link 
-            to="/login" 
+            to="/auth" 
             className="font-code bg-eco-green/10 text-eco-green px-4 py-2 rounded hover:bg-eco-green/20 transition-colors border border-eco-green whitespace-nowrap inline-flex items-center"
           >
             <LogIn className="w-4 h-4 mr-1" />connect()

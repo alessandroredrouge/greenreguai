@@ -63,9 +63,14 @@ export default function UserMenu({ credits }) {
               <CreditCard className="w-4 h-4" />
               Purchase Credits
             </Link>
+          </div>
+
+          <div className="px-4 py-3 border-t border-eco-dark">
             <button
               onClick={handleLogout}
-              className="w-full px-4 py-2 text-eco-gray hover:text-eco-green hover:bg-eco-green/5 flex items-center gap-2 transition-colors"
+              className="w-full text-center bg-eco-green/10 text-eco-green font-code py-2 px-4 
+                       rounded-lg hover:bg-eco-green/20 transition-all border border-eco-green
+                       flex items-center justify-center gap-2"
             >
               <LogOut className="w-4 h-4" />
               Logout

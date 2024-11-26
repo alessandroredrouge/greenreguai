@@ -1,6 +1,7 @@
 // src/pages/Dashboard.js
 import React from 'react';
 import { Link } from 'react-router-dom';
+import UserMenu from '../components/UserMenu';
 import { 
   Bot, 
   Search, 
@@ -46,10 +47,7 @@ export default function Dashboard() {
               &gt; Ready for your next query
             </p>
           </div>
-          <div className="text-right">
-            <div className="font-code text-eco-green text-3xl">{userData.credits}</div>
-            <div className="text-eco-gray text-sm">{userData.queriesRemaining} queries remaining</div>
-          </div>
+          <UserMenu credits={userData.credits} />
         </div>
       </div>
 

@@ -9,7 +9,13 @@ import {
   PieChart, 
   MessageSquare,
   CreditCard,
-  ArrowRight
+  ArrowRight,
+  ArrowUpRight,
+  Circle,
+  Bell,
+  AlertTriangle,
+  Info,
+  CheckCircle
 } from 'lucide-react';
 
 export default function Dashboard() {
@@ -19,9 +25,36 @@ export default function Dashboard() {
     credits: 750,
     queriesRemaining: 500,
     recentQueries: [
-      { type: "Regulation Search", credits: 5, status: "success" },
-      { type: "Policy Analysis", credits: 10, status: "success" },
-      { type: "Compliance Check", credits: 8, status: "error" }
+      { 
+        type: "Regulation Search", 
+        credits: 5, 
+        status: "success",
+        timestamp: "2024-03-15 14:30"
+      },
+      { 
+        type: "Policy Analysis", 
+        credits: 10, 
+        status: "success",
+        timestamp: "2024-03-15 13:15"
+      },
+      { 
+        type: "Compliance Check", 
+        credits: 8, 
+        status: "error",
+        timestamp: "2024-03-15 11:45"
+      },
+      { 
+        type: "Market Research", 
+        credits: 15, 
+        status: "success",
+        timestamp: "2024-03-15 10:30"
+      },
+      { 
+        type: "Risk Assessment", 
+        credits: 12, 
+        status: "success",
+        timestamp: "2024-03-15 09:15"
+      }
     ],
     creditUsage: {
       used: 250,
@@ -31,7 +64,27 @@ export default function Dashboard() {
       accuracy: "98%",
       rating: "4.9",
       avgTime: "1.2s"
-    }
+    },
+    notifications: [
+      {
+        type: "info",
+        message: "New feature: AI assistant now supports document comparison",
+        timestamp: "2024-03-15 09:00",
+        read: false
+      },
+      {
+        type: "warning",
+        message: "Your credits are running low. Consider purchasing more.",
+        timestamp: "2024-03-14 15:30",
+        read: true
+      },
+      {
+        type: "success",
+        message: "Successfully processed 5 queries this week",
+        timestamp: "2024-03-13 11:20",
+        read: true
+      }
+    ]
   };
 
   return (
@@ -95,24 +148,6 @@ export default function Dashboard() {
 
       {/* Stats Grid */}
       <div className="grid md:grid-cols-3 gap-6 mb-8">
-        {/* Recent Queries */}
-        <div className="bg-eco-darker p-6 rounded-lg border border-eco-dark">
-          <div className="flex items-center gap-2 mb-4">
-            <Clock className="h-5 w-5 text-eco-green" />
-            <h3 className="font-code text-eco-text">Recent Queries</h3>
-          </div>
-          <div className="space-y-3">
-            {userData.recentQueries.map((query, index) => (
-              <div key={index} className="flex justify-between items-center text-sm">
-                <span className="text-eco-gray">{query.type}</span>
-                <span className={`font-code ${query.status === 'error' ? 'text-red-500' : 'text-eco-green'}`}>
-                  {query.credits} credits
-                </span>
-              </div>
-            ))}
-          </div>
-        </div>
-
         {/* Credit Usage */}
         <div className="bg-eco-darker p-6 rounded-lg border border-eco-dark">
           <div className="flex items-center gap-2 mb-4">
@@ -127,47 +162,142 @@ export default function Dashboard() {
               ></div>
             </div>
           </div>
-          <div className="flex justify-between text-sm">
+          <div className="flex justify-between text-sm mb-4">
             <span className="text-eco-gray">{userData.creditUsage.used} used</span>
             <span className="text-eco-gray">{userData.creditUsage.remaining} remaining</span>
+          </div>
+          <Link 
+            to="/billing"
+            className="w-full bg-eco-green/10 text-eco-green font-code py-2 px-4 rounded-lg hover:bg-eco-green/20 transition-all border border-eco-green flex items-center justify-center gap-2 group"
+          >
+            Purchase Credits
+            <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
+          </Link>
+        </div>
+
+        {/* Notification Center */}
+        <div className="bg-eco-darker p-6 rounded-lg border border-eco-dark">
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-2">
+              <Bell className="h-5 w-5 text-eco-green" />
+              <h3 className="font-code text-eco-text">Notifications</h3>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-xs text-eco-green bg-eco-green/10 px-2 py-1 rounded-full font-code">
+                {userData.notifications.filter(n => !n.read).length} new
+              </span>
+            </div>
+          </div>
+          <div className="space-y-3 max-h-[160px] overflow-y-auto">
+            {userData.notifications.map((notification, index) => (
+              <div 
+                key={index} 
+                className={`p-2 rounded border ${
+                  notification.read 
+                    ? 'border-eco-dark/50 bg-eco-dark/10' 
+                    : 'border-eco-green/50 bg-eco-green/5'
+                }`}
+              >
+                <div className="flex items-start gap-2">
+                  {notification.type === 'warning' && <AlertTriangle className="h-4 w-4 text-yellow-500 flex-shrink-0 mt-1" />}
+                  {notification.type === 'info' && <Info className="h-4 w-4 text-eco-green flex-shrink-0 mt-1" />}
+                  {notification.type === 'success' && <CheckCircle className="h-4 w-4 text-eco-green flex-shrink-0 mt-1" />}
+                  <div className="flex-1">
+                    <p className="text-sm text-eco-text font-code">{notification.message}</p>
+                    <p className="text-xs text-eco-gray mt-1">{notification.timestamp}</p>
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
 
         {/* Feedback */}
         <div className="bg-eco-darker p-6 rounded-lg border border-eco-dark">
-          <div className="flex items-center gap-2 mb-4">
+          <div className="flex items-center gap-2 mb-6">
             <MessageSquare className="h-5 w-5 text-eco-green" />
-            <h3 className="font-code text-eco-text">Feedback</h3>
+            <h3 className="font-code text-eco-text">Connect & Rate</h3>
           </div>
-          <div className="grid grid-cols-3 gap-4 text-center">
-            <div>
-              <div className="text-eco-green text-xl font-code">{userData.feedback.accuracy}</div>
-              <div className="text-eco-gray text-sm">Accuracy</div>
-            </div>
-            <div>
-              <div className="text-eco-green text-xl font-code">{userData.feedback.rating}</div>
-              <div className="text-eco-gray text-sm">Rating</div>
-            </div>
-            <div>
-              <div className="text-eco-green text-xl font-code">{userData.feedback.avgTime}</div>
-              <div className="text-eco-gray text-sm">Avg. Time</div>
-            </div>
+          
+          {/* Social Links */}
+          <div className="grid grid-cols-3 gap-3 mb-4">
+            <a 
+              href="https://x.com/aleredrouge" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="p-2 border border-eco-dark rounded-lg bg-eco-black/50 hover:border-eco-green transition-colors group flex flex-col items-center"
+            >
+              <div className="text-eco-green text-xl mb-1">𝕏</div>
+              <div className="text-eco-gray group-hover:text-eco-green transition-colors text-xs">Follow</div>
+            </a>
+
+            <a 
+              href="https://www.linkedin.com/in/alessandro-rossi1/" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="p-2 border border-eco-dark rounded-lg bg-eco-black/50 hover:border-eco-green transition-colors group flex flex-col items-center"
+            >
+              <div className="text-eco-green text-xl mb-1">in</div>
+              <div className="text-eco-gray group-hover:text-eco-green transition-colors text-xs">Connect</div>
+            </a>
+
+            <a 
+              href="mailto:SixCleantechAIStartupsinSixMonths@outlook.com"
+              className="p-2 border border-eco-dark rounded-lg bg-eco-black/50 hover:border-eco-green transition-colors group flex flex-col items-center"
+            >
+              <div className="text-eco-green text-xl mb-1">@</div>
+              <div className="text-eco-gray group-hover:text-eco-green transition-colors text-xs">Email</div>
+            </a>
           </div>
+
+          {/* Product Hunt Rating */}
+          <a 
+            href="https://www.producthunt.com/posts/your-product"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="w-full bg-eco-green/10 text-eco-green font-code py-2 px-4 rounded-lg hover:bg-eco-green/20 transition-all border border-eco-green flex items-center justify-center gap-2 group"
+          >
+            <span>Rate us on Product Hunt</span>
+            <ArrowUpRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
+          </a>
         </div>
       </div>
 
-      {/* Purchase Credits */}
+      {/* Recent Activity - Full Width */}
       <div className="bg-eco-darker p-6 rounded-lg border border-eco-dark">
-        <div className="flex items-center gap-2 mb-4">
-          <CreditCard className="h-5 w-5 text-eco-green" />
-          <h3 className="font-code text-eco-text">Purchase Credits</h3>
+        <div className="flex items-center gap-2 mb-6">
+          <Clock className="h-5 w-5 text-eco-green" />
+          <h3 className="font-code text-eco-text">Recent Activity</h3>
         </div>
-        <Link 
-          to="/billing"
-          className="inline-block bg-eco-green/10 text-eco-green font-code py-2 px-4 rounded-lg hover:bg-eco-green/20 transition-all border border-eco-green group"
-        >
-          View Plans <ArrowRight className="inline ml-2 group-hover:translate-x-1 transition-transform" />
-        </Link>
+        <div className="space-y-6">
+          {userData.recentQueries.map((query, index) => (
+            <div key={index} className="flex items-center justify-between border-l-2 pl-4 py-1" 
+                 style={{ borderColor: query.status === 'error' ? '#ef4444' : '#10B981' }}>
+              <div className="flex-1">
+                <div className="flex items-center gap-2">
+                  <Circle className={`h-3 w-3 ${query.status === 'error' ? 'text-red-500' : 'text-eco-green'}`} />
+                  <span className="text-eco-text font-code">{query.type}</span>
+                </div>
+                <div className="text-eco-gray text-sm mt-1 font-code">
+                  {query.timestamp}
+                </div>
+              </div>
+              <div className="flex items-center gap-4">
+                <span className={`font-code ${query.status === 'error' ? 'text-red-500' : 'text-eco-green'}`}>
+                  {query.credits} credits
+                </span>
+                <button 
+                  className="px-3 py-1 text-sm border border-eco-green/50 rounded-lg 
+                           text-eco-green font-code bg-eco-green/5 hover:bg-eco-green/10 
+                           transition-colors flex items-center gap-1"
+                >
+                  View Details
+                  <ArrowUpRight className="h-3 w-3" />
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Send, ArrowLeft, Bot } from 'lucide-react';
+import { Send, ArrowLeft, Bot, Plus } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import Sidebar from '../components/Sidebar';
 import UserMenu from '../components/UserMenu';
@@ -53,6 +53,11 @@ export default function AIAssistant() {
     }
   };
 
+  const handleNewChat = () => {
+    setMessages([]);
+    setInput('');
+  };
+
   return (
     <div className="flex h-screen bg-eco-black">
       {/* Sidebar */}
@@ -79,7 +84,7 @@ export default function AIAssistant() {
         </div>
 
         {/* Messages Area */}
-        <div className="flex-1 overflow-y-auto p-4 bg-eco-black">
+        <div className="flex-1 overflow-y-auto p-4 bg-eco-black relative">
           {/* Welcome Message */}
           <div className="flex items-start gap-2 text-eco-text">
             <Bot className="h-6 w-6 text-eco-green mt-1" />
@@ -92,6 +97,19 @@ export default function AIAssistant() {
               </div>
             </div>
           </div>
+
+          {/* New Chat Button */}
+          <button
+            onClick={handleNewChat}
+            className="absolute bottom-6 right-6 w-12 h-12 bg-eco-green/10 hover:bg-eco-green/20 
+                       text-eco-green rounded-full shadow-lg flex items-center justify-center 
+                       transition-all hover:scale-105 focus:outline-none focus:ring-2 
+                       focus:ring-eco-green focus:ring-offset-2 focus:ring-offset-eco-black
+                       border border-eco-green"
+            aria-label="New Chat"
+          >
+            <Plus className="h-6 w-6" />
+          </button>
 
           {/* Chat Messages */}
           {messages.map((message, index) => (

@@ -124,7 +124,7 @@ export default function DocumentLibrary() {
             className="flex items-center gap-2 text-eco-green hover:text-eco-text transition-colors"
           >
             <ArrowLeft className="h-5 w-5" />
-            <span className="font-code">Back</span>
+            <span className="font-code">Back to Dashboard</span>
           </Link>
 
           {/* Search Bar */}

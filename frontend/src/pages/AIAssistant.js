@@ -1,61 +1,137 @@
-import React, { useState } from 'react'
-import { Send } from 'lucide-react'
+import React, { useState, useRef, useEffect } from 'react';
+import { Send, ArrowLeft, Bot } from 'lucide-react';
+import { useAuth } from '../contexts/AuthContext';
+import Sidebar from '../components/Sidebar';
+import UserMenu from '../components/UserMenu';
+import { Link } from 'react-router-dom';
 
 export default function AIAssistant() {
-  const [messages, setMessages] = useState([])
-  const [input, setInput] = useState('')
+  const [messages, setMessages] = useState([]);
+  const [input, setInput] = useState('');
+  const [isTyping, setIsTyping] = useState(false);
+  const messagesEndRef = useRef(null);
+  const { user } = useAuth();
 
-  const handleSend = () => {
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
+
+  const handleSend = async () => {
     if (input.trim()) {
-      setMessages([...messages, { type: 'user', content: input }])
-      // Here you would typically call your AI service
-      // For now, we'll just simulate a response
+      const userMessage = {
+        type: 'user',
+        content: input,
+        timestamp: new Date().toISOString()
+      };
+      
+      setMessages(prev => [...prev, userMessage]);
+      setInput('');
+      setIsTyping(true);
+
+      // Simulate AI response - replace with actual API call
       setTimeout(() => {
-        setMessages(prev => [...prev, { type: 'ai', content: 'This is a simulated AI response.' }])
-      }, 1000)
-      setInput('')
+        const aiMessage = {
+          type: 'ai',
+          content: 'This is a simulated AI response about renewable energy regulations.',
+          timestamp: new Date().toISOString(),
+          sources: ['EU Directive 2018/2001', 'Regulation (EU) 2019/943']
+        };
+        setMessages(prev => [...prev, aiMessage]);
+        setIsTyping(false);
+      }, 1000);
     }
-  }
+  };
+
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      handleSend();
+    }
+  };
 
   return (
-    <div className="flex flex-col h-full bg-light-gray">
-      <div className="flex-grow overflow-y-auto p-4">
-        {messages.map((message, index) => (
-          <div
-            key={index}
-            className={`mb-4 ${
-              message.type === 'user' ? 'text-right' : 'text-left'
-            }`}
-          >
-            <div
-              className={`inline-block p-3 rounded-lg ${
-                message.type === 'user'
-                  ? 'bg-forest-green text-white'
-                  : 'bg-white text-deep-blue'
-              }`}
+    <div className="flex h-screen bg-eco-black">
+      {/* Sidebar */}
+      <Sidebar />
+
+      {/* Main Chat Area */}
+      <div className="flex-1 flex flex-col">
+        {/* Header */}
+        <div className="bg-eco-darker border-b border-eco-dark p-4 flex justify-between items-center">
+          <div className="flex items-center gap-4">
+            <Link 
+              to="/dashboard"
+              className="flex items-center gap-2 text-eco-green hover:text-eco-text transition-colors group"
             >
-              {message.content}
+              <ArrowLeft className="h-5 w-5 group-hover:-translate-x-1 transition-transform" />
+              <span className="font-code">Back to Dashboard</span>
+            </Link>
+            <span className="text-eco-text font-code border-l border-eco-dark pl-4">Session: SESSION_123</span>
+          </div>
+          <div className="flex items-center gap-4">
+            <span className="text-eco-green font-code">750 credits available</span>
+            <UserMenu credits={750} />
+          </div>
+        </div>
+
+        {/* Messages Area */}
+        <div className="flex-1 overflow-y-auto p-4 bg-eco-black">
+          {/* Welcome Message */}
+          <div className="flex items-start gap-2 text-eco-text">
+            <Bot className="h-6 w-6 text-eco-green mt-1" />
+            <div className="bg-eco-darker rounded-lg p-4 max-w-3xl">
+              <div className="font-code">
+                Welcome to GreenReguAI. How can I assist you with renewable energy regulations today?
+              </div>
+              <div className="text-xs text-eco-gray mt-2">
+                2024-03-15 14:30:00
+              </div>
             </div>
           </div>
-        ))}
-      </div>
-      <div className="border-t border-gray-200 p-4">
-        <div className="flex items-center">
-          <input
-            type="text"
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            placeholder="Type your message..."
-            className="flex-grow mr-2 p-2 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-forest-green"
-          />
-          <button
-            onClick={handleSend}
-            className="bg-forest-green text-white p-2 rounded-full hover:bg-opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-forest-green"
-          >
-            <Send className="h-5 w-5" />
-          </button>
+
+          {/* Chat Messages */}
+          {messages.map((message, index) => (
+            <div key={index} className={`flex items-start gap-2 ${message.type === 'user' ? 'justify-end' : ''}`}>
+              {message.type === 'ai' && <Bot className="h-6 w-6 text-eco-green mt-1" />}
+              <div className={`rounded-lg p-4 max-w-3xl ${
+                message.type === 'user' 
+                  ? 'bg-eco-green text-eco-black' 
+                  : 'bg-eco-darker text-eco-text'
+              }`}>
+                <div className="font-code">{message.content}</div>
+                <div className="text-xs mt-2 opacity-70">
+                  {new Date(message.timestamp).toLocaleString()}
+                </div>
+              </div>
+            </div>
+          ))}
+          <div ref={messagesEndRef} />
+        </div>
+
+        {/* Input Area */}
+        <div className="border-t border-eco-dark p-4 bg-eco-darker">
+          <div className="relative">
+            <input
+              type="text"
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              onKeyPress={handleKeyPress}
+              placeholder="Type your message... (Cmd/Ctrl + Enter to send)"
+              className="w-full bg-eco-black text-eco-text border border-eco-dark rounded-lg py-3 px-4 pr-12 font-code focus:outline-none focus:border-eco-green"
+            />
+            <button
+              onClick={handleSend}
+              className="absolute right-2 top-1/2 -translate-y-1/2 text-eco-green hover:text-eco-text transition-colors"
+            >
+              <Send className="h-5 w-5" />
+            </button>
+          </div>
         </div>
       </div>
     </div>
-  )
+  );
 }

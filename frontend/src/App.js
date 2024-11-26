@@ -1,6 +1,6 @@
 // src/App.js
 import React from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes, useLocation } from "react-router-dom";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import LandingPage from "./pages/LandingPage";
@@ -13,44 +13,51 @@ import { AuthProvider } from "./contexts/AuthContext";
 import AuthPage from "./pages/AuthPage";
 import ProtectedRoute from './components/ProtectedRoute';
 
+// Create a layout component for the landing page
+const LandingLayout = () => {
+  return (
+    <>
+      <Header />
+      <LandingPage />
+      <Footer />
+    </>
+  );
+};
+
 function App() {
   return (
     <AuthProvider>
       <Router>
         <div className="flex flex-col min-h-screen font-system bg-cyber-black text-cyber-text">
-          <Header />
-          <main className="flex-grow">
           <Routes>
-              <Route path="/" element={<LandingPage />} />
-              <Route path="/auth" element={<AuthPage />} />
-              <Route path="/dashboard" element={
-                <ProtectedRoute>
-                  <Dashboard />
-                </ProtectedRoute>
-              } />
-              <Route path="/ai-assistant" element={
-                <ProtectedRoute>
-                  <AIAssistant />
-                </ProtectedRoute>
-              } />
-              <Route path="/document-library" element={
-                <ProtectedRoute>
-                  <DocumentLibrary />
-                </ProtectedRoute>
-              } />
-              <Route path="/saved-items" element={
-                <ProtectedRoute>
-                  <SavedItems />
-                </ProtectedRoute>
-              } />
-              <Route path="/notifications" element={
-                <ProtectedRoute>
-                  <Notifications />
-                </ProtectedRoute>
-              } />
-            </Routes>
-          </main>
-          <Footer />
+            <Route path="/" element={<LandingLayout />} />
+            <Route path="/auth" element={<AuthPage />} />
+            <Route path="/dashboard" element={
+              <ProtectedRoute>
+                <Dashboard />
+              </ProtectedRoute>
+            } />
+            <Route path="/ai-assistant" element={
+              <ProtectedRoute>
+                <AIAssistant />
+              </ProtectedRoute>
+            } />
+            <Route path="/document-library" element={
+              <ProtectedRoute>
+                <DocumentLibrary />
+              </ProtectedRoute>
+            } />
+            <Route path="/saved-items" element={
+              <ProtectedRoute>
+                <SavedItems />
+              </ProtectedRoute>
+            } />
+            <Route path="/notifications" element={
+              <ProtectedRoute>
+                <Notifications />
+              </ProtectedRoute>
+            } />
+          </Routes>
         </div>
       </Router>
     </AuthProvider>

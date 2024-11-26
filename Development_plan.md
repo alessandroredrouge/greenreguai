@@ -17,28 +17,28 @@ Use this checklist to guide your development process. You can tick off each item
         - [x]  Set up a Python virtual environment.
         - [x]  Initialize a FastAPI project.
         - [x]  Organize folders for routers, models, schemas, services, and database interactions.
-- [ ]  **Install Necessary Dependencies**
-    - [ ]  **Frontend:**
-        - [ ]  Install React Router.
-        - [ ]  Install Axios for API calls.
-        - [ ]  Install UI libraries (e.g., Material-UI, Bootstrap).
-    - [ ]  **Backend:**
-        - [ ]  Install FastAPI and Uvicorn.
-        - [ ]  Install Pydantic for data validation.
-        - [ ]  Install Supabase Python client.
-        - [ ]  Install Langchain for LLM integration.
+- [x]  **Install Necessary Dependencies**
+    - [x]  **Frontend:**
+        - [x]  Install React Router.
+        - [x]  Install Axios for API calls.
+        - [x]  Install UI libraries (e.g., Material-UI, Bootstrap).
+    - [x]  **Backend:**
+        - [x]  Install FastAPI and Uvicorn.
+        - [x]  Install Pydantic for data validation.
+        - [x]  Install Supabase Python client.
+        - [x]  Install Langchain for LLM integration.
 
 ---
 
 ## Phase 2: Designing User Flows and Wireframes
 
-- [ ]  **Define User Stories and Flows**
-    - [ ]  Revisit user personas and stories from the PRD.
-    - [ ]  Map out user journeys for:
-        - [ ]  Registration
-        - [ ]  Logging in
-        - [ ]  Querying the AI
-        - [ ]  Purchasing credits
+- [x]  **Define User Stories and Flows**
+    - [x]  Revisit user personas and stories from the PRD.
+    - [x]  Map out user journeys for:
+        - [x]  Registration
+        - [x]  Logging in
+        - [x]  Querying the AI
+        - [x]  Purchasing credits
 - [ ]  **Create Wireframes for Core Pages**
     - [ ]  Use a v0 or bolt.new:
         - [x]  Home/Landing Page

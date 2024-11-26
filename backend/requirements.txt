@@ -1,0 +1,25 @@
+# Core Framework
+fastapi>=0.109.0
+uvicorn[standard]>=0.27.0  # ASGI server
+python-multipart>=0.0.6    # For handling form data
+pydantic>=2.6.0           # Data validation
+
+# Security & Environment
+python-jose[cryptography]>=3.3.0  # JWT tokens
+passlib[bcrypt]>=1.7.4    # Password hashing
+python-dotenv>=1.0.0      # Environment variables
+
+# Database & Auth
+supabase>=2.3.0           # Supabase client
+postgrest>=0.13.0         # PostgreSQL interface
+
+# AI/LLM Integration
+langchain>=0.1.0          # LLM framework
+langchain-openai>=0.0.5   # OpenAI integration
+python-magic>=0.4.27      # File type detection
+tiktoken>=0.5.2           # Token counting for LLMs
+
+# Testing
+pytest>=7.4.4
+httpx>=0.26.0            # Async HTTP client for testing
+pytest-asyncio>=0.23.4

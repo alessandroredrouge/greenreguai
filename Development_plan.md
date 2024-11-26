@@ -13,10 +13,10 @@ Use this checklist to guide your development process. You can tick off each item
     - [x]  **Frontend:**
         - [x]  Initialize a React.js project using `create-react-app` or similar.
         - [x]  Set up folders for components, pages, assets, and services.
-    - [ ]  **Backend:**
-        - [ ]  Set up a Python virtual environment.
-        - [ ]  Initialize a FastAPI project.
-        - [ ]  Organize folders for routers, models, schemas, services, and database interactions.
+    - [x]  **Backend:**
+        - [x]  Set up a Python virtual environment.
+        - [x]  Initialize a FastAPI project.
+        - [x]  Organize folders for routers, models, schemas, services, and database interactions.
 - [ ]  **Install Necessary Dependencies**
     - [ ]  **Frontend:**
         - [ ]  Install React Router.
@@ -40,8 +40,8 @@ Use this checklist to guide your development process. You can tick off each item
         - [ ]  Querying the AI
         - [ ]  Purchasing credits
 - [ ]  **Create Wireframes for Core Pages**
-    - [ ]  Use a tool like Figma or sketch by hand to create wireframes for:
-        - [ ]  Home/Landing Page
+    - [ ]  Use a v0 or bolt.new:
+        - [x]  Home/Landing Page
         - [ ]  Sign Up Page
         - [ ]  Login Page
         - [ ]  Dashboard
@@ -211,33 +211,4 @@ Use this checklist to guide your development process. You can tick off each item
     - [ ]  Implement backend logging.
     - [ ]  Set up performance and uptime monitoring.
 
----
 
-## Phase 13: Post-Deployment Activities
-
-- [ ]  **Gather User Feedback**
-    - [ ]  Encourage early users to provide feedback.
-    - [ ]  Implement feedback forms or surveys.
-- [ ]  **Plan for Iterations**
-    - [ ]  Prioritize user feedback and bug reports.
-    - [ ]  Update the development roadmap.
-
----
-
-## Additional Tips
-
-- [ ]  **Time Management**
-    - [ ]  Allocate time for each phase.
-    - [ ]  Adjust scope as necessary.
-- [ ]  **Documentation**
-    - [ ]  Document APIs and key components.
-    - [ ]  Maintain a README with setup instructions.
-- [ ]  **Version Control Best Practices**
-    - [ ]  Commit changes frequently with clear messages.
-    - [ ]  Use branches for major features.
-- [ ]  **Security Considerations**
-    - [ ]  Regularly update dependencies.
-    - [ ]  Use secure coding practices.
-- [ ]  **Backup and Recovery**
-    - [ ]  Schedule and test database backups.
-    - [ ]  Have a rollback plan for deployments.

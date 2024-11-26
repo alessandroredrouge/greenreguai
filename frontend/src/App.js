@@ -7,8 +7,7 @@ import LandingPage from "./pages/LandingPage";
 import Dashboard from "./pages/Dashboard";
 import AIAssistant from "./pages/AIAssistant";
 import DocumentLibrary from "./pages/DocumentLibrary";
-import SavedItems from "./pages/SavedItems";
-import Notifications from "./pages/Notifications";
+import Billing from './pages/Billing';
 import { AuthProvider } from "./contexts/AuthContext";
 import AuthPage from "./pages/AuthPage";
 import ProtectedRoute from './components/ProtectedRoute';
@@ -47,14 +46,9 @@ function App() {
                 <DocumentLibrary />
               </ProtectedRoute>
             } />
-            <Route path="/saved-items" element={
+            <Route path="/billing" element={
               <ProtectedRoute>
-                <SavedItems />
-              </ProtectedRoute>
-            } />
-            <Route path="/notifications" element={
-              <ProtectedRoute>
-                <Notifications />
+                <Billing />
               </ProtectedRoute>
             } />
           </Routes>

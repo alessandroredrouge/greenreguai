@@ -68,19 +68,19 @@ export default function Dashboard() {
     notifications: [
       {
         type: "info",
-        message: "New feature: AI assistant now supports document comparison",
+        message: "I'll build this component if someone buys some credits, pliz :_)",
         timestamp: "2024-03-15 09:00",
         read: false
       },
       {
         type: "warning",
-        message: "Your credits are running low. Consider purchasing more.",
+        message: "This notification is scaaary, wuhuuuu.",
         timestamp: "2024-03-14 15:30",
         read: true
       },
       {
         type: "success",
-        message: "Successfully processed 5 queries this week",
+        message: "Placeholder for a random notification.",
         timestamp: "2024-03-13 11:20",
         read: true
       }
@@ -149,28 +149,30 @@ export default function Dashboard() {
       <div className="grid md:grid-cols-3 gap-6 mb-8">
         {/* Credit Usage */}
         <div className="bg-eco-darker p-6 rounded-lg border border-eco-dark">
-          <div className="flex items-center gap-2 mb-4">
-            <PieChart className="h-5 w-5 text-eco-green" />
-            <h3 className="font-code text-eco-text">Credit Usage</h3>
-          </div>
-          <div className="mb-2">
-            <div className="h-2 bg-eco-black rounded-full">
+          <h2 className="font-code text-xl text-eco-text flex items-center gap-2 mb-4">
+            <Clock className="h-5 w-5 text-eco-green" />
+            Credit Usage
+          </h2>
+          <div className="mb-4">
+            <div className="flex justify-between text-sm text-eco-gray mb-2">
+              <span>{userData.creditUsage.used} used</span>
+              <span>{userData.creditUsage.remaining} remaining</span>
+            </div>
+            <div className="h-2 bg-eco-dark rounded-full">
               <div 
                 className="h-full bg-eco-green rounded-full"
                 style={{ width: `${(userData.creditUsage.used / (userData.creditUsage.used + userData.creditUsage.remaining)) * 100}%` }}
-              ></div>
+              />
             </div>
           </div>
-          <div className="flex justify-between text-sm mb-4">
-            <span className="text-eco-gray">{userData.creditUsage.used} used</span>
-            <span className="text-eco-gray">{userData.creditUsage.remaining} remaining</span>
-          </div>
-          <Link 
+          <Link
             to="/billing"
-            className="w-full bg-eco-green/10 text-eco-green font-code py-2 px-4 rounded-lg hover:bg-eco-green/20 transition-all border border-eco-green flex items-center justify-center gap-2 group"
+            className="block text-center bg-eco-green/10 text-eco-green font-code py-2 px-4 
+                       rounded-lg hover:bg-eco-green/20 transition-all border border-eco-green 
+                       group"
           >
             Purchase Credits
-            <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
+            <ArrowRight className="inline ml-2 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
           </Link>
         </div>
 

@@ -75,7 +75,7 @@ export default function AuthPage() {
                 label: 'font-code text-eco-gray',
               }
             }}
-            providers={['google', 'github']}
+            providers={[]}
             redirectTo={`${window.location.origin}/dashboard`}
           />
         </div>

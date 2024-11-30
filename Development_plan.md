@@ -69,9 +69,9 @@ Use this checklist to guide your development process. You can tick off each item
 ## Phase 4: Document Management System Setup
 
 - [ ]  **Set Up Document Storage Infrastructure**
-    - [ ]  Configure Supabase Storage for official PDFs
+    - [x]  Configure Supabase Storage for official PDFs
     - [ ]  Create document metadata tables in Supabase:
-        - [ ]  Documents table (title, date, region, category)
+        - [x]  Documents table (title, date, region, category)
         - [ ]  Document chunks table
         - [ ]  Document references table
     - [ ]  Set up Pinecone for vector storage

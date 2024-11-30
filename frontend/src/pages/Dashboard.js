@@ -2,6 +2,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import UserMenu from '../components/UserMenu';
+import { useUserProfile } from '../hooks/useUserProfile';
+import { useAuth } from '../contexts/AuthContext';
 import { 
   Bot, 
   Search, 
@@ -19,6 +21,9 @@ import {
 } from 'lucide-react';
 
 export default function Dashboard() {
+  const { user } = useAuth();
+  const { profile } = useUserProfile();
+
   // Placeholder data - will be replaced with real user data
   const userData = {
     name: "User",
@@ -94,13 +99,13 @@ export default function Dashboard() {
         <div className="flex justify-between items-start">
           <div>
             <h1 className="font-code text-eco-text text-2xl mb-2">
-              Welcome back, <span className="text-eco-green">{userData.name}</span>
+              Welcome back, <span className="text-eco-green">{profile?.email || user?.email || 'User'}</span>
             </h1>
             <p className="font-code text-eco-gray">
               &gt; Ready for your next query? :)
             </p>
           </div>
-          <UserMenu credits={userData.credits} />
+          <UserMenu credits={profile?.credits || 0} />
         </div>
       </div>
 

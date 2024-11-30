@@ -4,6 +4,7 @@ import { useAuth } from '../contexts/AuthContext';
 import Sidebar from '../components/Sidebar';
 import UserMenu from '../components/UserMenu';
 import { Link } from 'react-router-dom';
+import { useUserProfile } from '../hooks/useUserProfile';
 
 export default function AIAssistant() {
   const [messages, setMessages] = useState([]);
@@ -11,6 +12,7 @@ export default function AIAssistant() {
   const [isTyping, setIsTyping] = useState(false);
   const messagesEndRef = useRef(null);
   const { user } = useAuth();
+  const { profile } = useUserProfile();
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -78,8 +80,8 @@ export default function AIAssistant() {
             <span className="text-eco-text font-code border-l border-eco-dark pl-4">Session: SESSION_123</span>
           </div>
           <div className="flex items-center gap-4">
-            <span className="text-eco-green font-code">750 credits available</span>
-            <UserMenu credits={750} />
+            <span className="text-eco-green font-code">{profile?.credits || 0} credits available</span>
+            <UserMenu credits={profile?.credits || 0} />
           </div>
         </div>
 

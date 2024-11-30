@@ -42,27 +42,27 @@ Use this checklist to guide your development process. You can tick off each item
 - [ ]  **Create Wireframes for Core Pages**
     - [ ]  Use a v0 or bolt.new:
         - [x]  Home/Landing Page
-        - [ ]  Sign Up Page
-        - [ ]  Login Page
-        - [ ]  Dashboard
-        - [ ]  AI Chat Interface
-        - [ ]  Billing/Credits Page
+        - [x]  Sign Up/In Page
+        - [x]  Dashboard
+        - [x]  AI Chat Interface
+        - [x]  Document Search Interface
+        - [x]  Billing Page
 
 ---
 
 ## Phase 3: Implementing User Authentication
 
-- [ ]  **Backend - Set Up Supabase Authentication**
-    - [ ]  Create a project on Supabase.
-    - [ ]  Configure authentication for email/password sign-up and login.
-    - [ ]  Set up user tables and configure policies.
-- [ ]  **Frontend - Develop Authentication Pages**
-    - [ ]  Build the **Sign Up** page with form validation and error handling.
-    - [ ]  Build the **Login** page with form validation and error handling.
-    - [ ]  Connect the forms to Supabase authentication APIs.
-- [ ]  **Implement Protected Routes**
-    - [ ]  Ensure only authenticated users can access protected pages.
-    - [ ]  Implement route guards or higher-order components in React.
+- [x]  **Backend - Set Up Supabase Authentication**
+    - [x]  Create a project on Supabase.
+    - [x]  Configure authentication for email/password sign-up and login.
+    - [x]  Set up user tables and configure policies.
+- [x]  **Frontend - Develop Authentication Pages**
+    - [x]  Build the **Sign Up** page with form validation and error handling.
+    - [x]  Build the **Login** page with form validation and error handling.
+    - [x]  Connect the forms to Supabase authentication APIs.
+- [x]  **Implement Protected Routes**
+    - [x]  Ensure only authenticated users can access protected pages.
+    - [x]  Implement route guards or higher-order components in React.
 
 ---
 

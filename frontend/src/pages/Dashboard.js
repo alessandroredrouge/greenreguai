@@ -167,11 +167,7 @@ export default function Dashboard() {
           <div className="mb-4">
             <div className="flex justify-between text-sm text-eco-gray mb-2">
               <span>{creditInfo?.total_used || 0} used</span>
-              <span>
-                {(creditInfo?.total_purchased || 0) -
-                  (creditInfo?.total_used || 0)}{" "}
-                remaining
-              </span>
+              <span>{profile?.credits || 0} remaining</span>
             </div>
             <div className="h-2 bg-eco-dark rounded-full">
               <div

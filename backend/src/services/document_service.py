@@ -30,12 +30,21 @@ class DocumentService:
 
     async def get_document_by_id(self, document_id: str) -> Optional[dict]:
         """Get document metadata by ID"""
-        result = self.supabase.client.table('documents')\
-            .select('*')\
-            .eq('document_id', document_id)\
-            .execute()
-        
-        return result.data[0] if result.data else None
+        try:
+            # Use admin_client and correct column name
+            result = self.supabase.admin_client.table('documents')\
+                .select('*')\
+                .eq('document_id', document_id)\
+                .execute()
+            
+            if not result.data:
+                return None
+            
+            document = result.data[0]
+            return document
+        except Exception as e:
+            print(f"Document Service Error: {str(e)}")
+            raise e
 
 # Create a singleton instance
 document_service = DocumentService()

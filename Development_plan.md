@@ -66,64 +66,80 @@ Use this checklist to guide your development process. You can tick off each item
 
 ---
 
-## Phase 4: Developing Core Backend APIs
+## Phase 4: Document Management System Setup
 
-- [ ]  **Design API Endpoints**
-    - [ ]  Define endpoints for:
-        - [ ]  AI query processing
-        - [ ]  Credit management
-        - [ ]  Payment processing hooks
-        - [ ]  Feedback submission
-- [ ]  **Implement User Management APIs**
-    - [ ]  Create endpoints for fetching user profiles.
-    - [ ]  Create endpoints for updating user profiles.
-- [ ]  **Implement Credit System Logic**
-    - [ ]  Set up database tables for user credits.
-    - [ ]  Write logic to deduct credits upon each AI query.
-    - [ ]  Create endpoints to get and update credit balances.
+- [ ]  **Set Up Document Storage Infrastructure**
+    - [ ]  Configure Supabase Storage for official PDFs
+    - [ ]  Create document metadata tables in Supabase:
+        - [ ]  Documents table (title, date, region, category)
+        - [ ]  Document chunks table
+        - [ ]  Document references table
+    - [ ]  Set up Pinecone for vector storage
+    - [ ]  Create necessary backend services and models
 
----
+- [ ]  **Document Processing Pipeline**
+    - [ ]  Implement document processing service:
+        - [ ]  PDF text extraction
+        - [ ]  Text chunking strategy
+        - [ ]  Embedding generation
+    - [ ]  Create reference system between chunks and sources
+    - [ ]  Process initial set of official documents
+    - [ ]  Store documents and generate embeddings
+    - [ ]  Implement backend APIs for document retrieval
 
-## Phase 5: Developing Core Frontend Components
+## Phase 5: Document Library Implementation
 
-- [ ]  **Build the Dashboard Page**
-    - [ ]  Display user information and credit balance.
-    - [ ]  Add navigation to:
-        - [ ]  AI Chat Interface
-        - [ ]  Billing/Credits Page
-        - [ ]  Profile Settings
-- [ ]  **Build the AI Chat Interface**
-    - [ ]  Develop the chat UI with message bubbles.
-    - [ ]  Implement the input field and send button.
-    - [ ]  Handle the display of AI responses.
+- [ ]  **Backend - Document Library APIs**
+    - [ ]  Create endpoints for document listing
+    - [ ]  Implement filtering and search functionality
+    - [ ]  Add document metadata retrieval
+    - [ ]  Set up PDF serving endpoints
 
----
+- [ ]  **Frontend - Document Library Interface**
+    - [ ]  Enhance existing Document Library page:
+        - [ ]  Add document browsing interface
+        - [ ]  Implement filtering system
+        - [ ]  Add document preview functionality
+        - [ ]  Implement metadata-based search
+    - [ ]  Create document detail view
+    - [ ]  Add PDF viewer integration
 
-## Phase 6: Integrating AI Functionality
+## Phase 6: AI Assistant Integration
 
-- [ ]  **Backend - Set Up Langchain and LLM Integration**
-    - [ ]  Install and configure Langchain.
-    - [ ]  Set up connections to the chosen LLM (e.g., OpenAI GPT-4).
-    - [ ]  Implement functions to process user queries and generate responses.
-- [ ]  **Backend - Implement AI Query Endpoint**
-    - [ ]  Create an API endpoint to handle AI queries.
-    - [ ]  Include logic to deduct credits per query.
-- [ ]  **Frontend - Connect AI Chat Interface to Backend**
-    - [ ]  Implement API calls from the chat interface to the backend.
-    - [ ]  Handle loading states and errors.
+- [ ]  **Backend - Set Up RAG System**
+    - [ ]  Install and configure Langchain
+    - [ ]  Implement vector similarity search
+    - [ ]  Create prompt engineering system
+    - [ ]  Set up response generation with citations
+    - [ ]  Implement citation verification system
+
+- [ ]  **Backend - AI Query Endpoint**
+    - [ ]  Create API endpoint for AI queries
+    - [ ]  Implement credit deduction logic
+    - [ ]  Add source reference generation
+    - [ ]  Handle error cases and rate limiting
+
+- [ ]  **Frontend - Enhance AI Chat Interface**
+    - [ ]  Update existing chat interface:
+        - [ ]  Add support for cited responses
+        - [ ]  Implement clickable citations
+        - [ ]  Add document preview modal
+        - [ ]  Improve error handling
+    - [ ]  Add loading states and animations
+    - [ ]  Implement credit balance display
 
 ---
 
 ## Phase 7: Implementing the Credit System
 
 - [ ]  **Frontend - Display Credit Balance**
-    - [ ]  Show the user's current credit balance on:
-        - [ ]  Dashboard
-        - [ ]  AI Chat Interface
-- [ ]  **Frontend - Handle Low Credit Scenarios**
+    - [x]  Show the user's current credit balance on:
+        - [x]  Dashboard
+        - [x]  AI Chat Interface
+- [ ]  **Frontend - Handle Low Credit Scenarios (Optional)**
     - [ ]  Notify users when credits are low.
     - [ ]  Prompt users to purchase more credits.
-- [ ]  **Backend - Implement Feedback Rewards**
+- [ ]  **Backend - Implement Feedback Rewards (Optional)**
     - [ ]  Develop logic to award credits for user feedback.
     - [ ]  Create an endpoint to handle feedback submissions.
 

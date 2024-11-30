@@ -55,6 +55,7 @@ wheels/
 *.egg-info/
 .installed.cfg
 *.egg
+config.py
 
 # Frontend
 frontend/node_modules

@@ -1,54 +1,25 @@
-import React, { useState, useEffect } from "react";
-import {
-  Search,
-  Filter,
-  Grid,
-  List,
-  ArrowLeft,
-  Download,
-  Share,
-  Bookmark,
-  Eye,
-  ChevronRight,
-  Clock,
-  Tag,
-  FolderIcon,
-} from "lucide-react";
-import { Link } from "react-router-dom";
-import { searchDocuments } from "../lib/api";
+import React, { useState, useEffect } from 'react';
+import { Search, Grid, List, ArrowLeft, Download } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { searchDocuments } from '../lib/api';
 import FiltersDrawer from '../components/FiltersDrawer';
 
 export default function DocumentLibrary() {
-  const [searchInput, setSearchInput] = useState("");
-  const [searchTerm, setSearchTerm] = useState("");
-  const [viewMode, setViewMode] = useState("grid");
+  const [searchInput, setSearchInput] = useState('');
+  const [searchTerm, setSearchTerm] = useState('');
+  const [viewMode, setViewMode] = useState('grid');
   const [documents, setDocuments] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [selectedDocument, setSelectedDocument] = useState(null);
+  const [isFiltersOpen, setIsFiltersOpen] = useState(false);
   const [filters, setFilters] = useState({
     region: null,
     category: null,
     tags: [],
     page: 1,
-    per_page: 12,
+    per_page: 12
   });
-  const [isFiltersOpen, setIsFiltersOpen] = useState(false);
-
-  const recentItems = [
-    "Solar Guidelines",
-    "Wind Power Report",
-    "Hydro Regulations",
-  ];
-
-  const tags = [
-    { name: "Solar", active: true },
-    { name: "Wind", active: false },
-    { name: "Hydro", active: false },
-    { name: "Compliance", active: false },
-    { name: "Safety", active: false },
-  ];
-
-  const bookmarks = ["Important Guidelines", "Reference Docs", "Templates"];
 
   const fetchDocuments = async () => {
     try {
@@ -71,37 +42,8 @@ export default function DocumentLibrary() {
     fetchDocuments();
   }, [searchTerm, filters]);
 
-  const handleTagClick = (tagName) => {
-    const updatedTags = tags.map((tag) => ({
-      ...tag,
-      active: tag.name === tagName ? !tag.active : tag.active,
-    }));
-
-    // Update filters with active tags
-    const activeTags = updatedTags
-      .filter((tag) => tag.active)
-      .map((tag) => tag.name);
-    setFilters((prev) => ({
-      ...prev,
-      tags: activeTags,
-    }));
-  };
-
-  const handleCategoryClick = (category) => {
-    setFilters((prev) => ({
-      ...prev,
-      category: prev.category === category ? null : category,
-    }));
-  };
-
   const handleSearch = () => {
     setSearchTerm(searchInput);
-  };
-
-  const handleKeyPress = (e) => {
-    if (e.key === "Enter") {
-      handleSearch();
-    }
   };
 
   const handleApplyFilters = (newFilters) => {
@@ -114,95 +56,66 @@ export default function DocumentLibrary() {
 
   return (
     <div className="flex h-screen bg-eco-black">
-      {/* Left Sidebar */}
-      <div className="w-64 border-r border-eco-dark bg-eco-darker overflow-y-auto">
-        {/* Folders Section */}
-        <div className="p-4 border-b border-eco-dark">
-          <h2 className="font-code text-eco-text mb-4 flex items-center gap-2">
-            <FolderIcon className="h-4 w-4 text-eco-green" /> Folders
-          </h2>
-          <div className="space-y-2">
-            {["Regulations", "Guidelines", "Reports", "Templates"].map(
-              (folder) => (
-                <button
-                  key={folder}
-                  onClick={() => handleCategoryClick(folder.toLowerCase())}
-                  className={`w-full text-left px-4 py-2 hover:bg-eco-dark/50 rounded-lg transition-colors font-code ${
-                    filters.category === folder.toLowerCase()
-                      ? "text-eco-green bg-eco-green/10"
-                      : "text-eco-gray hover:text-eco-text"
-                  }`}
-                >
-                  {folder}
-                  <ChevronRight className="float-right h-4 w-4" />
-                </button>
-              )
-            )}
-          </div>
-        </div>
+      {/* Preview Sidebar - Now smaller */}
+      <div className="w-1/4 border-r border-eco-dark bg-eco-darker overflow-y-auto p-6">
+        {selectedDocument ? (
+          <div className="space-y-6">
+            <div>
+              <h2 className="text-2xl font-code text-eco-text mb-2">{selectedDocument.title}</h2>
+              <p className="text-eco-gray">{selectedDocument.description}</p>
+            </div>
 
-        {/* Recent Section */}
-        <div className="p-4 border-b border-eco-dark">
-          <h2 className="font-code text-eco-text mb-4 flex items-center gap-2">
-            <Clock className="h-4 w-4 text-eco-green" /> Recent
-          </h2>
-          <div className="space-y-2">
-            {recentItems.map((item) => (
-              <button
-                key={item}
-                className="w-full text-left px-4 py-2 text-eco-gray hover:text-eco-text hover:bg-eco-dark/50 rounded-lg transition-colors font-code"
-              >
-                {item}
-              </button>
-            ))}
-          </div>
-        </div>
+            <div>
+              <h3 className="text-eco-text font-code mb-2">Details</h3>
+              <div className="space-y-2">
+                <p className="text-eco-gray">Region: <span className="text-eco-text">{selectedDocument.region}</span></p>
+                <p className="text-eco-gray">Category: <span className="text-eco-text">{selectedDocument.category}</span></p>
+                <p className="text-eco-gray">File Size: <span className="text-eco-text">{Math.round(selectedDocument.file_size / 1024)} KB</span></p>
+                <p className="text-eco-gray">Type: <span className="text-eco-text">{selectedDocument.mime_type}</span></p>
+                <p className="text-eco-gray">Updated: <span className="text-eco-text">
+                  {new Date(selectedDocument.updated_at).toLocaleDateString()}
+                </span></p>
+              </div>
+            </div>
 
-        {/* Tags Section */}
-        <div className="p-4 border-b border-eco-dark">
-          <h2 className="font-code text-eco-text mb-4 flex items-center gap-2">
-            <Tag className="h-4 w-4 text-eco-green" /> Tags
-          </h2>
-          <div className="flex flex-wrap gap-2">
-            {tags.map((tag) => (
-              <button
-                key={tag.name}
-                onClick={() => handleTagClick(tag.name)}
-                className={`px-3 py-1 rounded-full font-code text-sm transition-colors ${
-                  tag.active
-                    ? "bg-eco-green/20 text-eco-green border border-eco-green"
-                    : "bg-eco-dark/50 text-eco-gray hover:text-eco-text hover:bg-eco-dark border border-transparent"
-                }`}
-              >
-                {tag.name}
-              </button>
-            ))}
-          </div>
-        </div>
+            <div>
+              <h3 className="text-eco-text font-code mb-2">Tags</h3>
+              <div className="flex flex-wrap gap-2">
+                {selectedDocument.tags.map((tag) => (
+                  <span
+                    key={tag}
+                    className="bg-eco-green/10 text-eco-green text-sm px-2 py-1 rounded-full"
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            </div>
 
-        {/* Bookmarks Section */}
-        <div className="p-4">
-          <h2 className="font-code text-eco-text mb-4 flex items-center gap-2">
-            <Bookmark className="h-4 w-4 text-eco-green" /> Bookmarks
-          </h2>
-          <div className="space-y-2">
-            {bookmarks.map((bookmark) => (
-              <button
-                key={bookmark}
-                className="w-full text-left px-4 py-2 text-eco-gray hover:text-eco-text hover:bg-eco-dark/50 rounded-lg transition-colors font-code"
-              >
-                {bookmark}
-              </button>
-            ))}
+            <a
+              href={selectedDocument.download_url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block w-full bg-eco-green/10 text-eco-green border border-eco-green px-4 py-2 rounded-lg hover:bg-eco-green/20 transition-colors text-center"
+            >
+              Download Document
+            </a>
           </div>
-        </div>
+        ) : (
+          <div className="h-full flex flex-col items-center justify-center text-center px-6">
+            <div className="space-y-4">
+              <h3 className="text-xl font-code text-eco-text">Document Preview</h3>
+              <p className="text-eco-gray">Select a document to view its details</p>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Main Content */}
       <div className="flex-1 flex flex-col">
         {/* Top Navigation */}
         <div className="bg-eco-darker border-b border-eco-dark p-4 flex items-center justify-between">
-          <Link
+          <Link 
             to="/dashboard"
             className="flex items-center gap-2 text-eco-green hover:text-eco-text transition-colors"
           >
@@ -216,11 +129,11 @@ export default function DocumentLibrary() {
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-eco-gray" />
               <input
                 type="text"
-                placeholder="Search documents... (⌘K)"
+                placeholder="Search documents..."
                 className="flex-1 bg-eco-black border border-eco-dark rounded-lg py-2 pl-10 pr-4 text-eco-text placeholder:text-eco-gray focus:outline-none focus:ring-2 focus:ring-eco-green"
                 value={searchInput}
                 onChange={(e) => setSearchInput(e.target.value)}
-                onKeyPress={handleKeyPress}
+                onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
               />
               <button
                 onClick={handleSearch}
@@ -234,22 +147,14 @@ export default function DocumentLibrary() {
           {/* View Controls */}
           <div className="flex items-center gap-4">
             <button
-              onClick={() => setViewMode("grid")}
-              className={`p-2 rounded-lg ${
-                viewMode === "grid"
-                  ? "bg-eco-green/20 text-eco-green"
-                  : "text-eco-gray hover:text-eco-text"
-              }`}
+              onClick={() => setViewMode('grid')}
+              className={`p-2 rounded-lg ${viewMode === 'grid' ? 'bg-eco-green/20 text-eco-green' : 'text-eco-gray hover:text-eco-text'}`}
             >
               <Grid className="h-5 w-5" />
             </button>
             <button
-              onClick={() => setViewMode("list")}
-              className={`p-2 rounded-lg ${
-                viewMode === "list"
-                  ? "bg-eco-green/20 text-eco-green"
-                  : "text-eco-gray hover:text-eco-text"
-              }`}
+              onClick={() => setViewMode('list')}
+              className={`p-2 rounded-lg ${viewMode === 'list' ? 'bg-eco-green/20 text-eco-green' : 'text-eco-gray hover:text-eco-text'}`}
             >
               <List className="h-5 w-5" />
             </button>
@@ -273,29 +178,16 @@ export default function DocumentLibrary() {
               <div className="text-red-500">{error}</div>
             </div>
           ) : (
-            <div
-              className={
-                viewMode === "grid"
-                  ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-                  : "space-y-4"
-              }
-            >
+            <div className={viewMode === 'grid' ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6' : 'space-y-4'}>
               {documents.map((doc) => (
                 <div
                   key={doc.document_id}
                   className={`bg-eco-darker border border-eco-dark rounded-lg ${
-                    viewMode === "grid"
-                      ? "p-6"
-                      : "p-4 flex items-center justify-between"
-                  }`}
+                    viewMode === 'grid' ? 'p-6' : 'p-4 flex items-center justify-between'
+                  } cursor-pointer hover:border-eco-green transition-colors`}
+                  onClick={() => setSelectedDocument(doc)}
                 >
-                  <div
-                    className={
-                      viewMode === "grid"
-                        ? ""
-                        : "flex items-center gap-4 flex-1"
-                    }
-                  >
+                  <div className={viewMode === 'grid' ? '' : 'flex items-center gap-4 flex-1'}>
                     <div className="text-eco-text font-code mb-2">
                       <h3 className="text-lg">{doc.title}</h3>
                       <p className="text-eco-gray text-sm">{doc.region}</p>
@@ -311,11 +203,7 @@ export default function DocumentLibrary() {
                       ))}
                     </div>
                   </div>
-                  <div
-                    className={`flex ${
-                      viewMode === "grid" ? "justify-between" : "gap-4"
-                    } items-center mt-4`}
-                  >
+                  <div className={`flex ${viewMode === 'grid' ? 'justify-between' : 'gap-4'} items-center mt-4`}>
                     <div className="flex items-center gap-2">
                       <span className="text-eco-gray text-sm">
                         Updated {new Date(doc.updated_at).toLocaleDateString()}
@@ -327,6 +215,7 @@ export default function DocumentLibrary() {
                         target="_blank"
                         rel="noopener noreferrer"
                         className="p-2 text-eco-gray hover:text-eco-green"
+                        onClick={(e) => e.stopPropagation()}
                       >
                         <Download className="h-5 w-5" />
                       </a>
@@ -339,6 +228,7 @@ export default function DocumentLibrary() {
         </div>
       </div>
 
+      {/* Add the FiltersDrawer component */}
       <FiltersDrawer
         isOpen={isFiltersOpen}
         onClose={() => setIsFiltersOpen(false)}

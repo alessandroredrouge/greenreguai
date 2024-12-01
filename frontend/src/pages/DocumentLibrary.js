@@ -1,12 +1,26 @@
-import React, { useState, useEffect } from 'react';
-import { Search, Filter, Grid, List, ArrowLeft, Download, Share, Bookmark, Eye, ChevronRight, Clock, Tag, FolderIcon } from 'lucide-react';
-import { Link } from 'react-router-dom';
-import { searchDocuments } from '../lib/api';
+import React, { useState, useEffect } from "react";
+import {
+  Search,
+  Filter,
+  Grid,
+  List,
+  ArrowLeft,
+  Download,
+  Share,
+  Bookmark,
+  Eye,
+  ChevronRight,
+  Clock,
+  Tag,
+  FolderIcon,
+} from "lucide-react";
+import { Link } from "react-router-dom";
+import { searchDocuments } from "../lib/api";
 
 export default function DocumentLibrary() {
-  const [searchInput, setSearchInput] = useState('');
-  const [searchTerm, setSearchTerm] = useState('');
-  const [viewMode, setViewMode] = useState('grid');
+  const [searchInput, setSearchInput] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [viewMode, setViewMode] = useState("grid");
   const [documents, setDocuments] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -15,28 +29,24 @@ export default function DocumentLibrary() {
     category: null,
     tags: [],
     page: 1,
-    per_page: 12
+    per_page: 12,
   });
 
   const recentItems = [
-    'Solar Guidelines',
-    'Wind Power Report',
-    'Hydro Regulations'
+    "Solar Guidelines",
+    "Wind Power Report",
+    "Hydro Regulations",
   ];
 
   const tags = [
-    { name: 'Solar', active: true },
-    { name: 'Wind', active: false },
-    { name: 'Hydro', active: false },
-    { name: 'Compliance', active: false },
-    { name: 'Safety', active: false }
+    { name: "Solar", active: true },
+    { name: "Wind", active: false },
+    { name: "Hydro", active: false },
+    { name: "Compliance", active: false },
+    { name: "Safety", active: false },
   ];
 
-  const bookmarks = [
-    'Important Guidelines',
-    'Reference Docs',
-    'Templates'
-  ];
+  const bookmarks = ["Important Guidelines", "Reference Docs", "Templates"];
 
   const fetchDocuments = async () => {
     try {
@@ -44,11 +54,11 @@ export default function DocumentLibrary() {
       setError(null);
       const response = await searchDocuments({
         query: searchTerm,
-        ...filters
+        ...filters,
       });
       setDocuments(response.items);
     } catch (err) {
-      setError('Failed to fetch documents');
+      setError("Failed to fetch documents");
       console.error(err);
     } finally {
       setLoading(false);
@@ -60,23 +70,25 @@ export default function DocumentLibrary() {
   }, [searchTerm, filters]);
 
   const handleTagClick = (tagName) => {
-    const updatedTags = tags.map(tag => ({
+    const updatedTags = tags.map((tag) => ({
       ...tag,
-      active: tag.name === tagName ? !tag.active : tag.active
+      active: tag.name === tagName ? !tag.active : tag.active,
     }));
-    
+
     // Update filters with active tags
-    const activeTags = updatedTags.filter(tag => tag.active).map(tag => tag.name);
-    setFilters(prev => ({
+    const activeTags = updatedTags
+      .filter((tag) => tag.active)
+      .map((tag) => tag.name);
+    setFilters((prev) => ({
       ...prev,
-      tags: activeTags
+      tags: activeTags,
     }));
   };
 
   const handleCategoryClick = (category) => {
-    setFilters(prev => ({
+    setFilters((prev) => ({
       ...prev,
-      category: prev.category === category ? null : category
+      category: prev.category === category ? null : category,
     }));
   };
 
@@ -85,7 +97,7 @@ export default function DocumentLibrary() {
   };
 
   const handleKeyPress = (e) => {
-    if (e.key === 'Enter') {
+    if (e.key === "Enter") {
       handleSearch();
     }
   };
@@ -100,20 +112,22 @@ export default function DocumentLibrary() {
             <FolderIcon className="h-4 w-4 text-eco-green" /> Folders
           </h2>
           <div className="space-y-2">
-            {['Regulations', 'Guidelines', 'Reports', 'Templates'].map((folder) => (
-              <button
-                key={folder}
-                onClick={() => handleCategoryClick(folder.toLowerCase())}
-                className={`w-full text-left px-4 py-2 hover:bg-eco-dark/50 rounded-lg transition-colors font-code ${
-                  filters.category === folder.toLowerCase() 
-                    ? 'text-eco-green bg-eco-green/10' 
-                    : 'text-eco-gray hover:text-eco-text'
-                }`}
-              >
-                {folder}
-                <ChevronRight className="float-right h-4 w-4" />
-              </button>
-            ))}
+            {["Regulations", "Guidelines", "Reports", "Templates"].map(
+              (folder) => (
+                <button
+                  key={folder}
+                  onClick={() => handleCategoryClick(folder.toLowerCase())}
+                  className={`w-full text-left px-4 py-2 hover:bg-eco-dark/50 rounded-lg transition-colors font-code ${
+                    filters.category === folder.toLowerCase()
+                      ? "text-eco-green bg-eco-green/10"
+                      : "text-eco-gray hover:text-eco-text"
+                  }`}
+                >
+                  {folder}
+                  <ChevronRight className="float-right h-4 w-4" />
+                </button>
+              )
+            )}
           </div>
         </div>
 
@@ -145,9 +159,9 @@ export default function DocumentLibrary() {
                 key={tag.name}
                 onClick={() => handleTagClick(tag.name)}
                 className={`px-3 py-1 rounded-full font-code text-sm transition-colors ${
-                  tag.active 
-                    ? 'bg-eco-green/20 text-eco-green border border-eco-green' 
-                    : 'bg-eco-dark/50 text-eco-gray hover:text-eco-text hover:bg-eco-dark border border-transparent'
+                  tag.active
+                    ? "bg-eco-green/20 text-eco-green border border-eco-green"
+                    : "bg-eco-dark/50 text-eco-gray hover:text-eco-text hover:bg-eco-dark border border-transparent"
                 }`}
               >
                 {tag.name}
@@ -178,7 +192,7 @@ export default function DocumentLibrary() {
       <div className="flex-1 flex flex-col">
         {/* Top Navigation */}
         <div className="bg-eco-darker border-b border-eco-dark p-4 flex items-center justify-between">
-          <Link 
+          <Link
             to="/dashboard"
             className="flex items-center gap-2 text-eco-green hover:text-eco-text transition-colors"
           >
@@ -210,22 +224,27 @@ export default function DocumentLibrary() {
           {/* View Controls */}
           <div className="flex items-center gap-4">
             <button
-              onClick={() => setViewMode('grid')}
-              className={`p-2 rounded-lg ${viewMode === 'grid' ? 'bg-eco-green/20 text-eco-green' : 'text-eco-gray hover:text-eco-text'}`}
+              onClick={() => setViewMode("grid")}
+              className={`p-2 rounded-lg ${
+                viewMode === "grid"
+                  ? "bg-eco-green/20 text-eco-green"
+                  : "text-eco-gray hover:text-eco-text"
+              }`}
             >
               <Grid className="h-5 w-5" />
             </button>
             <button
-              onClick={() => setViewMode('list')}
-              className={`p-2 rounded-lg ${viewMode === 'list' ? 'bg-eco-green/20 text-eco-green' : 'text-eco-gray hover:text-eco-text'}`}
+              onClick={() => setViewMode("list")}
+              className={`p-2 rounded-lg ${
+                viewMode === "list"
+                  ? "bg-eco-green/20 text-eco-green"
+                  : "text-eco-gray hover:text-eco-text"
+              }`}
             >
               <List className="h-5 w-5" />
             </button>
             <button className="bg-eco-green/10 text-eco-green border border-eco-green px-4 py-2 rounded-lg hover:bg-eco-green/20 transition-colors">
               Filters
-            </button>
-            <button className="bg-eco-green/10 text-eco-green border border-eco-green px-4 py-2 rounded-lg hover:bg-eco-green/20 transition-colors">
-              Upload
             </button>
           </div>
         </div>
@@ -241,15 +260,29 @@ export default function DocumentLibrary() {
               <div className="text-red-500">{error}</div>
             </div>
           ) : (
-            <div className={viewMode === 'grid' ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6' : 'space-y-4'}>
+            <div
+              className={
+                viewMode === "grid"
+                  ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+                  : "space-y-4"
+              }
+            >
               {documents.map((doc) => (
                 <div
                   key={doc.document_id}
                   className={`bg-eco-darker border border-eco-dark rounded-lg ${
-                    viewMode === 'grid' ? 'p-6' : 'p-4 flex items-center justify-between'
+                    viewMode === "grid"
+                      ? "p-6"
+                      : "p-4 flex items-center justify-between"
                   }`}
                 >
-                  <div className={viewMode === 'grid' ? '' : 'flex items-center gap-4 flex-1'}>
+                  <div
+                    className={
+                      viewMode === "grid"
+                        ? ""
+                        : "flex items-center gap-4 flex-1"
+                    }
+                  >
                     <div className="text-eco-text font-code mb-2">
                       <h3 className="text-lg">{doc.title}</h3>
                       <p className="text-eco-gray text-sm">{doc.region}</p>
@@ -265,7 +298,11 @@ export default function DocumentLibrary() {
                       ))}
                     </div>
                   </div>
-                  <div className={`flex ${viewMode === 'grid' ? 'justify-between' : 'gap-4'} items-center mt-4`}>
+                  <div
+                    className={`flex ${
+                      viewMode === "grid" ? "justify-between" : "gap-4"
+                    } items-center mt-4`}
+                  >
                     <div className="flex items-center gap-2">
                       <span className="text-eco-gray text-sm">
                         Updated {new Date(doc.updated_at).toLocaleDateString()}
@@ -280,15 +317,6 @@ export default function DocumentLibrary() {
                       >
                         <Download className="h-5 w-5" />
                       </a>
-                      <button className="p-2 text-eco-gray hover:text-eco-green">
-                        <Share className="h-5 w-5" />
-                      </button>
-                      <button className="p-2 text-eco-gray hover:text-eco-green">
-                        <Bookmark className="h-5 w-5" />
-                      </button>
-                      <button className="p-2 text-eco-gray hover:text-eco-green">
-                        <Eye className="h-5 w-5" />
-                      </button>
                     </div>
                   </div>
                 </div>

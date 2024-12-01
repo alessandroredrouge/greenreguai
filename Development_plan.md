@@ -74,6 +74,9 @@ Use this checklist to guide your development process. You can tick off each item
         - [x]  Documents table (title, date, region, category)
         - [ ]  Document chunks table
         - [ ]  Document references table
+    - [ ]  Implement Document Search Functionality
+        - [ ]  Backend part
+        - [ ]  Frontend part
     - [ ]  Set up Pinecone for vector storage
     - [ ]  Create necessary backend services and models
 

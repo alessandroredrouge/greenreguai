@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { searchDocuments } from "../lib/api";
+import FiltersDrawer from '../components/FiltersDrawer';
 
 export default function DocumentLibrary() {
   const [searchInput, setSearchInput] = useState("");
@@ -31,6 +32,7 @@ export default function DocumentLibrary() {
     page: 1,
     per_page: 12,
   });
+  const [isFiltersOpen, setIsFiltersOpen] = useState(false);
 
   const recentItems = [
     "Solar Guidelines",
@@ -100,6 +102,14 @@ export default function DocumentLibrary() {
     if (e.key === "Enter") {
       handleSearch();
     }
+  };
+
+  const handleApplyFilters = (newFilters) => {
+    setFilters(prev => ({
+      ...prev,
+      ...newFilters,
+      page: 1 // Reset to first page when filters change
+    }));
   };
 
   return (
@@ -243,7 +253,10 @@ export default function DocumentLibrary() {
             >
               <List className="h-5 w-5" />
             </button>
-            <button className="bg-eco-green/10 text-eco-green border border-eco-green px-4 py-2 rounded-lg hover:bg-eco-green/20 transition-colors">
+            <button 
+              onClick={() => setIsFiltersOpen(true)}
+              className="bg-eco-green/10 text-eco-green border border-eco-green px-4 py-2 rounded-lg hover:bg-eco-green/20 transition-colors"
+            >
               Filters
             </button>
           </div>
@@ -325,6 +338,13 @@ export default function DocumentLibrary() {
           )}
         </div>
       </div>
+
+      <FiltersDrawer
+        isOpen={isFiltersOpen}
+        onClose={() => setIsFiltersOpen(false)}
+        filters={filters}
+        onApplyFilters={handleApplyFilters}
+      />
     </div>
   );
 }

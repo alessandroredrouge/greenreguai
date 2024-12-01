@@ -1,21 +1,22 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Search, Filter, Grid, List, ArrowLeft, Download, Share, Bookmark, Eye, ChevronRight, Clock, Tag, FolderIcon } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { searchDocuments } from '../lib/api';
 
 export default function DocumentLibrary() {
+  const [searchInput, setSearchInput] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
-  const [viewMode, setViewMode] = useState('grid'); // 'grid' or 'list'
-  const [documents] = useState([
-    {
-      id: 1,
-      title: 'Solar Panel Installation Guidelines 2024',
-      region: 'European Union',
-      tags: ['Solar', 'Installation', 'Guidelines'],
-      updatedAt: '2024-03-15',
-      isNew: true,
-    }
-    // Add more mock documents as needed
-  ]);
+  const [viewMode, setViewMode] = useState('grid');
+  const [documents, setDocuments] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [filters, setFilters] = useState({
+    region: null,
+    category: null,
+    tags: [],
+    page: 1,
+    per_page: 12
+  });
 
   const recentItems = [
     'Solar Guidelines',
@@ -37,6 +38,58 @@ export default function DocumentLibrary() {
     'Templates'
   ];
 
+  const fetchDocuments = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const response = await searchDocuments({
+        query: searchTerm,
+        ...filters
+      });
+      setDocuments(response.items);
+    } catch (err) {
+      setError('Failed to fetch documents');
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchDocuments();
+  }, [searchTerm, filters]);
+
+  const handleTagClick = (tagName) => {
+    const updatedTags = tags.map(tag => ({
+      ...tag,
+      active: tag.name === tagName ? !tag.active : tag.active
+    }));
+    
+    // Update filters with active tags
+    const activeTags = updatedTags.filter(tag => tag.active).map(tag => tag.name);
+    setFilters(prev => ({
+      ...prev,
+      tags: activeTags
+    }));
+  };
+
+  const handleCategoryClick = (category) => {
+    setFilters(prev => ({
+      ...prev,
+      category: prev.category === category ? null : category
+    }));
+  };
+
+  const handleSearch = () => {
+    setSearchTerm(searchInput);
+  };
+
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      handleSearch();
+    }
+  };
+
   return (
     <div className="flex h-screen bg-eco-black">
       {/* Left Sidebar */}
@@ -50,7 +103,12 @@ export default function DocumentLibrary() {
             {['Regulations', 'Guidelines', 'Reports', 'Templates'].map((folder) => (
               <button
                 key={folder}
-                className="w-full text-left px-4 py-2 text-eco-gray hover:text-eco-text hover:bg-eco-dark/50 rounded-lg transition-colors font-code"
+                onClick={() => handleCategoryClick(folder.toLowerCase())}
+                className={`w-full text-left px-4 py-2 hover:bg-eco-dark/50 rounded-lg transition-colors font-code ${
+                  filters.category === folder.toLowerCase() 
+                    ? 'text-eco-green bg-eco-green/10' 
+                    : 'text-eco-gray hover:text-eco-text'
+                }`}
               >
                 {folder}
                 <ChevronRight className="float-right h-4 w-4" />
@@ -85,6 +143,7 @@ export default function DocumentLibrary() {
             {tags.map((tag) => (
               <button
                 key={tag.name}
+                onClick={() => handleTagClick(tag.name)}
                 className={`px-3 py-1 rounded-full font-code text-sm transition-colors ${
                   tag.active 
                     ? 'bg-eco-green/20 text-eco-green border border-eco-green' 
@@ -129,15 +188,22 @@ export default function DocumentLibrary() {
 
           {/* Search Bar */}
           <div className="flex-1 max-w-2xl mx-4">
-            <div className="relative">
+            <div className="relative flex items-center">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-eco-gray" />
               <input
                 type="text"
                 placeholder="Search documents... (⌘K)"
-                className="w-full bg-eco-black border border-eco-dark rounded-lg py-2 pl-10 pr-4 text-eco-text placeholder:text-eco-gray focus:outline-none focus:ring-2 focus:ring-eco-green"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
+                className="flex-1 bg-eco-black border border-eco-dark rounded-lg py-2 pl-10 pr-4 text-eco-text placeholder:text-eco-gray focus:outline-none focus:ring-2 focus:ring-eco-green"
+                value={searchInput}
+                onChange={(e) => setSearchInput(e.target.value)}
+                onKeyPress={handleKeyPress}
               />
+              <button
+                onClick={handleSearch}
+                className="ml-2 bg-eco-green/10 text-eco-green border border-eco-green px-4 py-2 rounded-lg hover:bg-eco-green/20 transition-colors"
+              >
+                Search
+              </button>
             </div>
           </div>
 
@@ -166,57 +232,69 @@ export default function DocumentLibrary() {
 
         {/* Documents Grid/List */}
         <div className="flex-1 overflow-y-auto p-6">
-          <div className={viewMode === 'grid' ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6' : 'space-y-4'}>
-            {documents.map((doc) => (
-              <div
-                key={doc.id}
-                className={`bg-eco-darker border border-eco-dark rounded-lg ${
-                  viewMode === 'grid' ? 'p-6' : 'p-4 flex items-center justify-between'
-                }`}
-              >
-                <div className={viewMode === 'grid' ? '' : 'flex items-center gap-4 flex-1'}>
-                  <div className="text-eco-text font-code mb-2">
-                    <h3 className="text-lg">{doc.title}</h3>
-                    <p className="text-eco-gray text-sm">{doc.region}</p>
+          {loading ? (
+            <div className="flex justify-center items-center h-full">
+              <div className="text-eco-green">Loading...</div>
+            </div>
+          ) : error ? (
+            <div className="flex justify-center items-center h-full">
+              <div className="text-red-500">{error}</div>
+            </div>
+          ) : (
+            <div className={viewMode === 'grid' ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6' : 'space-y-4'}>
+              {documents.map((doc) => (
+                <div
+                  key={doc.document_id}
+                  className={`bg-eco-darker border border-eco-dark rounded-lg ${
+                    viewMode === 'grid' ? 'p-6' : 'p-4 flex items-center justify-between'
+                  }`}
+                >
+                  <div className={viewMode === 'grid' ? '' : 'flex items-center gap-4 flex-1'}>
+                    <div className="text-eco-text font-code mb-2">
+                      <h3 className="text-lg">{doc.title}</h3>
+                      <p className="text-eco-gray text-sm">{doc.region}</p>
+                    </div>
+                    <div className="flex flex-wrap gap-2 my-3">
+                      {doc.tags.map((tag) => (
+                        <span
+                          key={tag}
+                          className="bg-eco-green/10 text-eco-green text-sm px-2 py-1 rounded-full"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
                   </div>
-                  <div className="flex flex-wrap gap-2 my-3">
-                    {doc.tags.map((tag) => (
-                      <span
-                        key={tag}
-                        className="bg-eco-green/10 text-eco-green text-sm px-2 py-1 rounded-full"
+                  <div className={`flex ${viewMode === 'grid' ? 'justify-between' : 'gap-4'} items-center mt-4`}>
+                    <div className="flex items-center gap-2">
+                      <span className="text-eco-gray text-sm">
+                        Updated {new Date(doc.updated_at).toLocaleDateString()}
+                      </span>
+                    </div>
+                    <div className="flex gap-2">
+                      <a
+                        href={doc.download_url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="p-2 text-eco-gray hover:text-eco-green"
                       >
-                        {tag}
-                      </span>
-                    ))}
+                        <Download className="h-5 w-5" />
+                      </a>
+                      <button className="p-2 text-eco-gray hover:text-eco-green">
+                        <Share className="h-5 w-5" />
+                      </button>
+                      <button className="p-2 text-eco-gray hover:text-eco-green">
+                        <Bookmark className="h-5 w-5" />
+                      </button>
+                      <button className="p-2 text-eco-gray hover:text-eco-green">
+                        <Eye className="h-5 w-5" />
+                      </button>
+                    </div>
                   </div>
                 </div>
-                <div className={`flex ${viewMode === 'grid' ? 'justify-between' : 'gap-4'} items-center mt-4`}>
-                  <div className="flex items-center gap-2">
-                    <span className="text-eco-gray text-sm">Updated {doc.updatedAt}</span>
-                    {doc.isNew && (
-                      <span className="bg-eco-green/20 text-eco-green text-xs px-2 py-1 rounded-full">
-                        New
-                      </span>
-                    )}
-                  </div>
-                  <div className="flex gap-2">
-                    <button className="p-2 text-eco-gray hover:text-eco-green">
-                      <Download className="h-5 w-5" />
-                    </button>
-                    <button className="p-2 text-eco-gray hover:text-eco-green">
-                      <Share className="h-5 w-5" />
-                    </button>
-                    <button className="p-2 text-eco-gray hover:text-eco-green">
-                      <Bookmark className="h-5 w-5" />
-                    </button>
-                    <button className="p-2 text-eco-gray hover:text-eco-green">
-                      <Eye className="h-5 w-5" />
-                    </button>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </div>

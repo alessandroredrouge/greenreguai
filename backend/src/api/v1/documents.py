@@ -3,11 +3,38 @@ Endpoints for document management: listing, retrieving, and searching documents.
 Handles both metadata and file operations through Supabase.
 """
 
-from fastapi import APIRouter, HTTPException, Depends
+from fastapi import APIRouter, HTTPException, Depends, Query
 from typing import List, Optional
 from ...services.document_service import document_service
+from ...models.document_pydantic import DocumentSearchFilters, SearchResponse
 
 router = APIRouter(prefix="/documents", tags=["documents"])
+
+@router.get("/search", response_model=SearchResponse)
+async def search_documents(
+    query: Optional[str] = Query(None, description="Search query for title and description"),
+    region: Optional[str] = Query(None, description="Filter by region"),
+    category: Optional[str] = Query(None, description="Filter by category"),
+    tags: Optional[List[str]] = Query(None, description="Filter by tags"),
+    page: int = Query(1, ge=1, description="Page number"),
+    per_page: int = Query(10, ge=1, le=100, description="Items per page")
+) -> SearchResponse:
+    """
+    Search documents with filters and pagination.
+    Returns paginated results with download URLs.
+    """
+    try:
+        filters = DocumentSearchFilters(
+            query=query,
+            region=region,
+            category=category,
+            tags=tags,
+            page=page,
+            per_page=per_page
+        )
+        return await document_service.search_documents(filters)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 @router.get("/")
 async def list_documents(folder: Optional[str] = None) -> List[dict]:

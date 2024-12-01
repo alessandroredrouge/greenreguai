@@ -16,6 +16,7 @@ async def search_documents(
     region: Optional[str] = Query(None, description="Filter by region"),
     category: Optional[str] = Query(None, description="Filter by category"),
     tags: Optional[List[str]] = Query(None, description="Filter by tags"),
+    year: Optional[int] = Query(None, description="Filter by publication year"),
     page: int = Query(1, ge=1, description="Page number"),
     per_page: int = Query(10, ge=1, le=100, description="Items per page")
 ) -> SearchResponse:
@@ -29,6 +30,7 @@ async def search_documents(
             region=region,
             category=category,
             tags=tags,
+            year=year,
             page=page,
             per_page=per_page
         )

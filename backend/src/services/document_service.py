@@ -71,6 +71,10 @@ class DocumentService:
             if filters.tags and len(filters.tags) > 0:
                 query = query.contains('tags', filters.tags)
 
+            # Add year filter
+            if filters.year:
+                query = query.eq('publication_year', int(filters.year))
+
             # Calculate pagination
             start = (filters.page - 1) * filters.per_page
             end = start + filters.per_page - 1

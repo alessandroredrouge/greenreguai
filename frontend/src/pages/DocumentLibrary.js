@@ -17,6 +17,7 @@ export default function DocumentLibrary() {
     region: null,
     category: null,
     tags: [],
+    year: null,
     page: 1,
     per_page: 12
   });
@@ -61,7 +62,8 @@ export default function DocumentLibrary() {
         {selectedDocument ? (
           <div className="space-y-6">
             <div>
-              <h2 className="text-2xl font-code text-eco-text mb-2">{selectedDocument.title}</h2>
+              <h2 className="text-2xl font-code text-eco-text mb-1">{selectedDocument.title}</h2>
+              <p className="text-eco-green text-sm mb-3">{selectedDocument.publication_year}</p>
               <p className="text-eco-gray">{selectedDocument.description}</p>
             </div>
 
@@ -178,18 +180,19 @@ export default function DocumentLibrary() {
               <div className="text-red-500">{error}</div>
             </div>
           ) : (
-            <div className={viewMode === 'grid' ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6' : 'space-y-4'}>
+            <div className={`grid ${viewMode === 'grid' ? 'grid-cols-2 lg:grid-cols-3 gap-6' : 'grid-cols-1 gap-4'}`}>
               {documents.map((doc) => (
                 <div
                   key={doc.document_id}
-                  className={`bg-eco-darker border border-eco-dark rounded-lg ${
-                    viewMode === 'grid' ? 'p-6' : 'p-4 flex items-center justify-between'
-                  } cursor-pointer hover:border-eco-green transition-colors`}
                   onClick={() => setSelectedDocument(doc)}
+                  className={`bg-eco-darker border border-eco-dark rounded-lg p-4 cursor-pointer hover:border-eco-green transition-colors ${
+                    selectedDocument?.document_id === doc.document_id ? 'border-eco-green' : ''
+                  }`}
                 >
                   <div className={viewMode === 'grid' ? '' : 'flex items-center gap-4 flex-1'}>
-                    <div className="text-eco-text font-code mb-2">
-                      <h3 className="text-lg">{doc.title}</h3>
+                    <div className="flex-1">
+                      <h3 className="text-eco-text font-code text-lg mb-1">{doc.title}</h3>
+                      <p className="text-eco-green text-sm mb-2">{doc.publication_year}</p>
                       <p className="text-eco-gray text-sm">{doc.region}</p>
                     </div>
                     <div className="flex flex-wrap gap-2 my-3">

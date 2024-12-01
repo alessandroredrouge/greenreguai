@@ -10,6 +10,7 @@ export const searchDocuments = async (params) => {
             region: params.region,
             category: params.category,
             tags: params.tags,
+            year: params.year,
             page: params.page,
             per_page: params.per_page
         }

@@ -7,8 +7,10 @@ export default function FiltersDrawer({ isOpen, onClose, filters, onApplyFilters
   const regions = ['europe', 'north america', 'asia', 'global'];
   const categories = ['regulations', 'guidelines', 'reports', 'templates'];
   const availableTags = ['renewable', 'solar', 'wind', 'hydro', 'energy transition', 'compliance', 'safety'];
+  const years = Array.from({length: 25}, (_, i) => 2024 - i); // Creates array from 2024 to 2000
 
   const handleApply = () => {
+    console.log('Applying filters:', localFilters);
     onApplyFilters(localFilters);
     onClose();
   };
@@ -26,6 +28,24 @@ export default function FiltersDrawer({ isOpen, onClose, filters, onApplyFilters
 
         {/* Filters Content */}
         <div className="flex-1 overflow-y-auto p-4 space-y-6">
+          {/* Year Filter */}
+          <div>
+            <h3 className="text-eco-text font-code mb-2">Publication Year</h3>
+            <select
+              value={localFilters.year || ''}
+              onChange={(e) => setLocalFilters(prev => ({
+                ...prev,
+                year: e.target.value ? parseInt(e.target.value) : null
+              }))}
+              className="w-full bg-eco-black border border-eco-dark rounded-lg py-2 px-3 text-eco-text focus:outline-none focus:ring-2 focus:ring-eco-green"
+            >
+              <option value="">All Years</option>
+              {years.map(year => (
+                <option key={year} value={year}>{year}</option>
+              ))}
+            </select>
+          </div>
+
           {/* Region Filter */}
           <div>
             <h3 className="text-eco-text font-code mb-2">Region</h3>

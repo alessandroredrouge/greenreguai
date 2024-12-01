@@ -18,6 +18,7 @@ class DocumentBase(BaseModel):
     file_size: int
     mime_type: str
     url_source: Optional[str] = None
+    publication_year: int
 
 class DocumentResponse(DocumentBase):
     """Model for document responses"""
@@ -32,6 +33,7 @@ class DocumentSearchFilters(BaseModel):
     region: Optional[str] = Field(None, description="Filter by region")
     category: Optional[str] = Field(None, description="Filter by category")
     tags: Optional[List[str]] = Field(None, description="Filter by tags")
+    year: Optional[int] = Field(None, description="Filter by publication year")
     page: int = Field(1, ge=1, description="Page number")
     per_page: int = Field(10, ge=1, le=100, description="Items per page")
 

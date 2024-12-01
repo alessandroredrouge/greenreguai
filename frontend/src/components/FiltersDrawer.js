@@ -16,7 +16,7 @@ export default function FiltersDrawer({ isOpen, onClose, filters, onApplyFilters
   };
 
   return (
-    <div className={`fixed inset-y-0 right-0 w-80 bg-eco-darker border-l border-eco-dark transform transition-transform duration-300 ease-in-out ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}>
+    <div className={`fixed inset-y-0 right-0 w-full sm:w-80 bg-eco-darker border-l border-eco-dark transform transition-transform duration-300 ease-in-out ${isOpen ? 'translate-x-0' : 'translate-x-full'} z-50`}>
       <div className="h-full flex flex-col">
         {/* Header */}
         <div className="p-4 border-b border-eco-dark flex justify-between items-center">

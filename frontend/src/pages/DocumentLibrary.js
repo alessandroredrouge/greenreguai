@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Search, Grid, List, ArrowLeft, Download } from 'lucide-react';
+import { Search, Grid, List, ArrowLeft, Download, X } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { searchDocuments } from '../lib/api';
 import FiltersDrawer from '../components/FiltersDrawer';
@@ -21,6 +21,7 @@ export default function DocumentLibrary() {
     page: 1,
     per_page: 12
   });
+  const [showMobilePreview, setShowMobilePreview] = useState(false);
 
   const fetchDocuments = async () => {
     try {
@@ -55,10 +56,17 @@ export default function DocumentLibrary() {
     }));
   };
 
+  const handleDocumentClick = (doc) => {
+    setSelectedDocument(doc);
+    if (window.innerWidth < 768) { // md breakpoint
+      setShowMobilePreview(true);
+    }
+  };
+
   return (
-    <div className="flex h-screen bg-eco-black">
-      {/* Preview Sidebar - Now smaller */}
-      <div className="w-1/4 border-r border-eco-dark bg-eco-darker overflow-y-auto p-6">
+    <div className="flex flex-col md:flex-row h-screen bg-eco-black">
+      {/* Desktop Preview Sidebar */}
+      <div className="hidden md:block w-1/4 border-r border-eco-dark bg-eco-darker overflow-y-auto p-6">
         {selectedDocument ? (
           <div className="space-y-6">
             <div>
@@ -113,56 +121,113 @@ export default function DocumentLibrary() {
         )}
       </div>
 
-      {/* Main Content */}
-      <div className="flex-1 flex flex-col">
-        {/* Top Navigation */}
-        <div className="bg-eco-darker border-b border-eco-dark p-4 flex items-center justify-between">
-          <Link 
-            to="/dashboard"
-            className="flex items-center gap-2 text-eco-green hover:text-eco-text transition-colors"
-          >
-            <ArrowLeft className="h-5 w-5" />
-            <span className="font-code">Back to Dashboard</span>
-          </Link>
+      {/* Mobile Preview Overlay */}
+      {showMobilePreview && (
+        <div className="md:hidden fixed inset-0 bg-eco-black z-40 overflow-y-auto">
+          <div className="p-4">
+            <button 
+              onClick={() => setShowMobilePreview(false)}
+              className="text-eco-green mb-4 flex items-center gap-2"
+            >
+              <X className="h-5 w-5" />
+              Close Preview
+            </button>
+            {selectedDocument && (
+              <div className="space-y-6">
+                <div>
+                  <h2 className="text-2xl font-code text-eco-text mb-1">{selectedDocument.title}</h2>
+                  <p className="text-eco-green text-sm mb-3">{selectedDocument.publication_year}</p>
+                  <p className="text-eco-gray">{selectedDocument.description}</p>
+                </div>
 
-          {/* Search Bar */}
-          <div className="flex-1 max-w-2xl mx-4">
-            <div className="relative flex items-center">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-eco-gray" />
-              <input
-                type="text"
-                placeholder="Search documents..."
-                className="flex-1 bg-eco-black border border-eco-dark rounded-lg py-2 pl-10 pr-4 text-eco-text placeholder:text-eco-gray focus:outline-none focus:ring-2 focus:ring-eco-green"
-                value={searchInput}
-                onChange={(e) => setSearchInput(e.target.value)}
-                onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
-              />
-              <button
-                onClick={handleSearch}
-                className="ml-2 bg-eco-green/10 text-eco-green border border-eco-green px-4 py-2 rounded-lg hover:bg-eco-green/20 transition-colors"
-              >
-                Search
-              </button>
+                <div>
+                  <h3 className="text-eco-text font-code mb-2">Details</h3>
+                  <div className="space-y-2">
+                    <p className="text-eco-gray">Region: <span className="text-eco-text">{selectedDocument.region}</span></p>
+                    <p className="text-eco-gray">Category: <span className="text-eco-text">{selectedDocument.category}</span></p>
+                    <p className="text-eco-gray">File Size: <span className="text-eco-text">{Math.round(selectedDocument.file_size / 1024)} KB</span></p>
+                    <p className="text-eco-gray">Type: <span className="text-eco-text">{selectedDocument.mime_type}</span></p>
+                    <p className="text-eco-gray">Updated: <span className="text-eco-text">
+                      {new Date(selectedDocument.updated_at).toLocaleDateString()}
+                    </span></p>
+                  </div>
+                </div>
+
+                <div>
+                  <h3 className="text-eco-text font-code mb-2">Tags</h3>
+                  <div className="flex flex-wrap gap-2">
+                    {selectedDocument.tags.map((tag) => (
+                      <span
+                        key={tag}
+                        className="bg-eco-green/10 text-eco-green text-sm px-2 py-1 rounded-full"
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                <a
+                  href={selectedDocument.download_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block w-full bg-eco-green/10 text-eco-green border border-eco-green px-4 py-2 rounded-lg hover:bg-eco-green/20 transition-colors text-center"
+                >
+                  Download Document
+                </a>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* Main Content */}
+      <div className="flex-1 flex flex-col overflow-hidden">
+        {/* Search Header */}
+        <div className="p-4 border-b border-eco-dark">
+          <div className="flex flex-col md:flex-row gap-4 items-center mb-4">
+            <Link to="/dashboard" className="text-eco-green hover:text-eco-green/80 flex items-center gap-2">
+              <ArrowLeft className="h-5 w-5" />
+              Back to Dashboard
+            </Link>
+            <div className="flex-1 w-full">
+              <div className="relative">
+                <input
+                  type="text"
+                  value={searchInput}
+                  onChange={(e) => setSearchInput(e.target.value)}
+                  onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
+                  placeholder="Search documents..."
+                  className="w-full bg-eco-black border border-eco-dark rounded-lg py-2 pl-4 pr-12 text-eco-text"
+                />
+                <button
+                  onClick={handleSearch}
+                  className="absolute right-2 top-1/2 -translate-y-1/2 text-eco-gray hover:text-eco-green p-2"
+                >
+                  <Search className="h-5 w-5" />
+                </button>
+              </div>
             </div>
           </div>
 
-          {/* View Controls */}
-          <div className="flex items-center gap-4">
+          <div className="flex justify-between items-center">
+            <div className="flex gap-2">
+              <button
+                onClick={() => setViewMode('grid')}
+                className={`p-2 rounded-lg ${viewMode === 'grid' ? 'text-eco-green bg-eco-green/10' : 'text-eco-gray'}`}
+              >
+                <Grid className="h-5 w-5" />
+              </button>
+              <button
+                onClick={() => setViewMode('list')}
+                className={`p-2 rounded-lg ${viewMode === 'list' ? 'text-eco-green bg-eco-green/10' : 'text-eco-gray'}`}
+              >
+                <List className="h-5 w-5" />
+              </button>
+            </div>
             <button
-              onClick={() => setViewMode('grid')}
-              className={`p-2 rounded-lg ${viewMode === 'grid' ? 'bg-eco-green/20 text-eco-green' : 'text-eco-gray hover:text-eco-text'}`}
-            >
-              <Grid className="h-5 w-5" />
-            </button>
-            <button
-              onClick={() => setViewMode('list')}
-              className={`p-2 rounded-lg ${viewMode === 'list' ? 'bg-eco-green/20 text-eco-green' : 'text-eco-gray hover:text-eco-text'}`}
-            >
-              <List className="h-5 w-5" />
-            </button>
-            <button 
               onClick={() => setIsFiltersOpen(true)}
-              className="bg-eco-green/10 text-eco-green border border-eco-green px-4 py-2 rounded-lg hover:bg-eco-green/20 transition-colors"
+              className="text-eco-green border border-eco-green px-4 py-2 rounded-lg hover:bg-eco-green/10"
             >
               Filters
             </button>
@@ -170,21 +235,21 @@ export default function DocumentLibrary() {
         </div>
 
         {/* Documents Grid/List */}
-        <div className="flex-1 overflow-y-auto p-6">
-          {loading ? (
-            <div className="flex justify-center items-center h-full">
-              <div className="text-eco-green">Loading...</div>
-            </div>
-          ) : error ? (
-            <div className="flex justify-center items-center h-full">
-              <div className="text-red-500">{error}</div>
-            </div>
-          ) : (
-            <div className={`grid ${viewMode === 'grid' ? 'grid-cols-2 lg:grid-cols-3 gap-6' : 'grid-cols-1 gap-4'}`}>
-              {documents.map((doc) => (
+        <div className="flex-1 overflow-y-auto p-4">
+          <div className={`grid ${viewMode === 'grid' ? 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3' : 'grid-cols-1'} gap-4`}>
+            {loading ? (
+              <div className="flex justify-center items-center h-full">
+                <div className="text-eco-green">Loading...</div>
+              </div>
+            ) : error ? (
+              <div className="flex justify-center items-center h-full">
+                <div className="text-red-500">{error}</div>
+              </div>
+            ) : (
+              documents.map((doc) => (
                 <div
                   key={doc.document_id}
-                  onClick={() => setSelectedDocument(doc)}
+                  onClick={() => handleDocumentClick(doc)}
                   className={`bg-eco-darker border border-eco-dark rounded-lg p-4 cursor-pointer hover:border-eco-green transition-colors ${
                     selectedDocument?.document_id === doc.document_id ? 'border-eco-green' : ''
                   }`}
@@ -225,13 +290,13 @@ export default function DocumentLibrary() {
                     </div>
                   </div>
                 </div>
-              ))}
-            </div>
-          )}
+              ))
+            )}
+          </div>
         </div>
       </div>
 
-      {/* Add the FiltersDrawer component */}
+      {/* FiltersDrawer */}
       <FiltersDrawer
         isOpen={isFiltersOpen}
         onClose={() => setIsFiltersOpen(false)}

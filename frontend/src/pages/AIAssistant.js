@@ -77,7 +77,7 @@ export default function AIAssistant() {
               <ArrowLeft className="h-5 w-5 group-hover:-translate-x-1 transition-transform" />
               <span className="font-code">Back to Dashboard</span>
             </Link>
-            <span className="text-eco-text font-code border-l border-eco-dark pl-4">Session: SESSION_123</span>
+            <span className="text-eco-text font-code border-l border-eco-dark pl-4">Conversation: Regulation example 123</span>
           </div>
           <div className="flex items-center gap-4">
             <span className="text-eco-green font-code">{profile?.credits || 0} credits available</span>
@@ -140,7 +140,7 @@ export default function AIAssistant() {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyPress={handleKeyPress}
-              placeholder="Type your message... (Cmd/Ctrl + Enter to send)"
+              placeholder="Type your message... (Click Enter to send)"
               className="w-full bg-eco-black text-eco-text border border-eco-dark rounded-lg py-3 px-4 pr-12 font-code focus:outline-none focus:border-eco-green"
             />
             <button

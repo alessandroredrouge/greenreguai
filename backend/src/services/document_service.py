@@ -68,6 +68,7 @@ class DocumentService:
             if filters.category:
                 query = query.eq('category', filters.category)
             
+            #TODO: Fix the tags filter, it doesnt work
             if filters.tags and len(filters.tags) > 0:
                 query = query.contains('tags', filters.tags)
 

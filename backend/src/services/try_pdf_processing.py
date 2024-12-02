@@ -22,6 +22,11 @@ async def main():
         print(f"Element type: {chunk.element_type}")
         if chunk.font_info:
             print(f"Font info: {json.dumps(chunk.font_info, indent=2)}")
+        # Add context display
+        if chunk.context:
+            print("\nContext:")
+            print("Previous chunk:", chunk.context.get("previous"))
+            print("Next chunk:", chunk.context.get("next"))
         print("\n")
 
 if __name__ == "__main__":

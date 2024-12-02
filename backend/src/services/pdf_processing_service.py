@@ -14,9 +14,9 @@ class PDFProcessingService:
     def __init__(self):
         self.text_splitter = RecursiveCharacterTextSplitter(
             # Optimized for semantic boundaries
-            separators=["\n\n", "\n", ".", "!", "?", ";", ":", " ", ""],
-            chunk_size=1000,
-            chunk_overlap=200,
+            separators=["\n\n", "\n", ".", "!", "?", ";"],
+            chunk_size=1500,
+            chunk_overlap=300,
             length_function=len,
             add_start_index=True,
         )
@@ -56,6 +56,8 @@ class PDFProcessingService:
         """Create semantic chunks with detailed metadata"""
         processed_chunks = []
 
+        # First, create all basic chunks with their metadata
+        basic_chunks = []
         for element in elements:
             # Clean the text while preserving semantic meaning
             cleaned_text = self._clean_text(element.page_content)
@@ -101,22 +103,46 @@ class PDFProcessingService:
                     sections
                 )
 
-                # Create DocumentChunk with enhanced metadata
-                processed_chunks.append(
-                    DocumentChunk(
-                        content=chunk.page_content,
-                        page_number=page_num,
-                        section_title=current_section,
-                        chunk_index=i,
-                        start_offset=chunk.metadata.get('start_index'),
-                        end_offset=chunk.metadata.get('start_index') + len(chunk.page_content),
-                        category=element.metadata.get('category'),
-                        location_data=location_data,
-                        element_type=element.metadata.get('type'),
-                        font_info=element.metadata.get('font_info'),
-                        file_path=pdf_doc.name
-                    )
+                basic_chunks.append({
+                    'content': chunk.page_content,
+                    'page_number': page_num,
+                    'section_title': current_section,
+                    'chunk_index': i,
+                    'start_offset': chunk.metadata.get('start_index'),
+                    'end_offset': chunk.metadata.get('start_index') + len(chunk.page_content),
+                    'category': element.metadata.get('category'),
+                    'location_data': location_data,
+                    'element_type': element.metadata.get('type'),
+                    'font_info': element.metadata.get('font_info'),
+                    'file_path': pdf_doc.name
+                })
+
+        # Then process them with context
+        for i, chunk_data in enumerate(basic_chunks):
+            # Get surrounding context
+            prev_context = basic_chunks[i-1]['content'] if i > 0 else ""
+            next_context = basic_chunks[i+1]['content'] if i < len(basic_chunks)-1 else ""
+            
+            # Create enhanced chunk with both metadata and context
+            processed_chunks.append(
+                DocumentChunk(
+                    content=chunk_data['content'],
+                    page_number=chunk_data['page_number'],
+                    section_title=chunk_data['section_title'],
+                    chunk_index=chunk_data['chunk_index'],
+                    start_offset=chunk_data['start_offset'],
+                    end_offset=chunk_data['end_offset'],
+                    category=chunk_data['category'],
+                    location_data=chunk_data['location_data'],
+                    element_type=chunk_data['element_type'],
+                    font_info=chunk_data['font_info'],
+                    file_path=chunk_data['file_path'],
+                    context={
+                        "previous": prev_context[-200:] if prev_context else None,
+                        "next": next_context[:200] if next_context else None,
+                    }
                 )
+            )
 
         return processed_chunks
 

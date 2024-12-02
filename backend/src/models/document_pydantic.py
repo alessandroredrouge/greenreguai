@@ -47,13 +47,21 @@ class SearchResponse(BaseModel):
 
 class DocumentChunk(BaseModel):
     content: str
-    page_number: int
-    section_title: Optional[str]
-    chunk_index: int
-    start_offset: int
-    end_offset: int
-    category: Optional[str]
-    location_data: Dict
-    element_type: Optional[str]
-    font_info: Optional[Dict]
+    page_number: Optional[int] = None
+    section_title: Optional[str] = None
+    chunk_index: Optional[int] = None
+    start_offset: Optional[int] = None
+    end_offset: Optional[int] = None
+    category: Optional[str] = None
+    location_data: Optional[Dict] = Field(default_factory=dict)
+    element_type: Optional[str] = None
+    font_info: Optional[Dict] = Field(default_factory=dict)
     file_path: Optional[str] = None
+    context: Optional[Dict[str, Optional[str]]] = Field(
+        default_factory=dict,
+        description="Contains previous and next chunk context",
+        example={
+            "previous": "Text from previous chunk",
+            "next": "Text from next chunk"
+        }
+    )

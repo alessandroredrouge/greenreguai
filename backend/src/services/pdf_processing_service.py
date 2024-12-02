@@ -13,13 +13,14 @@ import re
 class PDFProcessingService:
     def __init__(self):
         self.text_splitter = RecursiveCharacterTextSplitter(
-            # Optimized for semantic boundaries
             separators=["\n\n", "\n", ".", "!", "?", ";"],
             chunk_size=1500,
-            chunk_overlap=300,
+            chunk_overlap=400,
             length_function=len,
             add_start_index=True,
         )
+        self.min_chunk_length = 100
+        self.merge_threshold = 150
 
     async def process_pdf(self, file_path: str) -> Dict:
         """Process PDF with semantic chunking and detailed location tracking"""
@@ -54,50 +55,42 @@ class PDFProcessingService:
         pdf_doc: fitz.Document
     ) -> List[DocumentChunk]:
         """Create semantic chunks with detailed metadata"""
-        processed_chunks = []
-
-        # First, create all basic chunks with their metadata
         basic_chunks = []
+        
         for element in elements:
-            # Clean the text while preserving semantic meaning
             cleaned_text = self._clean_text(element.page_content)
-            
-            # Get page number from element metadata
             page_num = element.metadata.get('page_number', 1)
             page = pdf_doc[page_num - 1]
-
-            # Extract structural information
             sections = self._identify_sections(page)
             
-            # Create chunks with metadata
+            # Find exact location in PDF
+            text_instances = page.search_for(cleaned_text[:100].strip())
+            location_data = {}
+            if text_instances:
+                rect = text_instances[0]
+                location_data = {
+                    "bbox": {
+                        "x0": rect.x0,
+                        "y0": rect.y0,
+                        "x1": rect.x1,
+                        "y1": rect.y1
+                    },
+                    "pdf_coordinates": {
+                        "page": page_num,
+                        "position": [rect.x0, rect.y0]
+                    }
+                }
+
+            # Skip table-like content
+            if self._is_table_content(cleaned_text, location_data):
+                continue
+
             chunks = self.text_splitter.create_documents(
                 texts=[cleaned_text],
                 metadatas=[element.metadata]
             )
 
             for i, chunk in enumerate(chunks):
-                # Find exact location in PDF
-                text_instances = page.search_for(
-                    chunk.page_content[:100].strip()
-                )
-                
-                location_data = {}
-                if text_instances:
-                    rect = text_instances[0]
-                    location_data = {
-                        "bbox": {
-                            "x0": rect.x0,
-                            "y0": rect.y0,
-                            "x1": rect.x1,
-                            "y1": rect.y1
-                        },
-                        "pdf_coordinates": {
-                            "page": page_num,
-                            "position": [rect.x0, rect.y0]
-                        }
-                    }
-
-                # Find current section
                 current_section = self._find_current_section(
                     location_data.get('pdf_coordinates', {}).get('position', [0, 0])[1],
                     sections
@@ -117,13 +110,32 @@ class PDFProcessingService:
                     'file_path': pdf_doc.name
                 })
 
-        # Then process them with context
-        for i, chunk_data in enumerate(basic_chunks):
-            # Get surrounding context
-            prev_context = basic_chunks[i-1]['content'] if i > 0 else ""
-            next_context = basic_chunks[i+1]['content'] if i < len(basic_chunks)-1 else ""
+        # Merge small chunks with context while preserving location data
+        merged_chunks = []
+        i = 0
+        while i < len(basic_chunks):
+            current_chunk = basic_chunks[i]
             
-            # Create enhanced chunk with both metadata and context
+            if self._should_merge_chunks(current_chunk):
+                if i + 1 < len(basic_chunks):
+                    next_chunk = basic_chunks[i + 1]
+                    # Merge content while keeping original location data
+                    current_chunk['content'] = f"{current_chunk['content']} {next_chunk['content']}"
+                    current_chunk['end_offset'] = next_chunk['end_offset']
+                    # Location data from the first chunk is preserved
+                    i += 2
+                    merged_chunks.append(current_chunk)
+                    continue
+            
+            merged_chunks.append(current_chunk)
+            i += 1
+
+        # Process chunks with context
+        processed_chunks = []
+        for i, chunk_data in enumerate(merged_chunks):
+            prev_context = merged_chunks[i-1]['content'] if i > 0 else ""
+            next_context = merged_chunks[i+1]['content'] if i < len(merged_chunks)-1 else ""
+            
             processed_chunks.append(
                 DocumentChunk(
                     content=chunk_data['content'],
@@ -216,6 +228,25 @@ class PDFProcessingService:
             r'^[A-Z\s]+$'
         ]
         return any(re.match(pattern, line.strip()) for pattern in patterns)
+
+    def _is_table_content(self, text: str, location_data: Dict) -> bool:
+        """Detect if content is likely part of a table"""
+        table_indicators = [
+            len(text.split()) <= 3,  # Very short content
+            bool(re.match(r'^\d+(\.\d+)?$', text.strip())),  # Just numbers
+            bool(location_data.get('bbox')) and  # Check if content is in a grid-like structure
+            len([x for x in text.split('\n') if x.strip()]) <= 2
+        ]
+        return any(table_indicators)
+
+    def _should_merge_chunks(self, chunk: Dict) -> bool:
+        """Determine if a chunk should be merged with surrounding context"""
+        content = chunk['content'].strip()
+        return (
+            len(content) < self.min_chunk_length or
+            bool(re.match(r'^\(\d+\)$', content)) or  # Matches patterns like "(7)"
+            bool(re.match(r'^\d+/\d+$', content))     # Matches patterns like "71/77"
+        )
 
     async def get_chunk_preview(self, chunk: DocumentChunk) -> Dict:
         """Generate preview data for a specific chunk"""

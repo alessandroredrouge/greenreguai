@@ -56,4 +56,4 @@ class DocumentChunk(BaseModel):
     location_data: Dict
     element_type: Optional[str]
     font_info: Optional[Dict]
-    file_path: Optional[str]
+    file_path: Optional[str] = None

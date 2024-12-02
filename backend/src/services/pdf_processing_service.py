@@ -3,7 +3,7 @@ Service for processing PDF documents with semantic chunking and detailed locatio
 """
 
 from typing import List, Dict, Optional
-from langchain_community.document_loaders import UnstructuredFileLoader
+from langchain_community.document_loaders import UnstructuredPDFLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_core.documents import Document
 from ..models.document_pydantic import DocumentChunk
@@ -24,7 +24,7 @@ class PDFProcessingService:
     async def process_pdf(self, file_path: str) -> Dict:
         """Process PDF with semantic chunking and detailed location tracking"""
         # Load document with Unstructured for better semantic parsing
-        loader = UnstructuredFileLoader(
+        loader = UnstructuredPDFLoader(
             file_path,
             mode="elements",
             strategy="fast",
@@ -113,7 +113,8 @@ class PDFProcessingService:
                         category=element.metadata.get('category'),
                         location_data=location_data,
                         element_type=element.metadata.get('type'),
-                        font_info=element.metadata.get('font_info')
+                        font_info=element.metadata.get('font_info'),
+                        file_path=pdf_doc.name
                     )
                 )
 

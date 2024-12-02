@@ -99,13 +99,15 @@ Use this checklist to guide your development process. You can tick off each item
 
 - [ ]  **Document Processing Pipeline**
     - [ ]  PDF Processing Service:
-        - [ ]  Extract text from PDFs in Supabase storage
-        - [ ]  Clean and preprocess text
-        - [ ]  Maintain structural information (sections, pages)
+        - [x]  Create code to extract text from PDFs
+        - [x]  Clean and preprocess text in chunks
+        - [x]  Maintain structural information (sections, pages) and infos about where to locate the chunk in the pdf
+        - [ ] connect this service to Supabase (currently it's done locally to test it out)
     - [ ]  Chunking Service:
-        - [ ]  Implement semantic text splitting
-        - [ ]  Create chunk metadata schema
-        - [ ]  Store chunks with references
+        - [x]  Implement semantic text splitting
+        - [x]  Create chunk metadata schema
+        - [x]  Store chunks with references to its location in the document
+        - [ ] configure integration with Supabase so that every new document that is uploaded is processed and chunked, saving the results of this process (in Supabase and/or Pinecone, tbd)
     - [ ]  Embedding Service:
         - [ ]  Set up OpenAI embedding generation
         - [ ]  Configure Pinecone integration

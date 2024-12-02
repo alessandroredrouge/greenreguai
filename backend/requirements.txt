@@ -24,3 +24,8 @@ tiktoken>=0.5.2           # Token counting for LLMs
 pytest>=7.4.4
 httpx>=0.26.0            # Async HTTP client for testing
 pytest-asyncio>=0.23.4
+
+# PDF Processing
+langchain-community>=0.0.16   # Community components for Langchain
+unstructured>=0.11.0         # For PDF text extraction
+pymupdf>=1.23.8              # PDF processing (fitz)

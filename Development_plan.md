@@ -74,68 +74,83 @@ Use this checklist to guide your development process. You can tick off each item
         - [x]  Documents table (title, date, region, category)
         - [ ]  Document chunks table
         - [ ]  Document references table
-    - [ ]  Implement Document Search Functionality
-        - [ ]  Backend part
-        - [ ]  Frontend part
-    - [ ]  Set up Pinecone for vector storage
-    - [ ]  Create necessary backend services and models
-
-- [ ]  **Document Processing Pipeline**
-    - [ ]  Implement document processing service:
-        - [ ]  PDF text extraction
-        - [ ]  Text chunking strategy
-        - [ ]  Embedding generation
-    - [ ]  Create reference system between chunks and sources
-    - [ ]  Process initial set of official documents
-    - [ ]  Store documents and generate embeddings
-    - [ ]  Implement backend APIs for document retrieval
+    - [x]  Implement Document Search Functionality
+        - [x]  Backend part
+        - [x]  Frontend part
 
 ## Phase 5: Document Library Implementation
 
-- [ ]  **Backend - Document Library APIs**
-    - [ ]  Create endpoints for document listing
-    - [ ]  Implement filtering and search functionality
-    - [ ]  Add document metadata retrieval
-    - [ ]  Set up PDF serving endpoints
+- [x]  **Backend - Document Library APIs**
+    - [x]  Create endpoints for document listing
+    - [x]  Implement filtering and search functionality
+    - [x]  Add document metadata retrieval
+    - [x]  Set up PDF serving endpoints
 
 - [ ]  **Frontend - Document Library Interface**
-    - [ ]  Enhance existing Document Library page:
-        - [ ]  Add document browsing interface
-        - [ ]  Implement filtering system
-        - [ ]  Add document preview functionality
-        - [ ]  Implement metadata-based search
-    - [ ]  Create document detail view
+    - [x]  Enhance existing Document Library page:
+        - [x]  Add document browsing interface
+        - [x]  Implement filtering system
+        - [x]  Implement metadata-based search
+    - [x]  Create document detail view
     - [ ]  Add PDF viewer integration
+
 
 ## Phase 6: AI Assistant Integration
 
-- [ ]  **Backend - Set Up RAG System**
-    - [ ]  Install and configure Langchain
-    - [ ]  Implement vector similarity search
-    - [ ]  Create prompt engineering system
-    - [ ]  Set up response generation with citations
-    - [ ]  Implement citation verification system
+- [ ]  **Document Processing Pipeline**
+    - [ ]  PDF Processing Service:
+        - [ ]  Extract text from PDFs in Supabase storage
+        - [ ]  Clean and preprocess text
+        - [ ]  Maintain structural information (sections, pages)
+    - [ ]  Chunking Service:
+        - [ ]  Implement semantic text splitting
+        - [ ]  Create chunk metadata schema
+        - [ ]  Store chunks with references
+    - [ ]  Embedding Service:
+        - [ ]  Set up OpenAI embedding generation
+        - [ ]  Configure Pinecone integration
+        - [ ]  Store embeddings with metadata
 
-- [ ]  **Backend - AI Query Endpoint**
-    - [ ]  Create API endpoint for AI queries
-    - [ ]  Implement credit deduction logic
-    - [ ]  Add source reference generation
-    - [ ]  Handle error cases and rate limiting
+- [ ]  **Query Processing System**
+    - [ ]  Query Handler (core Langchain, accessing Supabase/Pinecone):
+        - [ ]  Implement query preprocessing
+        - [ ]  Integrate with conversation tracking
+        - [ ]  Connect to credit system
+    - [ ]  Retrieval System (core Langchain, accessing Supabase/Pinecone):
+        - [ ]  Implement embedding-based search
+        - [ ]  Set up context fetching
+        - [ ]  Optimize retrieval relevance
+    - [ ]  Response Generator (core Langchain, accessing Supabase/Pinecone):
+        - [ ]  Design prompt engineering system
+        - [ ]  Implement LangChain + OpenAI integration
+        - [ ]  Create citation generation system based on the chunkcs saved
 
-- [ ]  **Frontend - Enhance AI Chat Interface**
-    - [ ]  Update existing chat interface:
-        - [ ]  Add support for cited responses
-        - [ ]  Implement clickable citations
-        - [ ]  Add document preview modal
-        - [ ]  Improve error handling
-    - [ ]  Add loading states and animations
-    - [ ]  Implement credit balance display
+- [ ]  **Backend API Development**
+    - [ ]  Create chat endpoint
+    - [ ]  Implement citation retrieval
+    - [ ]  Add feedback handling
+    - [ ]  Set up error handling
+    - [ ]  Add logging system
+
+- [ ]  **Frontend Enhancement**
+    - [ ]  Update chat interface:
+        - [ ]  Add citation display
+        - [ ]  Implement hover previews
+        - [ ]  Add confidence indicators
+    - [ ]  Create citation components:
+        - [ ]  Add clickable citations
+        - [ ]  Build document preview modal
+        - [ ]  Implement section navigation
+    - [ ]  Add feedback system:
+        - [ ]  Create feedback UI
+        - [ ]  Implement response saving
+        - [ ]  Add error reporting
 
 ---
 
 ## Phase 7: Implementing the Credit System
 
-- [ ]  **Frontend - Display Credit Balance**
+- [x]  **Frontend - Display Credit Balance**
     - [x]  Show the user's current credit balance on:
         - [x]  Dashboard
         - [x]  AI Chat Interface
@@ -155,7 +170,7 @@ Use this checklist to guide your development process. You can tick off each item
     - [ ]  Implement backend endpoints to create checkout sessions.
     - [ ]  Handle webhook events to confirm payments and update credits.
 - [ ]  **Frontend - Build the Billing/Credits Page**
-    - [ ]  Display available credit packages and pricing.
+    - [ ]  Display available credit packages and pricing (to be decided yet).
     - [ ]  Implement purchase buttons initiating Stripe checkout.
 - [ ]  **Frontend - Handle Post-Purchase Flow**
     - [ ]  Confirm purchase success.
@@ -164,55 +179,10 @@ Use this checklist to guide your development process. You can tick off each item
 
 ---
 
-## Phase 9: Testing Core Functionality
-
-- [ ]  **Conduct Unit and Integration Testing**
-    - [ ]  Write tests for backend functions:
-        - [ ]  Authentication
-        - [ ]  Credit deduction
-        - [ ]  Payment processing
-    - [ ]  Test frontend components and forms.
-- [ ]  **Perform End-to-End Testing**
-    - [ ]  Simulate user journeys:
-        - [ ]  Registering and logging in
-        - [ ]  Making AI queries
-        - [ ]  Purchasing credits
-    - [ ]  Ensure seamless feature integration.
-
----
-
-## Phase 10: Expanding Functionality
-
-- [ ]  **Implement Search Functionality**
-    - [ ]  **Backend:**
-        - [ ]  Create endpoints for search queries.
-        - [ ]  Implement database queries for documents.
-    - [ ]  **Frontend:**
-        - [ ]  Build the Search Page with filters.
-        - [ ]  Display search results.
-- [ ]  **Build Document Detail Page**
-    - [ ]  Display detailed regulation information.
-    - [ ]  Include download links for documents.
-
----
-
-## Phase 11: Refining UI/UX Design
-
-- [ ]  **Apply Consistent Styling**
-    - [ ]  Choose a CSS framework or design system.
-    - [ ]  Apply consistent fonts, colors, and spacing.
-- [ ]  **Improve Navigation and Accessibility**
-    - [ ]  Implement a responsive navigation menu.
-    - [ ]  Ensure keyboard accessibility.
-    - [ ]  Add ARIA labels where necessary.
+## Phase 9: Final Testing and Deployment
 - [ ]  **Optimize for Responsive Design**
     - [ ]  Test layouts on various screen sizes.
     - [ ]  Adjust styles for mobile, tablet, and desktop.
-
----
-
-## Phase 12: Final Testing and Deployment
-
 - [ ]  **Conduct Thorough Testing**
     - [ ]  Revisit all user flows.
     - [ ]  Test under different network conditions.

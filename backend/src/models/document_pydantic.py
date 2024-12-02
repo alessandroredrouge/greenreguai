@@ -3,7 +3,7 @@ Pydantic models for document-related data structures including
 metadata, search results, and document chunks.
 """
 
-from typing import List, Optional
+from typing import List, Optional, Dict
 from pydantic import BaseModel, Field
 from datetime import datetime
 
@@ -44,3 +44,16 @@ class SearchResponse(BaseModel):
     page: int
     per_page: int
     total_pages: int
+
+class DocumentChunk(BaseModel):
+    content: str
+    page_number: int
+    section_title: Optional[str]
+    chunk_index: int
+    start_offset: int
+    end_offset: int
+    category: Optional[str]
+    location_data: Dict
+    element_type: Optional[str]
+    font_info: Optional[Dict]
+    file_path: Optional[str]

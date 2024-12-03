@@ -17,9 +17,11 @@ postgrest>=0.13.0         # PostgreSQL interface
 # AI/LLM Integration
 langchain>=0.1.0          # LLM framework
 langchain-openai>=0.0.5   # OpenAI integration
+langchain-pinecone>=0.2.0  # Added for Pinecone integration
 python-magic>=0.4.27      # File type detection
 python-magic-bin>=0.4.14  # Windows support for libmagic
 tiktoken>=0.5.2           # Token counting for LLMs
+openai>=1.55.1
 
 # Testing
 pytest>=7.4.4
@@ -32,3 +34,9 @@ langchain-unstructured>=0.1.2 # Updated Unstructured loader
 unstructured[pdf]>=0.11.0    # For PDF text extraction with all PDF dependencies
 pymupdf>=1.23.8              # PDF processing (fitz)
 pdf2image>=1.16.3            # PDF to image conversion
+
+# Environment Management
+python-dotenv>=1.0.0
+
+# Vector Database
+pinecone-client>=5.0.1

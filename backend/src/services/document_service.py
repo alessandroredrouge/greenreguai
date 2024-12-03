@@ -118,5 +118,9 @@ class DocumentService:
             print(f"Search Error: {str(e)}")
             raise e
 
+    def document_exists(self, file_name: str) -> bool:
+        response = self.supabase.table('documents').select('document_id').eq('file_path', file_name).execute()
+        return len(response.data) > 0
+
 # Create a singleton instance
 document_service = DocumentService()

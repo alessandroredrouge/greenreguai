@@ -24,6 +24,11 @@ class PDFProcessingService:
 
     async def process_pdf(self, file_path: str) -> Dict:
         """Process PDF with semantic chunking and detailed location tracking"""
+        #TODO: Add it later after you tested the service
+        # if self.document_exists(file_path):
+        #     print("Document already processed.")
+        #     return
+
         # Load document with Unstructured for better semantic parsing
         loader = UnstructuredPDFLoader(
             file_path,

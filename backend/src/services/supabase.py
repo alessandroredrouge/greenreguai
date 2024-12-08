@@ -23,20 +23,26 @@ class SupabaseService:
         """Get appropriate storage client based on operation type"""
         return self.admin_client if admin else self.client
 
+    async def download_file(self, path: str) -> bytes:
+        """Download file from storage bucket"""
+        try:
+            response = self.admin_client.storage.from_(self.bucket_name)\
+                .download(path)
+            return response
+        except Exception as e:
+            print(f"Error downloading file: {str(e)}, Path: {path}")
+            raise e
+
     async def get_file_url(self, path: str, expires_in: int = 3600) -> str:
         """Generate a signed URL for file download"""
         try:
-            # Use the official_documents bucket
-            bucket_name = 'official_documents'
-            
-            client = await self.get_storage_client(admin=True)
-            response = client.storage.from_(bucket_name).create_signed_url(
-                path,  # This should be like 'europe/red_iii_2023.pdf'
+            response = self.admin_client.storage.from_(self.bucket_name).create_signed_url(
+                path,
                 expires_in
             )
             return response['signedURL']
         except Exception as e:
-            print(f"Error generating URL: {str(e)}, Path: {path}, Bucket: {bucket_name}")
+            print(f"Error generating URL: {str(e)}, Path: {path}")
             raise e
 
     async def list_files(self, folder: str = "") -> list:

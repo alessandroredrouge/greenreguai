@@ -101,7 +101,7 @@ Use this checklist to guide your development process. You can tick off each item
         - [x]  Create code to extract text from PDFs
         - [x]  Clean and preprocess text in chunks
         - [x]  Maintain structural information (sections, pages) and infos about where to locate the chunk in the pdf
-        - [ ] connect this service to Supabase (currently it's done locally to test it out)
+        - [x] connect this service to Supabase (currently it's done locally to test it out)
     - [ ]  Chunking Service:
         - [x]  Implement semantic text splitting
         - [x]  Create chunk metadata schema

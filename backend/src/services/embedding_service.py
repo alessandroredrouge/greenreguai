@@ -32,18 +32,22 @@ class EmbeddingService:
             index=index
         )
 
-    def generate_and_store_embeddings(self, chunks: List[Dict[str, Any]]) -> None:
+    async def generate_and_store_embeddings(self, chunks: List[Dict[str, Any]]) -> None:
         try:
-            batch_size = 10  # Adjust based on API limits and performance
+            batch_size = 10
             for i in range(0, len(chunks), batch_size):
                 batch = chunks[i:i + batch_size]
                 texts = [chunk['content'] for chunk in batch]
-                metadatas = [{'chunk_id': chunk['chunk_id']} for chunk in batch]
+                # Include both chunk_id and document_id in metadata
+                metadatas = [{
+                    'chunk_id': chunk['chunk_id'],
+                    'document_id': chunk['document_id'],
+                } for chunk in batch]
                 
                 # Add texts to vector store
-                self.vector_store.add_texts(texts=texts, metadatas=metadatas)
+                await self.vector_store.aadd_texts(texts=texts, metadatas=metadatas)
                 
-                logging.info(f"Processed batch {i//batch_size + 1} of {(len(chunks)-1)//batch_size + 1}")
+                logging.info(f"Processed embedding batch {i//batch_size + 1} of {(len(chunks)-1)//batch_size + 1}")
                 
         except Exception as e:
             logging.error(f"Error in generate_and_store_embeddings: {str(e)}")

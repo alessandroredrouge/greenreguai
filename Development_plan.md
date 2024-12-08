@@ -73,7 +73,6 @@ Use this checklist to guide your development process. You can tick off each item
     - [ ]  Create document metadata tables in Supabase:
         - [x]  Documents table (title, date, region, category)
         - [ ]  Document chunks table
-        - [ ]  Document references table
     - [x]  Implement Document Search Functionality
         - [x]  Backend part
         - [x]  Frontend part

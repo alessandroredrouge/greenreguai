@@ -20,7 +20,6 @@ This PRD covers the functional and non-functional requirements of GreenReguAI, i
 - **API:** Application Programming Interface
 - **UI/UX:** User Interface/User Experience
 - **i18n:** Internationalization
-- **n8n:** An extendable workflow automation tool
 - **FastAPI:** A modern, fast (high-performance) web framework for building APIs with Python 3.6+
 
 ---
@@ -198,7 +197,7 @@ GreenReguAI aims to solve this problem by providing a centralized, continually u
 5. **LLM Integration Service:**
     - Interfaces with the chosen LLM.
 6. **Workflow Automation Service:**
-    - Receives data from n8n workflows for database updates.
+    - Receives data from AI Agents for database updates.
 
 ### **Data Flow:**
 
@@ -219,7 +218,7 @@ GreenReguAI aims to solve this problem by providing a centralized, continually u
 
 - **Hugging Face Inference API:**
     - For natural language understanding and response generation.
-- **n8n Workflows:**
+- **AI Agents Workflows:**
     - For automated data ingestion and database updates.
 - **Vector Database (Pinecone):**
     - For semantic search capabilities.
@@ -259,7 +258,7 @@ GreenReguAI aims to solve this problem by providing a centralized, continually u
 | --- | --- | --- | --- |
 | Hugging Face Inference API rate limits or cost overruns | Medium | High | Implement caching, optimize prompts, monitor usage closely. |
 | Legal issues with scraping and distributing official documents | High | High | Verify permissions, focus on publicly available data, consult legal advice if necessary. |
-| Complexity of integrating n8n workflows | Medium | Medium | Allocate time for learning, start with simple workflows, seek community support. |
+| Complexity of integrating AI Agents workflows | Medium | Medium | Allocate time for learning, start with simple workflows, seek community support. |
 | Scalability issues with increasing data volume | Low | Medium | Design with scalability in mind, consider cloud services that auto-scale. |
 | Technical challenges with new technologies (React, FastAPI) | Medium | Medium | Utilize online resources, tutorials, and community forums for support. |
 | Data accuracy and reliability | High | High | Implement validation checks, source data from reputable sources, allow user feedback. |

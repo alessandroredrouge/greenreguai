@@ -6,6 +6,13 @@ metadata, search results, and document chunks.
 from typing import List, Optional, Dict
 from pydantic import BaseModel, Field
 from datetime import datetime
+from enum import Enum
+
+class ProcessingStatus(str, Enum):
+    PENDING = "pending"
+    PROCESSING = "processing"
+    COMPLETED = "completed"
+    FAILED = "failed"
 
 class DocumentBase(BaseModel):
     """Base document metadata model"""
@@ -19,6 +26,8 @@ class DocumentBase(BaseModel):
     mime_type: str
     url_source: Optional[str] = None
     publication_year: int
+    processing_status: ProcessingStatus = ProcessingStatus.PENDING
+    error_message: Optional[str] = None
 
 class DocumentResponse(DocumentBase):
     """Model for document responses"""

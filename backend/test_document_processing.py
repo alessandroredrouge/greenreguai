@@ -1,44 +1,37 @@
 import asyncio
 import logging
-from src.services.pdf_batch_processor import pdf_batch_processor
-from src.services.embedding_service import embedding_service
+from src.services.document_service import document_service
+from src.models.document_pydantic import ProcessingStatus
 
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(levelname)s - %(message)s'
 )
 
-async def process_document(document_id: str):
+async def test_document_processing():
+    # Use the document ID from your Supabase documents table
+    document_id = "d61858f1-720e-43fa-bf92-aada8b21789e"
+    
     try:
-        # # Step 1: Process PDF into chunks
-        # logging.info(f"Starting PDF processing for document {document_id}")
-        # try:
-        #     await pdf_batch_processor.process_pdf_to_chunks(document_id)
-        #     logging.info(f"PDF processing completed for document {document_id}")
-        # except Exception as e:
-        #     logging.error(f"Error in PDF processing: {str(e)}")
-        #     raise
+        # Get initial document state
+        initial_doc = await document_service.get_document_by_id(document_id)
+        logging.info(f"Initial document status: {initial_doc.get('processing_status')}")
         
-        # Step 2: Generate embeddings for chunks
-        logging.info(f"Starting embedding generation for document {document_id}")
-        try:
-            await embedding_service.generate_and_store_embeddings(document_id)
-            logging.info(f"Embedding generation completed for document {document_id}")
-        except Exception as e:
-            logging.error(f"Error in embedding generation: {str(e)}")
-            raise
+        # Process document
+        processed_doc = await document_service.process_document(document_id)
         
+        # Verify final state
+        final_doc = await document_service.get_document_by_id(document_id)
+        logging.info(f"Final document status: {final_doc.get('processing_status')}")
+        
+        if final_doc.get('processing_status') == ProcessingStatus.COMPLETED:
+            logging.info("Document processing completed successfully!")
+        else:
+            logging.error(f"Processing failed: {final_doc.get('error_message')}")
+            
     except Exception as e:
-        logging.error(f"Error in document processing pipeline: {str(e)}")
+        logging.error(f"Test failed: {str(e)}")
         raise
 
 if __name__ == "__main__":
-    # Document ID for the new EU Commission document
-    TEST_DOCUMENT_ID = "1c497e8b-2135-4b29-942e-a172bba4313a"
-    
-    try:
-        asyncio.run(process_document(TEST_DOCUMENT_ID))
-        logging.info("Document processing completed successfully")
-    except Exception as e:
-        logging.error(f"Process failed: {str(e)}")
-        exit(1) 
+    asyncio.run(test_document_processing())

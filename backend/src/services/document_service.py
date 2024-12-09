@@ -3,10 +3,16 @@ Handles document processing, storage, and retrieval operations.
 Manages interaction between Supabase storage and database for document metadata.
 """
 
-from typing import List, Optional, Tuple
+from typing import List, Optional, Tuple, Dict
+from datetime import datetime
+import logging
 from ..services.supabase import supabase_service
-from ..models.document_pydantic import DocumentSearchFilters, DocumentResponse, SearchResponse
+from ..models.document_pydantic import DocumentSearchFilters, DocumentResponse, SearchResponse, ProcessingStatus
+from .pdf_batch_processor import pdf_batch_processor
+from .embedding_service import embedding_service
 import math
+
+logging.basicConfig(level=logging.INFO)
 
 class DocumentService:
     def __init__(self):
@@ -121,6 +127,80 @@ class DocumentService:
     def document_exists(self, file_name: str) -> bool:
         response = self.supabase.table('documents').select('document_id').eq('file_path', file_name).execute()
         return len(response.data) > 0
+
+    async def process_document(self, document_id: str) -> Dict:
+        """Process a document through the entire pipeline"""
+        try:
+            # Get document and verify it exists
+            document = await self.get_document_by_id(document_id)
+            if not document:
+                raise ValueError(f"Document not found: {document_id}")
+
+            # Update status to processing
+            await self._update_processing_status(
+                document_id, 
+                ProcessingStatus.PROCESSING
+            )
+            
+            try:
+                # Step 1: Process PDF into chunks
+                logging.info(f"Starting PDF processing for document {document_id}")
+                await pdf_batch_processor.process_pdf_to_chunks(document)  # Pass the whole document
+                logging.info(f"PDF processing completed for document {document_id}")
+                
+                # Step 2: Generate embeddings for chunks
+                logging.info(f"Starting embedding generation for document {document_id}")
+                await embedding_service.generate_and_store_embeddings(document_id)
+                logging.info(f"Embedding generation completed for document {document_id}")
+                
+                # Update status to completed
+                await self._update_processing_status(
+                    document_id, 
+                    ProcessingStatus.COMPLETED
+                )
+                
+                return await self.get_document_by_id(document_id)
+                
+            except Exception as e:
+                error_msg = f"Error processing document: {str(e)}"
+                logging.error(error_msg)
+                await self._update_processing_status(
+                    document_id, 
+                    ProcessingStatus.FAILED,
+                    error_msg
+                )
+                raise
+                
+        except Exception as e:
+            logging.error(f"Error in process_document: {str(e)}")
+            raise
+
+    async def _update_processing_status(
+        self, 
+        document_id: str, 
+        status: ProcessingStatus, 
+        error_message: Optional[str] = None
+    ):
+        """Update document processing status and error message if any"""
+        update_data = {
+            'processing_status': status,
+            'updated_at': datetime.utcnow().isoformat()
+        }
+        
+        if error_message:
+            update_data['error_message'] = error_message
+            
+        try:
+            self.supabase.admin_client.table('documents')\
+                .update(update_data)\
+                .eq('document_id', document_id)\
+                .execute()
+            
+            logging.info(f"Updated document {document_id} status to: {status}")
+            
+        except Exception as e:
+            logging.error(f"Error updating document status: {str(e)}")
+            raise
 
 # Create a singleton instance
 document_service = DocumentService()

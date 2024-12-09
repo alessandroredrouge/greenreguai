@@ -1,6 +1,5 @@
 from typing import List, Dict
 from src.services.pdf_processing_service import PDFProcessingService
-from src.services.document_service import document_service
 from src.services.supabase import supabase_service
 import tempfile
 import os
@@ -14,32 +13,26 @@ class PDFBatchProcessor:
         self.pdf_processor = PDFProcessingService()
         self.supabase = supabase_service
         
-    async def process_pdf_to_chunks(self, document_id: str) -> None:
+    async def process_pdf_to_chunks(self, document: Dict) -> None:
         """Process a specific document into chunks"""
         try:
-            # Get document details
-            document = await document_service.get_document_by_id(document_id)
-            if not document:
-                raise ValueError(f"Document not found: {document_id}")
-            
-            logging.info(f"Starting to process document {document_id}")
+            logging.info(f"Starting to process document {document['document_id']}")
             await self._process_document(document)
-            logging.info(f"Successfully processed document {document_id} into chunks")
+            logging.info(f"Successfully processed document {document['document_id']} into chunks")
                 
         except Exception as e:
-            logging.error(f"Error processing document {document_id} into chunks: {str(e)}")
+            logging.error(f"Error processing document {document['document_id']} into chunks: {str(e)}")
             raise
 
     async def _process_document(self, document: Dict):
         """Process single document and save chunks"""
         temp_file = None
         try:
-            # Create temp file with context manager
             temp_file = tempfile.NamedTemporaryFile(delete=False, suffix='.pdf')
             file_data = await self.supabase.download_file(document['file_path'])
             temp_file.write(file_data)
             temp_file.flush()
-            temp_file.close()  # Explicitly close the file
+            temp_file.close()
             
             # Process PDF and get chunks
             processed = await self.pdf_processor.process_pdf(temp_file.name)
@@ -52,7 +45,6 @@ class PDFBatchProcessor:
                 try:
                     os.unlink(temp_file.name)
                 except Exception as e:
-                    # Log but don't raise the error
                     logging.warning(f"Failed to cleanup temporary file: {str(e)}")
 
     async def _save_chunks(self, document_id: str, chunks: List) -> List[str]:

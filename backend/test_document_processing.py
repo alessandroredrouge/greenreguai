@@ -10,7 +10,7 @@ logging.basicConfig(
 
 async def test_document_processing():
     # Use the document ID from your Supabase documents table
-    document_id = "d61858f1-720e-43fa-bf92-aada8b21789e"
+    document_id = "fb57c5c6-cb0e-47a2-94cb-f55944d35903"
     
     try:
         # Get initial document state

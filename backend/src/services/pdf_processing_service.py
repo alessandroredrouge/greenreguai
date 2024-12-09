@@ -125,24 +125,50 @@ class PDFProcessingService:
                     }
                 }
             
-            # Create DocumentChunk object compatible with existing system
+            # Determine chunk category based on content analysis
+            category = self._determine_chunk_category(section, section_title)
+            
+            # Create context from previous and next chunks
+            prev_context = sections[i-1][-200:] if i > 0 else None
+            next_context = sections[i+1][:200] if i < len(sections)-1 else None
+            
+            # Calculate proper offsets
+            start_offset = sum(len(s) for s in sections[:i])
+            end_offset = start_offset + len(section)
+            
             chunk = DocumentChunk(
                 content=section.strip(),
                 page_number=page_num,
                 section_title=section_title,
                 chunk_index=i,
-                start_offset=0,  # We could calculate this if needed
-                end_offset=len(section),
-                category=None,
+                start_offset=start_offset,
+                end_offset=end_offset,
+                category=category,
                 location_data=location_data,
                 element_type=None,
                 font_info=None,
                 file_path=file_path,
-                context={}  # We could add context if needed
+                context={
+                    "previous": prev_context,
+                    "next": next_context
+                }
             )
             chunks.append(chunk)
         
         return chunks
+
+    def _determine_chunk_category(self, text: str, title: str) -> str:
+        """Determine chunk category based on content analysis"""
+        if title and title.isupper():
+            return "Title"
+        elif re.match(r'^\([0-9]+\)', text):
+            return "Numbered Section"
+        elif len(text.split('\n')) > 3:
+            return "Text"
+        elif re.match(r'^\d+\.\s', text):
+            return "List Item"
+        else:
+            return "Other"
 
 # Singleton instance
 pdf_processing_service = PDFProcessingService()

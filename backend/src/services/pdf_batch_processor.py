@@ -4,46 +4,64 @@ from src.services.document_service import document_service
 from src.services.supabase import supabase_service
 import tempfile
 import os
+import logging
+from datetime import datetime
+
+logging.basicConfig(level=logging.INFO)
 
 class PDFBatchProcessor:
     def __init__(self):
         self.pdf_processor = PDFProcessingService()
         self.supabase = supabase_service
         
-    async def process_all_unprocessed(self):
-        """Process all unprocessed PDFs in storage"""
-        documents = await document_service.list_documents()
-        for document in documents:
-            if not await self._has_chunks(document['document_id']):
-                await self._process_document(document)
-
-    async def _has_chunks(self, document_id: str) -> bool:
-        """Check if document has chunks"""
-        result = self.supabase.admin_client.table('chunks')\
-            .select('chunk_id')\
-            .eq('document_id', document_id)\
-            .execute()
-        return len(result.data) > 0
+    async def process_pdf_to_chunks(self, document_id: str) -> None:
+        """Process a specific document into chunks"""
+        try:
+            # Get document details
+            document = await document_service.get_document_by_id(document_id)
+            if not document:
+                raise ValueError(f"Document not found: {document_id}")
+            
+            logging.info(f"Starting to process document {document_id}")
+            await self._process_document(document)
+            logging.info(f"Successfully processed document {document_id} into chunks")
+                
+        except Exception as e:
+            logging.error(f"Error processing document {document_id} into chunks: {str(e)}")
+            raise
 
     async def _process_document(self, document: Dict):
         """Process single document and save chunks"""
-        with tempfile.NamedTemporaryFile(delete=False, suffix='.pdf') as temp_file:
+        temp_file = None
+        try:
+            # Create temp file with context manager
+            temp_file = tempfile.NamedTemporaryFile(delete=False, suffix='.pdf')
             file_data = await self.supabase.download_file(document['file_path'])
             temp_file.write(file_data)
             temp_file.flush()
+            temp_file.close()  # Explicitly close the file
             
-            try:
-                processed = await self.pdf_processor.process_pdf(temp_file.name)
-                await self._save_chunks(document['document_id'], processed['chunks'])
-            finally:
-                os.unlink(temp_file.name)
+            # Process PDF and get chunks
+            processed = await self.pdf_processor.process_pdf(temp_file.name)
+            
+            # Save chunks
+            await self._save_chunks(document['document_id'], processed['chunks'])
+            
+        finally:
+            if temp_file:
+                try:
+                    os.unlink(temp_file.name)
+                except Exception as e:
+                    # Log but don't raise the error
+                    logging.warning(f"Failed to cleanup temporary file: {str(e)}")
 
-    async def _save_chunks(self, document_id: str, chunks: List):
-        """Save chunks to database"""
-        print(f'Processing document with Id: {document_id}')
-        print('Starting to save chunks...')
-        num_chunk=0
-        for chunk in chunks:
+    async def _save_chunks(self, document_id: str, chunks: List) -> List[str]:
+        """Save chunks to database and return chunk IDs"""
+        chunk_ids = []
+        total_chunks = len(chunks)
+        logging.info(f"Saving {total_chunks} chunks for document {document_id}")
+        
+        for i, chunk in enumerate(chunks, 1):
             chunk_data = {
                 'document_id': document_id,
                 'content': chunk.content,
@@ -58,9 +76,16 @@ class PDFBatchProcessor:
                 'font_info': chunk.font_info,
                 'context': chunk.context
             }
-            print(f'Chunk num. {num_chunk}/{len(chunks)} saved')
-            num_chunk+=1
-            self.supabase.admin_client.table('chunks').insert(chunk_data).execute()
+            result = self.supabase.admin_client.table('chunks')\
+                .insert(chunk_data)\
+                .execute()
+            chunk_ids.append(result.data[0]['chunk_id'])
+            
+            if i % 10 == 0:  # Log progress every 10 chunks
+                logging.info(f"Saved {i}/{total_chunks} chunks")
+        
+        logging.info(f"Successfully saved all {total_chunks} chunks for document {document_id}")
+        return chunk_ids
 
 # Singleton instance
 pdf_batch_processor = PDFBatchProcessor()

@@ -129,7 +129,7 @@ class DocumentService:
         return len(response.data) > 0
 
     async def process_document(self, document_id: str) -> Dict:
-        """Process a document through the entire pipeline"""
+        """Process a document through the chunking and embedding pipeline"""
         try:
             # Get document and verify it exists
             document = await self.get_document_by_id(document_id)
@@ -141,11 +141,11 @@ class DocumentService:
                 document_id, 
                 ProcessingStatus.PROCESSING
             )
-            
+
             try:
                 # Step 1: Process PDF into chunks
                 logging.info(f"Starting PDF processing for document {document_id}")
-                await pdf_batch_processor.process_pdf_to_chunks(document)  # Pass the whole document
+                await pdf_batch_processor.process_pdf_to_chunks(document)
                 logging.info(f"PDF processing completed for document {document_id}")
                 
                 # Step 2: Generate embeddings for chunks
@@ -160,19 +160,18 @@ class DocumentService:
                 )
                 
                 return await self.get_document_by_id(document_id)
-                
+                    
             except Exception as e:
-                error_msg = f"Error processing document: {str(e)}"
-                logging.error(error_msg)
+                # Update status to failed if there's an error
                 await self._update_processing_status(
                     document_id, 
                     ProcessingStatus.FAILED,
-                    error_msg
+                    str(e)
                 )
                 raise
                 
         except Exception as e:
-            logging.error(f"Error in process_document: {str(e)}")
+            logging.error(f"Error processing document {document_id}: {str(e)}")
             raise
 
     async def _update_processing_status(

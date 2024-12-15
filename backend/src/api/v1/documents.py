@@ -67,3 +67,14 @@ async def get_document(document_id: str):
     except Exception as e:
         print(f"Error in get_document endpoint: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
+
+@router.post("/{document_id}/process")
+async def process_document(document_id: str):
+    """Process a document with the specified ID"""
+    try:
+        processed_doc = await document_service.process_document(document_id)
+        return processed_doc
+    except ValueError as e:
+        raise HTTPException(status_code=404, detail=str(e))
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))

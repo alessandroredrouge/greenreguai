@@ -3,7 +3,7 @@ Endpoints for document management: listing, retrieving, and searching documents.
 Handles both metadata and file operations through Supabase.
 """
 
-from fastapi import APIRouter, HTTPException, Depends, Query
+from fastapi import APIRouter, HTTPException, Depends, Query, Body
 from typing import List, Optional
 from ...services.document_service import document_service
 from ...models.document_pydantic import DocumentSearchFilters, SearchResponse
@@ -76,5 +76,14 @@ async def process_document(document_id: str):
         return processed_doc
     except ValueError as e:
         raise HTTPException(status_code=404, detail=str(e))
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@router.post("/from-storage")
+async def create_document_from_storage(storage_path: str = Body(..., embed=True)):
+    """Create document record from file in storage"""
+    try:
+        document = await document_service.create_document_from_upload(storage_path)
+        return document
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

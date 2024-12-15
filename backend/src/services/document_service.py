@@ -6,17 +6,31 @@ Manages interaction between Supabase storage and database for document metadata.
 from typing import List, Optional, Tuple, Dict
 from datetime import datetime
 import logging
+import tempfile
+import os
+from dotenv import load_dotenv
+from langchain_openai import ChatOpenAI
+from langchain.prompts import ChatPromptTemplate
+from langchain_community.document_loaders import UnstructuredPDFLoader
 from ..services.supabase import supabase_service
-from ..models.document_pydantic import DocumentSearchFilters, DocumentResponse, SearchResponse, ProcessingStatus
+from ..models.document_pydantic import DocumentSearchFilters, DocumentResponse, SearchResponse, ProcessingStatus, DocumentBase
 from .pdf_batch_processor import pdf_batch_processor
 from .embedding_service import embedding_service
 import math
+
+# Load environment variables
+load_dotenv()
 
 logging.basicConfig(level=logging.INFO)
 
 class DocumentService:
     def __init__(self):
         self.supabase = supabase_service
+        self.llm = ChatOpenAI(
+            model="gpt-4",
+            temperature=0,
+            openai_api_key=os.getenv('OPENAI_API_KEY')
+        )
 
     async def list_documents(self, folder: Optional[str] = None) -> List[dict]:
         """List all documents with their metadata"""
@@ -199,6 +213,81 @@ class DocumentService:
             
         except Exception as e:
             logging.error(f"Error updating document status: {str(e)}")
+            raise
+
+    async def create_document_from_upload(self, storage_path: str) -> Dict:
+        """
+        Extract metadata from uploaded PDF and create document record.
+        Args:
+            storage_path: Path of the uploaded file in Supabase storage
+        Returns:
+            Created document record
+        """
+        try:
+            # Download file to temporary location
+            temp_file = tempfile.NamedTemporaryFile(delete=False, suffix='.pdf')
+            try:
+                file_data = await self.supabase.download_file(storage_path)
+                temp_file.write(file_data)
+                temp_file.flush()
+                
+                # Load PDF content
+                loader = UnstructuredPDFLoader(temp_file.name)
+                doc = loader.load()[0]
+                
+                # Create prompt for metadata extraction
+                prompt = ChatPromptTemplate.from_messages([
+                    ("system", r"""You are an expert at analyzing legal and regulatory documents in the renewable energy sector.
+                    Extract the following metadata from the document:
+                    1. title: The official title of the document
+                    2. description: A brief description of the document's content and purpose
+                    3. region: The geographical region this document applies to (e.g., europe)
+                    4. category: The type of document (e.g., regulations, reports)
+                    5. tags: A list of relevant tags for categorizing the document
+                    6. publication_year: The year the document was published
+                    
+                    Format your response as a JSON object with these exact field names.
+                    For the file_path, use the format: {{sanitized_title}}.pdf
+                    where sanitized_title replaces spaces with underscores and removes special characters.
+                    
+                    Example format:
+                    {{
+                        "title": "Document Title",
+                        "description": "Brief description",
+                        "region": "europe",
+                        "category": "regulations",
+                        "tags": ["renewable", "energy", "policy"],
+                        "publication_year": 2024,
+                        "file_path": "document_title.pdf"
+                    }}"""),
+                    ("user", f"Analyze this document and extract metadata:\n\n{doc.page_content[:2000]}")
+                ])
+                
+                # Get metadata from LLM
+                chain = prompt | self.llm
+                result = chain.invoke({})
+                metadata = eval(result.content)  # Convert string to dict
+                
+                # Add additional required fields
+                metadata['file_size'] = len(file_data)
+                metadata['mime_type'] = 'application/pdf'
+                metadata['processing_status'] = ProcessingStatus.PENDING
+                
+                # Create document record
+                doc_data = DocumentBase(**metadata)
+                result = self.supabase.admin_client.table('documents')\
+                    .insert(doc_data.model_dump())\
+                    .execute()
+                
+                return result.data[0]
+                
+            finally:
+                # Clean up temporary file
+                temp_file.close()
+                os.unlink(temp_file.name)
+                
+        except Exception as e:
+            logging.error(f"Error creating document from upload: {str(e)}")
             raise
 
 # Create a singleton instance

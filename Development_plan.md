@@ -39,8 +39,8 @@ Use this checklist to guide your development process. You can tick off each item
         - [x]  Logging in
         - [x]  Querying the AI
         - [x]  Purchasing credits
-- [ ]  **Create Wireframes for Core Pages**
-    - [ ]  Use a v0 or bolt.new:
+- [x]  **Create Wireframes for Core Pages**
+    - [x]  Use a v0 or bolt.new:
         - [x]  Home/Landing Page
         - [x]  Sign Up/In Page
         - [x]  Dashboard
@@ -68,11 +68,11 @@ Use this checklist to guide your development process. You can tick off each item
 
 ## Phase 4: Document Management System Setup
 
-- [ ]  **Set Up Document Storage Infrastructure**
+- [x]  **Set Up Document Storage Infrastructure**
     - [x]  Configure Supabase Storage for official PDFs
-    - [ ]  Create document metadata tables in Supabase:
+    - [x]  Create document metadata tables in Supabase:
         - [x]  Documents table (title, date, region, category)
-        - [ ]  Document chunks table
+        - [x]  Document chunks table
     - [x]  Implement Document Search Functionality
         - [x]  Backend part
         - [x]  Frontend part
@@ -97,7 +97,7 @@ Use this checklist to guide your development process. You can tick off each item
 ## Phase 6: AI Assistant Integration
 
 - [ ]  **Document Processing Pipeline**
-    - [ ]  PDF Processing Service:
+    - [x]  PDF Processing Service:
         - [x]  Create code to extract text from PDFs
         - [x]  Clean and preprocess text in chunks
         - [x]  Maintain structural information (sections, pages) and infos about where to locate the chunk in the pdf
@@ -106,11 +106,11 @@ Use this checklist to guide your development process. You can tick off each item
         - [x]  Implement semantic text splitting
         - [x]  Create chunk metadata schema
         - [x]  Store chunks with references to its location in the document
-        - [ ] configure integration with Supabase so that every new document that is uploaded is processed and chunked, saving the results of this process (in Supabase and/or Pinecone, tbd)
-    - [ ]  Embedding Service:
-        - [ ]  Set up OpenAI embedding generation
-        - [ ]  Configure Pinecone integration
-        - [ ]  Store embeddings with metadata
+        - [ ] configure integration with Supabase so that every new document that is uploaded in the official_documents bucket is processed and chunked, saving the results of this process in Supabase and embedding & saving those chunks in Pinecone
+    - [x]  Embedding Service:
+        - [x]  Set up OpenAI embedding generation
+        - [x]  Configure Pinecone integration
+        - [x]  Store embeddings with metadata
 
 - [ ]  **Query Processing System**
     - [ ]  Query Handler (core Langchain, accessing Supabase/Pinecone):

@@ -247,8 +247,6 @@ class DocumentService:
                     6. publication_year: The year the document was published
                     
                     Format your response as a JSON object with these exact field names.
-                    For the file_path, use the format: {{sanitized_title}}.pdf
-                    where sanitized_title replaces spaces with underscores and removes special characters.
                     
                     Example format:
                     {{
@@ -257,8 +255,7 @@ class DocumentService:
                         "region": "europe",
                         "category": "regulations",
                         "tags": ["renewable", "energy", "policy"],
-                        "publication_year": 2024,
-                        "file_path": "document_title.pdf"
+                        "publication_year": 2024
                     }}"""),
                     ("user", f"Analyze this document and extract metadata:\n\n{doc.page_content[:2000]}")
                 ])
@@ -272,6 +269,7 @@ class DocumentService:
                 metadata['file_size'] = len(file_data)
                 metadata['mime_type'] = 'application/pdf'
                 metadata['processing_status'] = ProcessingStatus.PENDING
+                metadata['file_path'] = storage_path  # Use the original storage path
                 
                 # Create document record
                 doc_data = DocumentBase(**metadata)

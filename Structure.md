@@ -101,7 +101,7 @@ Use this document to understand the structure of the pages needed for the fronte
 
 ---
 
-## 4. Password Reset Page
+## 4. Password Reset Page (currently not present)
 
 **Purpose:**
 
@@ -211,7 +211,7 @@ Use this document to understand the structure of the pages needed for the fronte
 
 ---
 
-## 7. Search Page
+## 7. Document Library Page
 
 **Purpose:**
 
@@ -250,7 +250,7 @@ Use this document to understand the structure of the pages needed for the fronte
 
 ---
 
-## 8. Document Detail Page
+## 8. Document Detail Page (not present yet)
 
 **Purpose:**
 
@@ -322,7 +322,7 @@ Use this document to understand the structure of the pages needed for the fronte
 
 ---
 
-## 10. Profile Settings Page
+## 10. Profile Settings Page (not present yet)
 
 **Purpose:**
 
@@ -360,7 +360,7 @@ Use this document to understand the structure of the pages needed for the fronte
 
 ---
 
-## 11. Feedback Page
+## 11. Feedback Page (not present yet)
 
 **Purpose:**
 
@@ -398,7 +398,7 @@ Use this document to understand the structure of the pages needed for the fronte
 
 ---
 
-## 12. Support/Contact Us Page
+## 12. Support/Contact Us Page (not present yet)
 
 **Purpose:**
 
@@ -429,7 +429,7 @@ Use this document to understand the structure of the pages needed for the fronte
 
 ---
 
-## 13. FAQ/Help Page
+## 13. FAQ/Help Page (not present yet)
 
 **Purpose:**
 
@@ -463,7 +463,7 @@ Use this document to understand the structure of the pages needed for the fronte
 
 ---
 
-## 14. Legal Pages (Terms of Service, Privacy Policy)
+## 14. Legal Pages (Terms of Service, Privacy Policy) (not present yet)
 
 **Purpose:**
 
@@ -489,7 +489,7 @@ Use this document to understand the structure of the pages needed for the fronte
 
 ---
 
-## 15. Error Pages (404, 500, etc.)
+## 15. Error Pages (404, 500, etc.) (not present yet)
 
 **Purpose:**
 
@@ -515,30 +515,6 @@ Use this document to understand the structure of the pages needed for the fronte
 
 ---
 
-## 16. Logout Functionality
-
-**Purpose:**
-
-- Allow users to securely log out.
-
-**Content & Layout:**
-
-- **Confirmation Prompt:** Optional, to confirm the user wants to log out.
-- **Redirection:** After logging out, redirect to the Home/Landing Page.
-
-**Interconnections:**
-
-- **Available From:** Accessible via a dropdown under the user avatar or in the navigation menu.
-
-**Tools & Technologies:**
-
-- **Frontend:**
-    - **Framework:** React.js
-- **Authentication:**
-    - **Service:** Supabase Auth (session termination)
-    - **Library:** Supabase JavaScript Client
-
----
 
 ## Reasoning Behind the Structure
 

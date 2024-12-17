@@ -85,28 +85,28 @@ Use this checklist to guide your development process. You can tick off each item
     - [x]  Add document metadata retrieval
     - [x]  Set up PDF serving endpoints
 
-- [ ]  **Frontend - Document Library Interface**
+- [x]  **Frontend - Document Library Interface**
     - [x]  Enhance existing Document Library page:
         - [x]  Add document browsing interface
         - [x]  Implement filtering system
         - [x]  Implement metadata-based search
     - [x]  Create document detail view
-    - [ ]  Add PDF viewer integration
+
 
 
 ## Phase 6: AI Assistant Integration
 
-- [ ]  **Document Processing Pipeline**
+- [x]  **Document Processing Pipeline**
     - [x]  PDF Processing Service:
         - [x]  Create code to extract text from PDFs
         - [x]  Clean and preprocess text in chunks
         - [x]  Maintain structural information (sections, pages) and infos about where to locate the chunk in the pdf
         - [x] connect this service to Supabase (currently it's done locally to test it out)
-    - [ ]  Chunking Service:
+    - [x]  Chunking Service:
         - [x]  Implement semantic text splitting
         - [x]  Create chunk metadata schema
         - [x]  Store chunks with references to its location in the document
-        - [ ] configure integration with Supabase so that every new document that is uploaded in the official_documents bucket is processed and chunked, saving the results of this process in Supabase and embedding & saving those chunks in Pinecone
+        - [x] configure integration with Supabase so that every new document that is uploaded in the official_documents bucket is processed and chunked, saving the results of this process in Supabase and embedding & saving those chunks in Pinecone
     - [x]  Embedding Service:
         - [x]  Set up OpenAI embedding generation
         - [x]  Configure Pinecone integration

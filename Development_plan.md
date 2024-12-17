@@ -192,6 +192,7 @@ Use this checklist to guide your development process. You can tick off each item
     - [ ]  Set up hosting for the frontend.
     - [ ]  Set up hosting for the backend.
     - [ ]  Configure environment variables securely.
+    - [ ]  Change API links of Supabase related services from the ones of ngrok, which was redirecting to your localhost, to the one used in production.
     - [ ]  Set up SSL certificates.
 - [ ]  **Deploy the Application**
     - [ ]  Deploy the backend API.

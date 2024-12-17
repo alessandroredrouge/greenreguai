@@ -13,10 +13,10 @@ class BackgroundTaskManager:
         
     def start(self):
         """Start the background task scheduler"""
-        # Add document sync job - runs every 5 minutes
+        # Add document sync job - runs every 30 minutes
         self.scheduler.add_job(
             supabase_service.sync_unprocessed_documents,
-            trigger=IntervalTrigger(minutes=60),
+            trigger=IntervalTrigger(minutes=30),
             id='document_sync',
             name='Document Sync Job',
             replace_existing=True

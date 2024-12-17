@@ -1,6 +1,6 @@
 import React from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-
+// TODO: Add this to the project
 export default function Pagination({ currentPage, totalPages, onPageChange }) {
   return (
     <div className="flex items-center justify-center gap-4">

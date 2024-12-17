@@ -19,7 +19,7 @@ export default function DocumentLibrary() {
     tags: [],
     year: null,
     page: 1,
-    per_page: 12
+    per_page: 30
   });
   const [showMobilePreview, setShowMobilePreview] = useState(false);
 

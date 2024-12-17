@@ -25,7 +25,7 @@ class DocumentBase(BaseModel):
     file_size: int
     mime_type: str
     url_source: Optional[str] = None
-    publication_year: int
+    publication_year: str
     processing_status: ProcessingStatus = ProcessingStatus.PENDING
     error_message: Optional[str] = None
 

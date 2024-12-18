@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { ArrowRight, Search, Shield, Zap, Globe, CreditCard, RefreshCw, Target, Clock, Users } from 'lucide-react'
 
+// TODO: add a video demonstration of the AI Assistant work that repeats in the background
 export default function LandingPage() {
   const features = [
     {

@@ -7,7 +7,7 @@ async def test_rag_query_processing():
     """Test the complete RAG pipeline with a sample query"""
     
     # Test query about offshore wind regulations
-    query = "What are the European Transport Corridors?"
+    query = "What are the main points of RED III?"
     print("\n" + "="*80)
     print(f"Testing RAG with query: '{query}'")
     print("="*80)

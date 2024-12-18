@@ -15,7 +15,7 @@ logging.basicConfig(level=logging.INFO)
 class LLMService:
     def __init__(self):
         self.llm = ChatOpenAI(
-            model="gpt-4-turbo-preview",  # Using latest GPT-4 for better instruction following
+            model="gpt-4o-mini",  # Using latest GPT-4 for better instruction following
             temperature=0.1,  # Lower temperature for more focused responses
             api_key=settings.OPENAI_API_KEY
         )
@@ -28,7 +28,7 @@ Your task is to provide accurate, well-sourced answers based on the provided con
 Guidelines:
 - Use ONLY the information from the provided context
 - If you can't answer from the context, say so
-- ALWAYS cite sources using [{{index}}] format, where index is the chunk number
+- ALWAYS cite sources using [index] format, where index is the chunk number
 - Every relevant statement must have a citation
 - If a statement combines information from multiple chunks, cite all relevant chunks like [0,2,3]
 - Keep responses clear and concise
@@ -38,11 +38,12 @@ Example citation format:
 "The renewable energy target for 2030 is 42.5% [0]. This includes specific provisions for hydrogen production [0,3] and storage requirements [2]."
 
 Context format:
-Each context chunk is numbered and contains:
-- index: The chunk number to use in citations
-- content: The actual text
-- source: Metadata including page numbers"""),
-            ("user", "Question: {{question}}\n\nContext:\n{{context}}"),
+Each chunk contains:
+- Chunk number (for citations)
+- Page number
+- Section title
+- Content text"""),
+            ("user", "Question: {question}\n\nContext:\n{context}"),
         ])
         
         self.output_parser = StrOutputParser()
@@ -79,7 +80,9 @@ Each context chunk is numbered and contains:
         for chunk in context["chunks"]:
             formatted_chunks.append(
                 f"[Chunk {chunk['index']}]\n"
-                f"{chunk['content']}\n"
+                f"Page: {chunk['source']['page_number']}\n"
+                f"Section: {chunk['source']['section_title'] or 'N/A'}\n"
+                f"Content:\n{chunk['content']}\n"
             )
             
         return "\n\n".join(formatted_chunks)

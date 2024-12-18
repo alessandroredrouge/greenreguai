@@ -2,7 +2,7 @@
 RAG (Retrieval Augmented Generation) service that handles:
 - Query processing and embedding
 - Relevant chunk retrieval
-- Context assembly
+- Context assembly with source tracking
 - Response generation with citations
 """
 
@@ -34,12 +34,12 @@ class RAGService:
             relevant_docs = await self._retrieve_relevant_chunks(query)
             
             # Assemble context with metadata
-            context = await self._assemble_context(relevant_docs)
+            context = self._assemble_context(relevant_docs)
             
             return {
                 "query": query,
                 "context": context,
-                "chunks": relevant_docs
+                "total_chunks": len(relevant_docs)
             }
             
         except Exception as e:
@@ -62,7 +62,7 @@ class RAGService:
             for doc, score in docs_with_scores:
                 if score >= self.similarity_threshold:
                     # Get full chunk data from Supabase
-                    chunk_data = await self._get_chunk_data(doc.metadata['chunk_id'])
+                    chunk_data = self._get_chunk_data(doc.metadata['chunk_id'])
                     if chunk_data:
                         relevant_chunks.append({
                             "chunk": chunk_data,
@@ -75,12 +75,12 @@ class RAGService:
             logging.error(f"Error retrieving relevant chunks: {str(e)}")
             raise
 
-    async def _get_chunk_data(self, chunk_id: str) -> Dict:
+    def _get_chunk_data(self, chunk_id: str) -> Dict:
         """
         Retrieve full chunk data from Supabase
         """
         try:
-            result = await self.supabase.admin_client.table('chunks')\
+            result = self.supabase.admin_client.table('chunks')\
                 .select('*')\
                 .eq('chunk_id', chunk_id)\
                 .execute()
@@ -91,10 +91,10 @@ class RAGService:
             logging.error(f"Error retrieving chunk data: {str(e)}")
             raise
 
-    async def _assemble_context(self, relevant_chunks: List[Dict]) -> Dict:
+    def _assemble_context(self, relevant_chunks: List[Dict]) -> Dict:
         """
-        Assemble retrieved chunks into a coherent context
-        Includes metadata for citations and source tracking
+        Assemble retrieved chunks into an array-based context format
+        Each chunk maintains its content and detailed source information
         """
         try:
             # Sort chunks by similarity score
@@ -104,16 +104,20 @@ class RAGService:
                 reverse=True
             )
             
-            # Assemble context with metadata
+            # Create array-based context with detailed source tracking
             context = {
-                "text": "\n\n".join([chunk['chunk']['content'] for chunk in sorted_chunks]),
-                "sources": [{
-                    "chunk_id": chunk['chunk']['chunk_id'],
-                    "document_id": chunk['chunk']['document_id'],
-                    "page_number": chunk['chunk']['page_number'],
-                    "section_title": chunk['chunk']['section_title'],
-                    "location_data": chunk['chunk']['location_data']
-                } for chunk in sorted_chunks]
+                "chunks": [{
+                    "index": i,  # Add index for easy reference
+                    "content": chunk['chunk']['content'],
+                    "source": {
+                        "chunk_id": chunk['chunk']['chunk_id'],
+                        "document_id": chunk['chunk']['document_id'],
+                        "page_number": chunk['chunk']['page_number'],
+                        "section_title": chunk['chunk']['section_title'],
+                        "location_data": chunk['chunk']['location_data'],
+                        "similarity_score": chunk['similarity_score']
+                    }
+                } for i, chunk in enumerate(sorted_chunks)]
             }
             
             return context

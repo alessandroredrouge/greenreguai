@@ -241,8 +241,8 @@ class DocumentService:
                     Extract the following metadata from the document:
                     1. title: The official title of the document
                     2. description: A brief description of the document's content and purpose
-                    3. region: The geographical region this document applies to (e.g., europe)
-                    4. category: The type of document (e.g., regulations, reports)
+                    3. region: The geographical region this document applies to (e.g., europe, asia, africa, etc.)
+                    4. category: The type of document (e.g., regulations, reports, etc.)
                     5. tags: A list of relevant tags for categorizing the document
                     6. publication_year: The year the document was published
                     

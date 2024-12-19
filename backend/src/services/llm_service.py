@@ -8,6 +8,7 @@ import logging
 from langchain_openai import ChatOpenAI
 from langchain.prompts import ChatPromptTemplate
 from langchain.schema import StrOutputParser
+from .supabase import supabase_service
 from ..core.config import settings
 
 logging.basicConfig(level=logging.INFO)
@@ -15,7 +16,7 @@ logging.basicConfig(level=logging.INFO)
 class LLMService:
     def __init__(self):
         self.llm = ChatOpenAI(
-            model="gpt-4o-mini",  # Using latest GPT-4 for better instruction following
+            model="gpt-4o-mini",  # Using gpt-4o-mini to save money. LEAVE IT AS IT IS
             temperature=0.1,  # Lower temperature for more focused responses
             api_key=settings.OPENAI_API_KEY
         )
@@ -33,40 +34,59 @@ Guidelines:
 - If a statement combines information from multiple chunks, cite all relevant chunks like [0,2,3]
 - Keep responses clear and concise
 - Maintain professional tone
+- Consider the conversation history for context
 
 Example citation format:
 "The renewable energy target for 2030 is 42.5% [0]. This includes specific provisions for hydrogen production [0,3] and storage requirements [2]."
+"""),
+            ("user", """Previous conversation:
+{history}
 
-Context format:
-Each chunk contains:
-- Chunk number (for citations)
-- Page number
-- Section title
-- Content text"""),
-            ("user", "Question: {question}\n\nContext:\n{context}"),
+Current question: {question}
+
+Context:
+{context}"""),
         ])
         
         self.output_parser = StrOutputParser()
         
-    async def generate_rag_response(self, query: str, context: Dict[str, Any]) -> Dict[str, Any]:
-        """
-        Generate a response using RAG context
-        Returns response text with citations and metadata
-        """
+    async def generate_rag_response(
+        self, 
+        query: str, 
+        context: Dict[str, Any],
+        conversation_id: Optional[str] = None
+    ) -> Dict[str, Any]:
+        """Generate a response using RAG context and conversation history"""
         try:
-            # Format context for prompt
+            # Get conversation history if conversation_id provided
+            history = ""
+            if conversation_id:
+                result = supabase_service.admin_client.table('messages')\
+                    .select('*')\
+                    .eq('conversation_id', conversation_id)\
+                    .order('message_index', desc=False)\
+                    .execute()
+                    
+                if result.data:
+                    history = "\n".join([
+                        f"{'User' if msg['role'] == 'user' else 'Assistant'}: {msg['content']}"
+                        for msg in result.data
+                    ])
+            
+            # Format context
             formatted_context = self._format_context(context)
             
             # Generate response
             chain = self.rag_prompt | self.llm | self.output_parser
             response = await chain.ainvoke({
                 "question": query,
-                "context": formatted_context
+                "context": formatted_context,
+                "history": history
             })
             
             return {
                 "response": response,
-                "sources": context["chunks"]  # Return source chunks for citation tracking
+                "sources": context["chunks"]
             }
             
         except Exception as e:

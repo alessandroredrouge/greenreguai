@@ -19,9 +19,9 @@ async def test_conversation_flow():
     
     # Simulate a conversation
     queries = [
-        "What's the REPowerEU plan?",
-        "How does it relate to the RED III plan?",
-        "Do any of them talk about fuels of non-biological origin? Ans anyways, can you tell me more about such fuels?"
+        "What are the main targets in RED III?",
+        "How does this relate to offshore wind development?",
+        "What are the specific requirements for member states?"
     ]
     
 
@@ -88,7 +88,6 @@ async def test_conversation_flow():
                 print(f"Document ID: {chunk['source']['document_id']}")
                 print(f"Page: {chunk['source']['page_number']}")
                 print(f"Content Preview: {chunk['content'][:200]}...")
-                print("-" * 40)
             
         except Exception as e:
             pytest.fail(f"Test failed with error: {str(e)}")

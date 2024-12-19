@@ -5,7 +5,7 @@ and sets up middleware and error handlers.
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from src.api.v1 import documents
+from src.api.v1 import documents, chat
 from src.core.background_tasks import background_task_manager
 import logging
 
@@ -17,7 +17,7 @@ logging.basicConfig(level=logging.INFO)
 # Configure CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Adjust this in production
+    allow_origins=["http://localhost:3000"],  # Add your frontend URL
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -25,6 +25,7 @@ app.add_middleware(
 
 # Include routers
 app.include_router(documents.router, prefix="/api/v1")
+app.include_router(chat.router, prefix="/api/v1")
 
 @app.on_event("startup")
 async def startup_event():

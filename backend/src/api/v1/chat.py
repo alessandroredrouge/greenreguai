@@ -12,19 +12,30 @@ from ...services.supabase import supabase_service
 from uuid import uuid4
 from ...services.conversation_service import conversation_service
 
-router = APIRouter()
+router = APIRouter(tags=["chat"])
 logger = logging.getLogger(__name__)
 
 @router.post("/chat")
 async def process_chat_query(request: ChatRequest):
     try:
-        # First verify user has enough credits
-        result = supabase_service.admin_client.table('user_profiles')\
-            .select('credits')\
-            .eq('user_id', request.user_id)\
+        # Get user_id from email using Supabase
+        result = supabase_service.admin_client.from_('user_profiles')\
+            .select('user_id, credits')\
+            .eq('email', request.email)\
+            .single()\
             .execute()
             
-        if not result.data or result.data[0]['credits'] <= 0:
+        if not result.data:
+            raise HTTPException(
+                status_code=404,
+                detail="User profile not found"
+            )
+            
+        user_id = result.data['user_id']
+        credits = result.data['credits']
+        
+        # Check credits
+        if credits <= 0:
             raise HTTPException(
                 status_code=402,  # Payment Required
                 detail="Insufficient credits. Please purchase more credits to continue using the AI Assistant."
@@ -33,7 +44,7 @@ async def process_chat_query(request: ChatRequest):
         # First get/create conversation
         conversation = conversation_service.get_or_create_conversation(
             request.conversation_id,
-            request.user_id
+            user_id
         )
         
         # Save user's message

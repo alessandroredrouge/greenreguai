@@ -9,9 +9,9 @@ async def test_conversation_flow():
     
     test_user_id = "9f4cbd8c-66d0-4387-9443-14c9f20b91f6"
     queries = [
-        "What are the main targets in RED III?",
-        "How does this relate to offshore wind development?",
-        "What are the specific requirements for member states?"
+        "What's the RepowerEU act?",
+        "Do you like me?",
+        "What the hell is this?"
     ]
     
     conversation_id = None

@@ -61,10 +61,10 @@ Use this checklist to track progress on implementing the AI Assistant functional
 
 ### Credit Management
 - [ ] **Credit Checking**
-    - [ ] Implement credit verification
+    - [x] Implement credit verification
     - [ ] Add insufficient credit handling
 - [ ] **Credit Processing**
-    - [ ] Fix credit deduction on Supabase (we use triggers)
+    - [x] Fix credit deduction on Supabase (we use triggers)
     - [ ] Create refund mechanism (optional)
 
 ### Transaction Tracking
@@ -83,8 +83,7 @@ Use this checklist to track progress on implementing the AI Assistant functional
     - [x] Implement history saving
     - [x] Add conversation retrieval
 - [ ] **Context Processing**
-    - [ ] Implement context window management
-    - [ ] Add relevance scoring
+    - [x] Add relevance scoring
     - [ ] Create context pruning system (what's that?)
 
 ### Conversation Features

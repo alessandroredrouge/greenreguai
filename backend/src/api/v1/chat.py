@@ -18,10 +18,22 @@ logger = logging.getLogger(__name__)
 @router.post("/chat")
 async def process_chat_query(request: ChatRequest):
     try:
+        # First verify user has enough credits
+        result = supabase_service.admin_client.table('user_profiles')\
+            .select('credits')\
+            .eq('user_id', request.user_id)\
+            .execute()
+            
+        if not result.data or result.data[0]['credits'] <= 0:
+            raise HTTPException(
+                status_code=402,  # Payment Required
+                detail="Insufficient credits. Please purchase more credits to continue using the AI Assistant."
+            )
+
         # First get/create conversation
         conversation = conversation_service.get_or_create_conversation(
             request.conversation_id,
-            "test-user"  # Will be replaced with actual user_id later
+            request.user_id
         )
         
         # Save user's message
@@ -29,9 +41,10 @@ async def process_chat_query(request: ChatRequest):
             "conversation_id": conversation.conversation_id,
             "user_id": conversation.user_id,
             "role": "user",
-            "content": request.query
+            "content": request.query,
+            "credits_used": 0  # User messages don't use credits
         }
-        await supabase_service.admin_client.table('messages').insert(user_message).execute()
+        supabase_service.admin_client.table('messages').insert(user_message).execute()
         
         # Process with RAG + LLM
         rag_result = await rag_service.process_query(request.query)
@@ -46,14 +59,15 @@ async def process_chat_query(request: ChatRequest):
             rag_result["context"]["chunks"]
         )
         
-        # Save assistant's message with sources
+        # Save assistant's message with credits_used = -1
         assistant_message = {
             "conversation_id": conversation.conversation_id,
             "user_id": conversation.user_id,
             "role": "assistant",
             "content": llm_result["response"],
+            "credits_used": -1,  # Explicitly set credit usage for assistant messages
             "sources": {
-                str(chunk["index"]): {  # Convert index to string as JSON keys must be strings
+                str(chunk["index"]): {
                     "chunk_id": chunk["source"]["chunk_id"],
                     "document_id": chunk["source"]["document_id"],
                     "page_number": chunk["source"]["page_number"],
@@ -64,15 +78,17 @@ async def process_chat_query(request: ChatRequest):
                 for chunk in used_chunks
             }
         }
-        result = await supabase_service.admin_client.table('messages').insert(assistant_message).execute()
+        result = supabase_service.admin_client.table('messages').insert(assistant_message).execute()
         
         return ChatResponse(
             response=llm_result["response"],
-            sources=used_chunks,  # Return all chunks for immediate use
+            sources=used_chunks,
             conversation_id=conversation.conversation_id,
             tokens_used=len(request.query.split()) + len(llm_result["response"].split())
         )
         
+    except HTTPException as he:
+        raise he
     except Exception as e:
         logger.error(f"Error processing chat query: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))

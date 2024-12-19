@@ -31,6 +31,7 @@ class ChatRequest(BaseModel):
     """Incoming chat request"""
     query: str = Field(..., description="User's question")
     conversation_id: Optional[str] = Field(None, description="ID of existing conversation")
+    user_id: str = Field(..., description="ID of the user making the request")
 
 class ChatResponse(BaseModel):
     """Response including answer and source information"""

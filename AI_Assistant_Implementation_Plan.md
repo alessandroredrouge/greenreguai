@@ -7,47 +7,47 @@ Use this checklist to track progress on implementing the AI Assistant functional
 ## Phase 1: Backend RAG Service Setup
 
 ### Core RAG Implementation
-- [ ] **Set Up Basic RAG Service**
-    - [ ] Configure LangChain with OpenAI
-    - [ ] Create base prompt template
-    - [ ] Implement document retrieval from Pinecone
-    - [ ] Set up basic response generation
+- [x] **Set Up Basic RAG Service**
+    - [x] Configure LangChain with OpenAI
+    - [x] Create base prompt template
+    - [x] Implement document retrieval from Pinecone
+    - [x] Set up basic response generation
 - [x] **Document Processing**
     - [x] Create chunk metadata structure
     - [x] Implement context formatting
     - [x] Add source document tracking
-- [ ] **Response Formatting**
-    - [ ] Design response structure with citations
-    - [ ] Implement response parsing
-    - [ ] Add metadata extraction
+- [x] **Response Formatting**
+    - [x] Design response structure with citations
+    - [x] Implement response parsing
+    - [x] Add metadata extraction
 
 ### API Endpoints
 - [ ] **Create FastAPI Routes**
-    - [ ] Set up chat endpoint
+    - [x] Set up chat endpoint
     - [ ] Add authentication middleware
-    - [ ] Implement error handling
+    - [x] Implement error handling
 - [ ] **Request/Response Models**
-    - [ ] Define Pydantic models for chat
-    - [ ] Create response schemas
-    - [ ] Add validation rules
+    - [x] Define Pydantic models for chat
+    - [x] Create response schemas
+    - [x] Add validation rules
 
 ---
 
 ## Phase 2: Citation System
 
 ### Backend Implementation
-- [ ] **Source Tracking**
-    - [ ] Create citation data structure
-    - [ ] Implement source document linking
-    - [ ] Add page/section tracking
+- [x] **Source Tracking**
+    - [x] Create citation data structure
+    - [x] Implement source document linking
+    - [x] Add page/section tracking
 - [ ] **PDF Integration**
-    - [ ] Add PDF location tracking
+    - [x] Add PDF location tracking
     - [ ] Implement chunk-to-PDF mapping
     - [ ] Create preview generation system
-- [ ] **Citation Storage**
-    - [ ] Design citation storage schema
-    - [ ] Implement citation saving
-    - [ ] Add citation retrieval system
+- [x] **Citation Storage**
+    - [x] Design citation storage schema
+    - [x] Implement citation saving
+    - [x] Add citation retrieval system
 
 ### API Integration
 - [ ] **Citation Endpoints**
@@ -63,31 +63,29 @@ Use this checklist to track progress on implementing the AI Assistant functional
 - [ ] **Credit Checking**
     - [ ] Implement credit verification
     - [ ] Add insufficient credit handling
-    - [ ] Create credit reservation system
 - [ ] **Credit Processing**
-    - [ ] Implement credit deduction
-    - [ ] Add transaction logging
-    - [ ] Create refund mechanism
+    - [ ] Fix credit deduction on Supabase (we use triggers)
+    - [ ] Create refund mechanism (optional)
 
 ### Transaction Tracking
 - [ ] **Usage Monitoring**
-    - [ ] Create usage tracking system
+    - [x] Create usage tracking system
     - [ ] Implement analytics collection
-    - [ ] Add usage reporting
+    - [ ] Add usage reporting (optional)
 
 ---
 
 ## Phase 4: Chat History & Context
 
 ### Conversation Management
-- [ ] **History Storage**
-    - [ ] Design conversation schema
-    - [ ] Implement history saving
-    - [ ] Add conversation retrieval
+- [x] **History Storage**
+    - [x] Design conversation schema
+    - [x] Implement history saving
+    - [x] Add conversation retrieval
 - [ ] **Context Processing**
     - [ ] Implement context window management
     - [ ] Add relevance scoring
-    - [ ] Create context pruning system
+    - [ ] Create context pruning system (what's that?)
 
 ### Conversation Features
 - [ ] **Conversation Control**

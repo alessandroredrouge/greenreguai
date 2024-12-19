@@ -19,9 +19,9 @@ async def test_conversation_flow():
     
     # Simulate a conversation
     queries = [
-        "What are the main targets in RED III?",
-        "How does this relate to offshore wind development?",
-        "What are the specific requirements for member states?"
+        "What's the REPowerEU plan?",
+        "How does it relate to the RED III plan?",
+        "Do any of them talk about fuels of non-biological origin? Ans anyways, can you tell me more about such fuels?"
     ]
     
 

@@ -61,7 +61,8 @@ async def process_chat_query(request: ChatRequest):
         rag_result = await rag_service.process_query(request.query)
         llm_result = await llm_service.generate_rag_response(
             query=request.query,
-            context=rag_result["context"]
+            context=rag_result["context"],
+            conversation_id=conversation.conversation_id
         )
         
         # Extract used chunks from response

@@ -10,6 +10,7 @@ from langchain.prompts import ChatPromptTemplate
 from langchain.schema import StrOutputParser
 from .supabase import supabase_service
 from ..core.config import settings
+from .conversation_service import conversation_service
 
 logging.basicConfig(level=logging.INFO)
 
@@ -61,16 +62,11 @@ Context:
             # Get conversation history if conversation_id provided
             history = ""
             if conversation_id:
-                result = supabase_service.admin_client.table('messages')\
-                    .select('*')\
-                    .eq('conversation_id', conversation_id)\
-                    .order('message_index', desc=False)\
-                    .execute()
-                    
-                if result.data:
+                messages = conversation_service.get_conversation_history(conversation_id)
+                if messages:
                     history = "\n".join([
                         f"{'User' if msg['role'] == 'user' else 'Assistant'}: {msg['content']}"
-                        for msg in result.data
+                        for msg in messages
                     ])
             
             # Format context

@@ -65,5 +65,20 @@ class ConversationService:
             logging.error(f"Error in get_or_create_conversation: {str(e)}")
             raise
 
+    def get_conversation_history(self, conversation_id: str) -> list:
+        """Get ordered messages for a conversation"""
+        try:
+            result = self.supabase.admin_client.table('messages')\
+                .select('*')\
+                .eq('conversation_id', conversation_id)\
+                .order('message_index', desc=False)\
+                .execute()
+                
+            return result.data if result.data else []
+            
+        except Exception as e:
+            logging.error(f"Error retrieving conversation history: {str(e)}")
+            raise
+
 # Singleton instance
 conversation_service = ConversationService() 

@@ -14,7 +14,7 @@ export default function AIAssistant() {
   const [isTyping, setIsTyping] = useState(false);
   const messagesEndRef = useRef(null);
   const { user } = useAuth();
-  const { profile } = useUserProfile();
+  const { profile, refreshProfile } = useUserProfile();
   const [currentConversationId, setCurrentConversationId] = useState(null);
   const [selectedConversation, setSelectedConversation] = useState(null);
   const [isEditingTitle, setIsEditingTitle] = useState(false);
@@ -60,6 +60,10 @@ export default function AIAssistant() {
 
         // Update conversation ID if new
         setCurrentConversationId(response.conversation_id);
+
+        // Refresh profile to update credits
+        await refreshProfile();
+
       } catch (error) {
         console.error("Chat error:", error);
         // Add error message to chat
@@ -97,6 +101,15 @@ export default function AIAssistant() {
   };
 
   const handleConversationSelect = async (conversation) => {
+    if (!conversation) {
+      // Reset everything to initial state
+      setSelectedConversation(null);
+      setCurrentConversationId(null);
+      setNewTitle("New Conversation");
+      setMessages([]);
+      return;
+    }
+    
     setSelectedConversation(conversation);
     setCurrentConversationId(conversation.conversation_id);
     setNewTitle(conversation.title);

@@ -9,6 +9,23 @@ export function useUserProfile() {
   const [error, setError] = useState(null);
   const { user } = useAuth();
 
+  const refreshProfile = async () => {
+    if (!user?.id) return;
+    
+    try {
+      const { data: profileData, error: profileError } = await supabase
+        .from("user_profiles")
+        .select("*")
+        .eq("user_id", user.id)
+        .single();
+
+      if (profileError) throw profileError;
+      setProfile(profileData);
+    } catch (err) {
+      console.error('Error refreshing profile:', err);
+    }
+  };
+
   useEffect(() => {
     async function fetchData() {
       if (!user?.id) return;
@@ -58,5 +75,5 @@ export function useUserProfile() {
     fetchData();
   }, [user?.id]);
 
-  return { profile, creditInfo, loading, error };
+  return { profile, creditInfo, loading, error, refreshProfile };
 }

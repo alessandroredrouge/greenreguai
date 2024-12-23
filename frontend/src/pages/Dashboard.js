@@ -56,18 +56,18 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-eco-black p-8">
-      {/* Welcome Header */}
-      <div className="mb-8">
+    <div className="min-h-screen bg-eco-black p-4 sm:p-8">
+      {/* Welcome Header - Modified for mobile */}
+      <div className="mb-6 sm:mb-8">
         <div className="flex justify-between items-start">
           <div>
-            <h1 className="font-code text-eco-text text-2xl mb-2">
+            <h1 className="font-code text-eco-text text-xl sm:text-2xl mb-2 break-words">
               Welcome back,{" "}
               <span className="text-eco-green">
                 {profile?.email || user?.email || "User"}
               </span>
             </h1>
-            <p className="font-code text-eco-gray">
+            <p className="font-code text-eco-gray text-sm sm:text-base">
               &gt; Ready for your next query? :)
             </p>
           </div>
@@ -75,10 +75,10 @@ export default function Dashboard() {
         </div>
       </div>
 
-      {/* Main Action Cards */}
-      <div className="grid md:grid-cols-2 gap-6 mb-8">
+      {/* Main Action Cards - Modified for mobile */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 mb-6 sm:mb-8">
         {/* New AI Query Card */}
-        <div className="bg-eco-darker p-6 rounded-lg border border-eco-dark">
+        <div className="bg-eco-darker p-4 sm:p-6 rounded-lg border border-eco-dark">
           <div className="flex justify-center mb-4">
             <Bot className="h-12 w-12 text-eco-green" />
           </div>
@@ -98,7 +98,7 @@ export default function Dashboard() {
         </div>
 
         {/* Search Regulations Card */}
-        <div className="bg-eco-darker p-6 rounded-lg border border-eco-dark">
+        <div className="bg-eco-darker p-4 sm:p-6 rounded-lg border border-eco-dark">
           <div className="flex justify-center mb-4">
             <Search className="h-12 w-12 text-eco-green" />
           </div>
@@ -118,10 +118,10 @@ export default function Dashboard() {
         </div>
       </div>
 
-      {/* Stats Grid */}
-      <div className="grid md:grid-cols-3 gap-6 mb-8">
-        {/* Credit Usage */}
-        <div className="bg-eco-darker p-6 rounded-lg border border-eco-dark">
+      {/* Stats Grid - Modified for mobile */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-8">
+        {/* Credit Usage - Adjusted for mobile */}
+        <div className="bg-eco-darker p-4 sm:p-6 rounded-lg border border-eco-dark">
           <h2 className="font-code text-xl text-eco-text flex items-center gap-2 mb-4">
             <Clock className="h-5 w-5 text-eco-green" />
             Credit Usage
@@ -156,8 +156,8 @@ export default function Dashboard() {
           </Link>
         </div>
 
-        {/* Notification Center */}
-        <div className="bg-eco-darker p-6 rounded-lg border border-eco-dark">
+        {/* Notification Center - Adjusted for mobile */}
+        <div className="bg-eco-darker p-4 sm:p-6 rounded-lg border border-eco-dark">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-2">
               <Bell className="h-5 w-5 text-eco-green" />
@@ -185,15 +185,15 @@ export default function Dashboard() {
           </div>
         </div>
 
-        {/* Feedback */}
-        <div className="bg-eco-darker p-6 rounded-lg border border-eco-dark">
-          <div className="flex items-center gap-2 mb-6">
+        {/* Connect & Rate - Modified social links for mobile */}
+        <div className="bg-eco-darker p-4 sm:p-6 rounded-lg border border-eco-dark">
+          <div className="flex items-center gap-2 mb-4 sm:mb-6">
             <MessageSquare className="h-5 w-5 text-eco-green" />
             <h3 className="font-code text-eco-text">Connect & Rate</h3>
           </div>
 
-          {/* Social Links */}
-          <div className="grid grid-cols-3 gap-3 mb-4">
+          {/* Social Links - Adjusted for mobile */}
+          <div className="grid grid-cols-3 gap-2 sm:gap-3 mb-4">
             <a
               href="https://x.com/aleredrouge"
               target="_blank"
@@ -242,41 +242,39 @@ export default function Dashboard() {
         </div>
       </div>
 
-      {/* Recent Activity - Full Width */}
-      <div className="bg-eco-darker p-6 rounded-lg border border-eco-dark">
-        <div className="flex items-center gap-2 mb-6">
+      {/* Recent Activity - Modified for mobile */}
+      <div className="bg-eco-darker p-4 sm:p-6 rounded-lg border border-eco-dark">
+        <div className="flex items-center gap-2 mb-4 sm:mb-6">
           <Clock className="h-5 w-5 text-eco-green" />
           <h3 className="font-code text-eco-text">Recent Activity</h3>
         </div>
-        <div className="space-y-6">
+        <div className="space-y-4 sm:space-y-6">
           {recentActivity.map((activity) => (
             <div
               key={activity.id}
-              className="flex items-center justify-between border-l-2 pl-4 py-1"
+              className="flex flex-col sm:flex-row sm:items-center justify-between border-l-2 pl-4 py-1"
               style={{ borderColor: "#10B981" }}
             >
-              <div className="flex-1">
+              <div className="flex-1 mb-2 sm:mb-0">
                 <div className="flex items-center gap-2">
-                  <Circle
-                    className="h-3 w-3 text-eco-green"
-                  />
-                  <span className="text-eco-text font-code">{activity.title}</span>
+                  <Circle className="h-3 w-3 text-eco-green" />
+                  <span className="text-eco-text font-code text-sm sm:text-base truncate">
+                    {activity.title}
+                  </span>
                 </div>
-                <div className="text-eco-gray text-sm mt-1 font-code">
+                <div className="text-eco-gray text-xs sm:text-sm mt-1 font-code">
                   {new Date(activity.timestamp).toLocaleString()}
                 </div>
               </div>
-              <div className="flex items-center gap-4">
-                <span
-                  className="font-code text-eco-green"
-                >
+              <div className="flex items-center justify-between sm:justify-end w-full sm:w-auto gap-4">
+                <span className="font-code text-eco-green text-sm sm:text-base">
                   {activity.credits} credits
                 </span>
                 <button
                   onClick={() => handleViewDetails(activity.id)}
-                  className="px-3 py-1 text-sm border border-eco-green/50 rounded-lg 
+                  className="px-3 py-1 text-xs sm:text-sm border border-eco-green/50 rounded-lg 
                            text-eco-green font-code bg-eco-green/5 hover:bg-eco-green/10 
-                           transition-colors flex items-center gap-1"
+                           transition-colors flex items-center gap-1 whitespace-nowrap"
                 >
                   View Details
                   <ArrowUpRight className="h-3 w-3" />

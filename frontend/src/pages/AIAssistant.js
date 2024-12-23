@@ -176,6 +176,7 @@ export default function AIAssistant() {
       ))];
 
       // Fetch document titles from Supabase
+      // FIXME: the retrieval of title and publication_year through the document_id is a very inefficient approach that slows down significanlty the webapp> Consider saving these values directly in the chunks table to avoid this issue.
       const { data: documents, error } = await supabase
         .from('documents')
         .select('document_id, title, publication_year')

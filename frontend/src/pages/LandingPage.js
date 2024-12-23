@@ -102,21 +102,25 @@ export default function LandingPage() {
               AI-powered platform for navigating renewable energy regulations.
               <span className="text-eco-green">_</span>
             </p>
-            <div className="flex justify-center gap-6">
+            <div className="flex flex-col sm:flex-row justify-center gap-4 sm:gap-6">
               <Link
                 to="/auth"
-                className="bg-eco-green/10 text-eco-green font-code py-3 px-8 rounded-lg inline-flex items-center hover:bg-eco-green/20 transition-all border border-eco-green group min-w-[200px]"
+                className="bg-eco-green/10 text-eco-green font-code py-3 px-6 sm:px-8 rounded-lg 
+                         inline-flex items-center justify-center hover:bg-eco-green/20 transition-all 
+                         border border-eco-green group w-full sm:w-auto sm:min-w-[200px]"
               >
-                <span className="mx-auto flex items-center">
+                <span className="flex items-center">
                   Start Free Trial
                   <ArrowRight className="ml-2 h-5 w-5 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
                 </span>
               </Link>
               <Link
                 to="/auth"
-                className="bg-eco-green/10 text-eco-green font-code py-3 px-8 rounded-lg inline-flex items-center hover:bg-eco-green/20 transition-all border border-eco-green group min-w-[200px]"
+                className="bg-eco-green/10 text-eco-green font-code py-3 px-6 sm:px-8 rounded-lg 
+                         inline-flex items-center justify-center hover:bg-eco-green/20 transition-all 
+                         border border-eco-green group w-full sm:w-auto sm:min-w-[200px]"
               >
-                <span className="mx-auto flex items-center">
+                <span className="flex items-center">
                   User Login
                   <ArrowRight className="ml-2 h-5 w-5 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
                 </span>

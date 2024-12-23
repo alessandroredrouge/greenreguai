@@ -164,27 +164,66 @@ export default function AIAssistant() {
     setIsMobileSidebarOpen(!isMobileSidebarOpen);
   };
 
-  const handleCitationClick = (citationIndices) => {
+  const handleCitationClick = async (citationIndices) => {
     // Get the current message's sources
     const currentMessage = messages[messages.length - 1];
     if (!currentMessage?.sources) return;
 
-    // Prepare citation data for the modal
-    const citationData = citationIndices.map(index => {
-      const source = currentMessage.sources[index];
-      return {
-        index,
-        content: source.content,
-        document_title: source.document_id, // We'll need to fetch the actual title
-        page_number: source.page_number,
-        location_data: source.location_data,
-        chunk_id: source.chunk_id,
-        document_id: source.document_id
-      };
-    });
+    try {
+      // Get unique document IDs from the citations
+      const documentIds = [...new Set(citationIndices.map(index => 
+        currentMessage.sources[index].document_id
+      ))];
 
-    setSelectedCitations(citationData);
-    setShowCitationModal(true);
+      // Fetch document titles from Supabase
+      const { data: documents, error } = await supabase
+        .from('documents')
+        .select('document_id, title')
+        .in('document_id', documentIds);
+
+      if (error) throw error;
+
+      // Create a map of document_id to title for easy lookup
+      const documentTitles = Object.fromEntries(
+        documents.map(doc => [doc.document_id, doc.title])
+      );
+
+      // Prepare citation data for the modal
+      const citationData = citationIndices.map(index => {
+        const source = currentMessage.sources[index];
+        return {
+          index,
+          content: source.content,
+          document_title: documentTitles[source.document_id] || 'Unknown Document',
+          page_number: source.page_number,
+          location_data: source.location_data,
+          chunk_id: source.chunk_id,
+          document_id: source.document_id
+        };
+      });
+
+      setSelectedCitations(citationData);
+      setShowCitationModal(true);
+
+    } catch (error) {
+      console.error('Error fetching document titles:', error);
+      // Fallback to showing document IDs if fetch fails
+      const citationData = citationIndices.map(index => {
+        const source = currentMessage.sources[index];
+        return {
+          index,
+          content: source.content,
+          document_title: `Document ${source.document_id}`,
+          page_number: source.page_number,
+          location_data: source.location_data,
+          chunk_id: source.chunk_id,
+          document_id: source.document_id
+        };
+      });
+
+      setSelectedCitations(citationData);
+      setShowCitationModal(true);
+    }
   };
 
   const handleViewSource = (citation) => {

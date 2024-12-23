@@ -49,13 +49,14 @@ export default function UserMenu({ credits }) {
           </div>
 
           <div className="py-2">
-            <Link
+            {/* TODO: Add settings page */}
+            {/* <Link
               to="/settings"
               className="px-4 py-2 text-eco-gray hover:text-eco-green hover:bg-eco-green/5 flex items-center gap-2 transition-colors"
             >
               <Settings className="w-4 h-4" />
               Settings
-            </Link>
+            </Link> */}
             <Link
               to="/billing"
               className="px-4 py-2 text-eco-gray hover:text-eco-green hover:bg-eco-green/5 flex items-center gap-2 transition-colors"

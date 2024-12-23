@@ -6,6 +6,7 @@ import UserMenu from "../components/UserMenu";
 import { Link } from "react-router-dom";
 import { useUserProfile } from "../hooks/useUserProfile";
 import { sendChatMessage } from "../lib/api";
+import { supabase } from '../lib/supabaseClient';
 
 export default function AIAssistant() {
   const [messages, setMessages] = useState([]);
@@ -15,6 +16,9 @@ export default function AIAssistant() {
   const { user } = useAuth();
   const { profile } = useUserProfile();
   const [currentConversationId, setCurrentConversationId] = useState(null);
+  const [selectedConversation, setSelectedConversation] = useState(null);
+  const [isEditingTitle, setIsEditingTitle] = useState(false);
+  const [newTitle, setNewTitle] = useState("");
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -85,10 +89,59 @@ export default function AIAssistant() {
     setInput("");
   };
 
+  const handleConversationSelect = async (conversation) => {
+    setSelectedConversation(conversation);
+    setCurrentConversationId(conversation.conversation_id);
+    setNewTitle(conversation.title);
+    
+    // Fetch conversation messages
+    const { data: messages } = await supabase
+      .from('messages')
+      .select('*')
+      .eq('conversation_id', conversation.conversation_id)
+      .order('message_index', { ascending: true });
+      
+    if (messages) {
+      setMessages(messages.map(msg => ({
+        type: msg.role === 'user' ? 'user' : 'ai',
+        content: msg.content,
+        timestamp: msg.created_at,
+        sources: msg.sources
+      })));
+    }
+  };
+
+  const handleTitleEdit = async (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      if (currentConversationId && newTitle.trim()) {
+        try {
+          const { error } = await supabase
+            .from('conversations')
+            .update({ title: newTitle.trim() })
+            .eq('conversation_id', currentConversationId);
+            
+          if (!error) {
+            setSelectedConversation(prev => ({...prev, title: newTitle.trim()}));
+            setIsEditingTitle(false);
+          }
+        } catch (error) {
+          console.error('Error updating title:', error);
+        }
+      }
+    } else if (e.key === 'Escape') {
+      setIsEditingTitle(false);
+      setNewTitle(selectedConversation?.title || 'New Conversation');
+    }
+  };
+
   return (
     <div className="flex h-screen bg-eco-black">
       {/* Sidebar */}
-      <Sidebar />
+      <Sidebar 
+        currentConversationId={currentConversationId}
+        onConversationSelect={handleConversationSelect}
+      />
 
       {/* Main Chat Area */}
       <div className="flex-1 flex flex-col">
@@ -103,7 +156,24 @@ export default function AIAssistant() {
               <span className="font-code">Back to Dashboard</span>
             </Link>
             <span className="text-eco-text font-code border-l border-eco-dark pl-4">
-              Conversation: New Conversation
+              {isEditingTitle ? (
+                <input
+                  type="text"
+                  value={newTitle}
+                  onChange={(e) => setNewTitle(e.target.value)}
+                  onKeyDown={handleTitleEdit}
+                  onBlur={() => setIsEditingTitle(false)}
+                  className="bg-eco-black text-eco-text border border-eco-dark rounded px-2 py-1 font-code focus:outline-none focus:border-eco-green"
+                  autoFocus
+                />
+              ) : (
+                <button
+                  onClick={() => setIsEditingTitle(true)}
+                  className="hover:text-eco-green transition-colors"
+                >
+                  {selectedConversation?.title || 'New Conversation'}
+                </button>
+              )}
             </span>
           </div>
           <div className="flex items-center gap-4">

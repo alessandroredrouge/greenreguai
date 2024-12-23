@@ -8,6 +8,7 @@ import { useUserProfile } from "../hooks/useUserProfile";
 import { sendChatMessage } from "../lib/api";
 import { supabase } from '../lib/supabaseClient';
 import CitationHighlight from "../components/CitationHighlight";
+import CitationPreviewModal from "../components/CitationPreviewModal";
 
 export default function AIAssistant() {
   const [messages, setMessages] = useState([]);
@@ -21,6 +22,8 @@ export default function AIAssistant() {
   const [isEditingTitle, setIsEditingTitle] = useState(false);
   const [newTitle, setNewTitle] = useState("");
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
+  const [showCitationModal, setShowCitationModal] = useState(false);
+  const [selectedCitations, setSelectedCitations] = useState([]);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -161,8 +164,33 @@ export default function AIAssistant() {
     setIsMobileSidebarOpen(!isMobileSidebarOpen);
   };
 
-  const handleCitationClick = (citations) => {
-    console.log("Citations clicked:", citations); // For testing initially
+  const handleCitationClick = (citationIndices) => {
+    // Get the current message's sources
+    const currentMessage = messages[messages.length - 1];
+    if (!currentMessage?.sources) return;
+
+    // Prepare citation data for the modal
+    const citationData = citationIndices.map(index => {
+      const source = currentMessage.sources[index];
+      return {
+        index,
+        content: source.content,
+        document_title: source.document_id, // We'll need to fetch the actual title
+        page_number: source.page_number,
+        location_data: source.location_data,
+        chunk_id: source.chunk_id,
+        document_id: source.document_id
+      };
+    });
+
+    setSelectedCitations(citationData);
+    setShowCitationModal(true);
+  };
+
+  const handleViewSource = (citation) => {
+    console.log("View source for citation:", citation); // For testing
+    setShowCitationModal(false);
+    // We'll implement PDF preview in the next step
   };
 
   return (
@@ -384,6 +412,13 @@ export default function AIAssistant() {
           </div>
         </div>
       </div>
+
+      <CitationPreviewModal
+        isOpen={showCitationModal}
+        onClose={() => setShowCitationModal(false)}
+        citations={selectedCitations}
+        onViewSource={handleViewSource}
+      />
     </div>
   );
 }

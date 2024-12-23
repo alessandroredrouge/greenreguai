@@ -97,34 +97,14 @@ Use this checklist to guide your development process. You can tick off each item
 ## Phase 6: AI Assistant Integration
 
 - [x]  **Document Processing Pipeline**
-    - [x]  PDF Processing Service:
-        - [x]  Create code to extract text from PDFs
-        - [x]  Clean and preprocess text in chunks
-        - [x]  Maintain structural information (sections, pages) and infos about where to locate the chunk in the pdf
-        - [x] connect this service to Supabase (currently it's done locally to test it out)
-    - [x]  Chunking Service:
-        - [x]  Implement semantic text splitting
-        - [x]  Create chunk metadata schema
-        - [x]  Store chunks with references to its location in the document
-        - [x] configure integration with Supabase so that every new document that is uploaded in the official_documents bucket is processed and chunked, saving the results of this process in Supabase and embedding & saving those chunks in Pinecone
-    - [x]  Embedding Service:
-        - [x]  Set up OpenAI embedding generation
-        - [x]  Configure Pinecone integration
-        - [x]  Store embeddings with metadata
+    - [x]  PDF Processing Service
+    - [x]  Chunking Service
+    - [x]  Embedding Service
 
 - [x]  **Query Processing System**
-    - [x]  Query Handler (core Langchain, accessing Supabase/Pinecone):
-        - [x]  Implement query preprocessing
-        - [x]  Integrate with conversation tracking
-        - [x]  Connect to credit system
-    - [x]  Retrieval System (core Langchain, accessing Supabase/Pinecone):
-        - [x]  Implement embedding-based search
-        - [x]  Set up context fetching
-        - [x]  Optimize retrieval relevance
-    - [x]  Response Generator (core Langchain, accessing Supabase/Pinecone):
-        - [x]  Design prompt engineering system
-        - [x]  Implement LangChain + OpenAI integration
-        - [x]  Create citation generation system based on the chunkcs saved
+    - [x]  Query Handler
+    - [x]  Retrieval System
+    - [x]  Response Generator
 
 - [x]  **Backend API Development**
     - [x]  Create chat endpoint
@@ -133,67 +113,56 @@ Use this checklist to guide your development process. You can tick off each item
     - [x]  Add logging system
 
 - [ ]  **Frontend Enhancement**
-    - [ ]  Update chat interface:
-        - [x]  Add citation display
-        - [ ]  Implement hover previews
-    - [ ]  Create citation components:
-        - [ ]  Add clickable citations
-        - [ ]  Build document preview modal
-        - [ ]  Implement section navigation
+    - [ ]  PDF Preview Functionality:
+        - [ ]  Implement PDF viewer modal
+        - [ ]  Add citation highlighting
+        - [ ]  Enable section navigation
+    - [x]  Update chat interface with citations
 
----
+## Phase 7: Document Library Enhancement
 
-## Phase 7: Implementing the Credit System
+- [ ]  **Performance Optimization**
+    - [ ]  Implement pagination for document listing
+    - [ ]  Optimize document fetching and loading
+    - [ ]  Add loading states and error handling
 
-- [x]  **Frontend - Display Credit Balance**
-    - [x]  Show the user's current credit balance on:
-        - [x]  Dashboard
-        - [x]  AI Chat Interface
-- [ ]  **Frontend - Handle Low Credit Scenarios (Optional)**
-    - [ ]  Notify users when credits are low.
-    - [ ]  Prompt users to purchase more credits.
-- [ ]  **Backend - Implement Feedback Rewards (Optional)**
-    - [ ]  Develop logic to award credits for user feedback.
-    - [ ]  Create an endpoint to handle feedback submissions.
+- [ ]  **Content Population**
+    - [ ]  Research and compile list of essential environmental regulations
+    - [ ]  Upload and process at least 100 key documents
+    - [ ]  Ensure global coverage of regulations
+    - [ ]  Verify document processing quality
 
----
+## Phase 8: Payment Integration and Pricing
 
-## Phase 8: Integrating Payment Processing with Stripe
+- [ ]  **Stripe Integration**
+    - [ ]  Set up Stripe account and API keys
+    - [ ]  Implement checkout session endpoints
+    - [ ]  Handle webhook events for payment confirmation
+    - [ ]  Update credit balance system
 
-- [ ]  **Backend - Set Up Stripe Integration**
-    - [ ]  Create a Stripe account and obtain API keys.
-    - [ ]  Implement backend endpoints to create checkout sessions.
-    - [ ]  Handle webhook events to confirm payments and update credits.
-- [ ]  **Frontend - Build the Billing/Credits Page**
-    - [ ]  Display available credit packages and pricing (to be decided yet).
-    - [ ]  Implement purchase buttons initiating Stripe checkout.
-- [ ]  **Frontend - Handle Post-Purchase Flow**
-    - [ ]  Confirm purchase success.
-    - [ ]  Update credit balance on the UI.
-    - [ ]  Redirect users appropriately after payment.
+- [ ]  **Pricing Implementation**
+    - [ ]  Update landing page with new pricing structure
+    - [ ]  Create billing page with credit packages
+    - [ ]  Implement credit purchase flow
+    - [ ]  Add credit balance display
 
----
+## Phase 9: Testing and Deployment
 
-## Phase 9: Final Testing and Deployment
-- [ ]  **Optimize for Responsive Design**
-    - [ ]  Test layouts on various screen sizes.
-    - [ ]  Adjust styles for mobile, tablet, and desktop.
-- [ ]  **Conduct Thorough Testing**
-    - [ ]  Revisit all user flows.
-    - [ ]  Test under different network conditions.
-    - [ ]  Verify security measures.
-- [ ]  **Prepare for Deployment**
-    - [ ]  Set up hosting for the frontend.
-    - [ ]  Set up hosting for the backend.
-    - [ ]  Configure environment variables securely.
-    - [ ]  Change API links of Supabase related services from the ones of ngrok, which was redirecting to your localhost, to the one used in production.
-    - [ ]  Set up SSL certificates.
-- [ ]  **Deploy the Application**
-    - [ ]  Deploy the backend API.
-    - [ ]  Deploy the frontend application.
-    - [ ]  Perform smoke tests in production.
-- [ ]  **Set Up Monitoring and Logging**
-    - [ ]  Implement backend logging.
-    - [ ]  Set up performance and uptime monitoring.
+- [ ]  **User Testing**
+    - [ ]  Conduct comprehensive testing with new users
+    - [ ]  Document and fix identified issues
+    - [ ]  Test all payment flows
+
+- [ ]  **Deployment Preparation**
+    - [ ]  Set up production hosting environments
+    - [ ]  Configure SSL certificates
+    - [ ]  Update API endpoints for production
+    - [ ]  Set up monitoring and logging
+
+- [ ]  **Launch**
+    - [ ]  Deploy backend API
+    - [ ]  Deploy frontend application
+    - [ ]  Perform final testing in production
+    - [ ]  Official product launch
 
 

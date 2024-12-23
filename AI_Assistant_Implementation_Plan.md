@@ -26,7 +26,7 @@ Use this checklist to track progress on implementing the AI Assistant functional
     - [x] Set up chat endpoint
     - [ ] Add authentication middleware
     - [x] Implement error handling
-- [ ] **Request/Response Models**
+- [x] **Request/Response Models**
     - [x] Define Pydantic models for chat
     - [x] Create response schemas
     - [x] Add validation rules
@@ -62,7 +62,7 @@ Use this checklist to track progress on implementing the AI Assistant functional
 ### Credit Management
 - [ ] **Credit Checking**
     - [x] Implement credit verification
-    - [ ] Add insufficient credit handling
+    - [ ] Add insufficient credit handling (optional)
 - [ ] **Credit Processing**
     - [x] Fix credit deduction on Supabase (we use triggers)
     - [ ] Create refund mechanism (optional)
@@ -70,7 +70,7 @@ Use this checklist to track progress on implementing the AI Assistant functional
 ### Transaction Tracking
 - [ ] **Usage Monitoring**
     - [x] Create usage tracking system
-    - [ ] Implement analytics collection
+    - [ ] Implement analytics collection (optional)
     - [ ] Add usage reporting (optional)
 
 ---
@@ -82,9 +82,8 @@ Use this checklist to track progress on implementing the AI Assistant functional
     - [x] Design conversation schema
     - [x] Implement history saving
     - [x] Add conversation retrieval
-- [ ] **Context Processing**
+- [x] **Context Processing**
     - [x] Add relevance scoring
-    - [ ] Create context pruning system (what's that?)
 
 ### Conversation Features
 - [ ] **Conversation Control**
@@ -96,15 +95,6 @@ Use this checklist to track progress on implementing the AI Assistant functional
 
 ## Phase 5: Frontend Integration
 
-### API Integration
-- [ ] **Service Connection**
-    - [ ] Create API service layer
-    - [ ] Implement error handling
-    - [ ] Add retry logic
-- [ ] **Real-time Updates**
-    - [ ] Implement loading states
-    - [ ] Add progress indicators
-    - [ ] Create error notifications
 
 ### UI Enhancement
 - [ ] **Citation Display**

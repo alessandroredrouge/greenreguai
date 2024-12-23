@@ -39,9 +39,11 @@ export default function CitationPreviewModal({
                 <p className="text-eco-text font-code text-sm">
                   {citation.document_title}
                 </p>
-                <p className="text-eco-gray text-sm">
-                  Page {citation.page_number}
-                </p>
+                <div className="flex items-center gap-2 text-eco-gray text-sm">
+                  <span>Page {citation.page_number}</span>
+                  <span>•</span>
+                  <span>{citation.publication_year}</span>
+                </div>
               </div>
 
               {/* Chunk Content */}

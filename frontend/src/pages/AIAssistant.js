@@ -178,23 +178,32 @@ export default function AIAssistant() {
       // Fetch document titles from Supabase
       const { data: documents, error } = await supabase
         .from('documents')
-        .select('document_id, title')
+        .select('document_id, title, publication_year')
         .in('document_id', documentIds);
 
       if (error) throw error;
 
       // Create a map of document_id to title for easy lookup
-      const documentTitles = Object.fromEntries(
-        documents.map(doc => [doc.document_id, doc.title])
+      const documentInfo = Object.fromEntries(
+        documents.map(doc => [doc.document_id, {
+          title: doc.title,
+          publication_year: doc.publication_year
+        }])
       );
 
       // Prepare citation data for the modal
       const citationData = citationIndices.map(index => {
         const source = currentMessage.sources[index];
+        const docInfo = documentInfo[source.document_id] || { 
+          title: 'Unknown Document', 
+          publication_year: 'N/A' 
+        };
+        
         return {
           index,
           content: source.content,
-          document_title: documentTitles[source.document_id] || 'Unknown Document',
+          document_title: docInfo.title,
+          publication_year: docInfo.publication_year,
           page_number: source.page_number,
           location_data: source.location_data,
           chunk_id: source.chunk_id,

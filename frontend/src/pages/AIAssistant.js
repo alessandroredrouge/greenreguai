@@ -85,8 +85,15 @@ export default function AIAssistant() {
   };
 
   const handleNewChat = () => {
+    // Clear current conversation state
+    setCurrentConversationId(null);
+    setSelectedConversation(null);
+    setNewTitle("New Conversation");
     setMessages([]);
     setInput("");
+    
+    // Scroll to top of messages
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
   const handleConversationSelect = async (conversation) => {
@@ -203,11 +210,11 @@ export default function AIAssistant() {
           {/* New Chat Button */}
           <button
             onClick={handleNewChat}
-            className="absolute bottom-6 right-6 w-12 h-12 bg-eco-green/10 hover:bg-eco-green/20 
+            className="fixed bottom-24 right-6 w-12 h-12 bg-eco-green/10 hover:bg-eco-green/20 
                        text-eco-green rounded-full shadow-lg flex items-center justify-center 
                        transition-all hover:scale-105 focus:outline-none focus:ring-2 
                        focus:ring-eco-green focus:ring-offset-2 focus:ring-offset-eco-black
-                       border border-eco-green"
+                       border border-eco-green z-99999"
             aria-label="New Chat"
           >
             <Plus className="h-6 w-6" />

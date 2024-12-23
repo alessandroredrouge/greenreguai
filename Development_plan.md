@@ -112,40 +112,34 @@ Use this checklist to guide your development process. You can tick off each item
         - [x]  Configure Pinecone integration
         - [x]  Store embeddings with metadata
 
-- [ ]  **Query Processing System**
-    - [ ]  Query Handler (core Langchain, accessing Supabase/Pinecone):
-        - [ ]  Implement query preprocessing
-        - [ ]  Integrate with conversation tracking
-        - [ ]  Connect to credit system
-    - [ ]  Retrieval System (core Langchain, accessing Supabase/Pinecone):
-        - [ ]  Implement embedding-based search
-        - [ ]  Set up context fetching
-        - [ ]  Optimize retrieval relevance
-    - [ ]  Response Generator (core Langchain, accessing Supabase/Pinecone):
-        - [ ]  Design prompt engineering system
-        - [ ]  Implement LangChain + OpenAI integration
-        - [ ]  Create citation generation system based on the chunkcs saved
+- [x]  **Query Processing System**
+    - [x]  Query Handler (core Langchain, accessing Supabase/Pinecone):
+        - [x]  Implement query preprocessing
+        - [x]  Integrate with conversation tracking
+        - [x]  Connect to credit system
+    - [x]  Retrieval System (core Langchain, accessing Supabase/Pinecone):
+        - [x]  Implement embedding-based search
+        - [x]  Set up context fetching
+        - [x]  Optimize retrieval relevance
+    - [x]  Response Generator (core Langchain, accessing Supabase/Pinecone):
+        - [x]  Design prompt engineering system
+        - [x]  Implement LangChain + OpenAI integration
+        - [x]  Create citation generation system based on the chunkcs saved
 
-- [ ]  **Backend API Development**
-    - [ ]  Create chat endpoint
-    - [ ]  Implement citation retrieval
-    - [ ]  Add feedback handling
-    - [ ]  Set up error handling
-    - [ ]  Add logging system
+- [x]  **Backend API Development**
+    - [x]  Create chat endpoint
+    - [x]  Implement citation retrieval
+    - [x]  Set up error handling
+    - [x]  Add logging system
 
 - [ ]  **Frontend Enhancement**
     - [ ]  Update chat interface:
-        - [ ]  Add citation display
+        - [x]  Add citation display
         - [ ]  Implement hover previews
-        - [ ]  Add confidence indicators
     - [ ]  Create citation components:
         - [ ]  Add clickable citations
         - [ ]  Build document preview modal
         - [ ]  Implement section navigation
-    - [ ]  Add feedback system:
-        - [ ]  Create feedback UI
-        - [ ]  Implement response saving
-        - [ ]  Add error reporting
 
 ---
 

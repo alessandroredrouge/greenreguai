@@ -1,9 +1,10 @@
 // src/pages/Dashboard.js
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import UserMenu from "../components/UserMenu";
 import { useUserProfile } from "../hooks/useUserProfile";
 import { useAuth } from "../contexts/AuthContext";
+import { supabase } from '../lib/supabaseClient';
 import {
   Bot,
   Search,
@@ -23,74 +24,35 @@ import {
 export default function Dashboard() {
   const { user } = useAuth();
   const { profile, creditInfo } = useUserProfile();
+  const [recentActivity, setRecentActivity] = React.useState([]);
+  const navigate = useNavigate();
 
-  // Placeholder data - will be replaced with real user data
-  const userData = {
-    name: "User",
-    credits: 750,
-    queriesRemaining: 500,
-    recentQueries: [
-      {
-        type: "Regulation Search",
-        credits: 5,
-        status: "success",
-        timestamp: "2024-03-15 14:30",
-      },
-      {
-        type: "Policy Analysis",
-        credits: 10,
-        status: "success",
-        timestamp: "2024-03-15 13:15",
-      },
-      {
-        type: "Compliance Check",
-        credits: 8,
-        status: "error",
-        timestamp: "2024-03-15 11:45",
-      },
-      {
-        type: "Market Research",
-        credits: 15,
-        status: "success",
-        timestamp: "2024-03-15 10:30",
-      },
-      {
-        type: "Risk Assessment",
-        credits: 12,
-        status: "success",
-        timestamp: "2024-03-15 09:15",
-      },
-    ],
-    creditUsage: {
-      used: 250,
-      remaining: 500,
-    },
-    feedback: {
-      accuracy: "98%",
-      rating: "4.9",
-      avgTime: "1.2s",
-    },
-    notifications: [
-      {
-        type: "info",
-        message:
-          "I'll build this component if someone buys some credits, pliz :_)",
-        timestamp: "2024-03-15 09:00",
-        read: false,
-      },
-      {
-        type: "warning",
-        message: "This notification is scaaary, wuhuuuu.",
-        timestamp: "2024-03-14 15:30",
-        read: true,
-      },
-      {
-        type: "success",
-        message: "Placeholder for a random notification.",
-        timestamp: "2024-03-13 11:20",
-        read: true,
-      },
-    ],
+  React.useEffect(() => {
+    const fetchRecentActivity = async () => {
+      if (!user) return;
+      
+      const { data, error } = await supabase
+        .from('conversations')
+        .select('*, messages:messages(credits_used)')
+        .eq('user_id', user.id)
+        .order('updated_at', { ascending: false })
+        .limit(5);
+        
+      if (!error && data) {
+        setRecentActivity(data.map(conv => ({
+          id: conv.conversation_id,
+          title: conv.title,
+          timestamp: conv.updated_at,
+          credits: conv.messages.reduce((sum, msg) => sum + (msg.credits_used || 0), 0)
+        })));
+      }
+    };
+    
+    fetchRecentActivity();
+  }, [user]);
+
+  const handleViewDetails = (conversationId) => {
+    navigate(`/ai-assistant?conversation=${conversationId}`);
   };
 
   return (
@@ -203,41 +165,23 @@ export default function Dashboard() {
             </div>
             <div className="flex items-center gap-2">
               <span className="text-xs text-eco-green bg-eco-green/10 px-2 py-1 rounded-full font-code">
-                {userData.notifications.filter((n) => !n.read).length} new
+                {1} new
               </span>
             </div>
           </div>
           <div className="space-y-3 max-h-[160px] overflow-y-auto">
-            {userData.notifications.map((notification, index) => (
-              <div
-                key={index}
-                className={`p-2 rounded border ${
-                  notification.read
-                    ? "border-eco-dark/50 bg-eco-dark/10"
-                    : "border-eco-green/50 bg-eco-green/5"
-                }`}
-              >
-                <div className="flex items-start gap-2">
-                  {notification.type === "warning" && (
-                    <AlertTriangle className="h-4 w-4 text-yellow-500 flex-shrink-0 mt-1" />
-                  )}
-                  {notification.type === "info" && (
-                    <Info className="h-4 w-4 text-eco-green flex-shrink-0 mt-1" />
-                  )}
-                  {notification.type === "success" && (
-                    <CheckCircle className="h-4 w-4 text-eco-green flex-shrink-0 mt-1" />
-                  )}
-                  <div className="flex-1">
-                    <p className="text-sm text-eco-text font-code">
-                      {notification.message}
-                    </p>
-                    <p className="text-xs text-eco-gray mt-1">
-                      {notification.timestamp}
-                    </p>
-                  </div>
+            <div className="p-2 rounded border border-eco-dark/50 bg-eco-dark/10">
+              <div className="flex items-start gap-2">
+                <div className="flex-1">
+                  <p className="text-sm text-eco-text font-code">
+                    Notification functionality coming soon
+                  </p>
+                  <p className="text-xs text-eco-gray mt-1">
+                    System notifications will appear here.
+                  </p>
                 </div>
               </div>
-            ))}
+            </div>
           </div>
         </div>
 
@@ -305,38 +249,31 @@ export default function Dashboard() {
           <h3 className="font-code text-eco-text">Recent Activity</h3>
         </div>
         <div className="space-y-6">
-          {userData.recentQueries.map((query, index) => (
+          {recentActivity.map((activity) => (
             <div
-              key={index}
+              key={activity.id}
               className="flex items-center justify-between border-l-2 pl-4 py-1"
-              style={{
-                borderColor: query.status === "error" ? "#ef4444" : "#10B981",
-              }}
+              style={{ borderColor: "#10B981" }}
             >
               <div className="flex-1">
                 <div className="flex items-center gap-2">
                   <Circle
-                    className={`h-3 w-3 ${
-                      query.status === "error"
-                        ? "text-red-500"
-                        : "text-eco-green"
-                    }`}
+                    className="h-3 w-3 text-eco-green"
                   />
-                  <span className="text-eco-text font-code">{query.type}</span>
+                  <span className="text-eco-text font-code">{activity.title}</span>
                 </div>
                 <div className="text-eco-gray text-sm mt-1 font-code">
-                  {query.timestamp}
+                  {new Date(activity.timestamp).toLocaleString()}
                 </div>
               </div>
               <div className="flex items-center gap-4">
                 <span
-                  className={`font-code ${
-                    query.status === "error" ? "text-red-500" : "text-eco-green"
-                  }`}
+                  className="font-code text-eco-green"
                 >
-                  {query.credits} credits
+                  {activity.credits} credits
                 </span>
                 <button
+                  onClick={() => handleViewDetails(activity.id)}
                   className="px-3 py-1 text-sm border border-eco-green/50 rounded-lg 
                            text-eco-green font-code bg-eco-green/5 hover:bg-eco-green/10 
                            transition-colors flex items-center gap-1"

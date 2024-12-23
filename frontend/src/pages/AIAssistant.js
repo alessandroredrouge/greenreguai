@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import { useUserProfile } from "../hooks/useUserProfile";
 import { sendChatMessage } from "../lib/api";
 import { supabase } from '../lib/supabaseClient';
+import CitationHighlight from "../components/CitationHighlight";
 
 export default function AIAssistant() {
   const [messages, setMessages] = useState([]);
@@ -158,6 +159,10 @@ export default function AIAssistant() {
 
   const toggleMobileSidebar = () => {
     setIsMobileSidebarOpen(!isMobileSidebarOpen);
+  };
+
+  const handleCitationClick = (citations) => {
+    console.log("Citations clicked:", citations); // For testing initially
   };
 
   return (
@@ -327,7 +332,16 @@ export default function AIAssistant() {
                     : "bg-eco-darker text-eco-text"
                 }`}
               >
-                <div className="font-code">{message.content}</div>
+                <div className="font-code">
+                  {message.type === "ai" ? (
+                    <CitationHighlight 
+                      text={message.content} 
+                      onCitationClick={handleCitationClick} 
+                    />
+                  ) : (
+                    message.content
+                  )}
+                </div>
                 <div className="text-xs mt-2 opacity-70">
                   {new Date(message.timestamp).toLocaleString()}
                 </div>

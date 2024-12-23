@@ -24,9 +24,15 @@ module.exports = {
       boxShadow: {
         'eco-glow': '0 0 5px theme(colors.eco-green), 0 0 20px theme(colors.eco-green)',
       },
-      // backgroundImage: {
-      //   'circuit-pattern': "url('/src/assets/circuit-pattern.svg')",
-      // }
+      keyframes: {
+        'citation-pulse': {
+          '0%, 100%': { opacity: 1 },
+          '50%': { opacity: 0.5 }
+        }
+      },
+      animation: {
+        'citation-pulse': 'citation-pulse 2s ease-in-out 1'
+      }
     },
   },
   plugins: [],

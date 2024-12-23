@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Send, ArrowLeft, Bot, Plus } from "lucide-react";
+import { Send, ArrowLeft, Bot, Plus, Menu } from "lucide-react";
 import { useAuth } from "../contexts/AuthContext";
 import Sidebar from "../components/Sidebar";
 import UserMenu from "../components/UserMenu";
@@ -19,6 +19,7 @@ export default function AIAssistant() {
   const [selectedConversation, setSelectedConversation] = useState(null);
   const [isEditingTitle, setIsEditingTitle] = useState(false);
   const [newTitle, setNewTitle] = useState("");
+  const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -155,27 +156,79 @@ export default function AIAssistant() {
     }
   };
 
-  return (
-    <div className="flex h-screen bg-eco-black">
-      {/* Sidebar */}
-      <Sidebar 
-        currentConversationId={currentConversationId}
-        onConversationSelect={handleConversationSelect}
-      />
+  const toggleMobileSidebar = () => {
+    setIsMobileSidebarOpen(!isMobileSidebarOpen);
+  };
 
-      {/* Main Chat Area */}
-      <div className="flex-1 flex flex-col">
-        {/* Header */}
-        <div className="bg-eco-darker border-b border-eco-dark p-4 flex justify-between items-center">
-          <div className="flex items-center gap-4">
-            <Link
-              to="/dashboard"
-              className="flex items-center gap-2 text-eco-green hover:text-eco-text transition-colors group"
-            >
-              <ArrowLeft className="h-5 w-5 group-hover:-translate-x-1 transition-transform" />
-              <span className="font-code">Back to Dashboard</span>
-            </Link>
-            <span className="text-eco-text font-code border-l border-eco-dark pl-4">
+  return (
+    <div className="flex h-screen bg-eco-black relative">
+      {/* Mobile Sidebar Overlay */}
+      {isMobileSidebarOpen && (
+        <div 
+          className="fixed inset-0 bg-black bg-opacity-50 z-20 lg:hidden"
+          onClick={() => setIsMobileSidebarOpen(false)}
+        />
+      )}
+
+      {/* Sidebar - Modified for responsive */}
+      <div className={`
+        fixed lg:relative
+        ${isMobileSidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
+        transition-transform duration-200 ease-in-out
+        z-30 lg:z-auto
+        h-full
+      `}>
+        <Sidebar 
+          currentConversationId={currentConversationId}
+          onConversationSelect={(conv) => {
+            handleConversationSelect(conv);
+            setIsMobileSidebarOpen(false);
+          }}
+        />
+      </div>
+
+      {/* Main Chat Area - Modified for responsive */}
+      <div className="flex-1 flex flex-col w-full lg:w-auto">
+        {/* Header - Modified for responsive */}
+        <div className="bg-eco-darker border-b border-eco-dark p-4">
+          {/* Top row with menu, back button, and user menu */}
+          <div className="flex justify-between items-center mb-2">
+            <div className="flex items-center gap-2 lg:gap-4">
+              {/* Mobile Menu Button */}
+              <button
+                onClick={toggleMobileSidebar}
+                className="lg:hidden text-eco-green hover:text-eco-text transition-colors"
+              >
+                <Menu className="h-6 w-6" />
+              </button>
+              
+              <Link
+                to="/dashboard"
+                className="flex items-center gap-2 text-eco-green hover:text-eco-text transition-colors group"
+              >
+                <ArrowLeft className="h-5 w-5 group-hover:-translate-x-1 transition-transform" />
+                <span className="hidden sm:inline font-code">Back to Dashboard</span>
+              </Link>
+            </div>
+
+            {/* Desktop credits and user menu */}
+            <div className="hidden lg:flex items-center gap-4">
+              <span className="text-eco-green font-code">
+                {profile?.credits || 0} credits available
+              </span>
+              <UserMenu credits={profile?.credits || 0} />
+            </div>
+
+            {/* Mobile user menu */}
+            <div className="lg:hidden">
+              <UserMenu credits={profile?.credits || 0} />
+            </div>
+          </div>
+
+          {/* Bottom row with title and mobile credits */}
+          <div className="flex flex-col lg:hidden">
+            {/* Title */}
+            <div className="text-eco-text font-code">
               {isEditingTitle ? (
                 <input
                   type="text"
@@ -183,29 +236,50 @@ export default function AIAssistant() {
                   onChange={(e) => setNewTitle(e.target.value)}
                   onKeyDown={handleTitleEdit}
                   onBlur={() => setIsEditingTitle(false)}
-                  className="bg-eco-black text-eco-text border border-eco-dark rounded px-2 py-1 font-code focus:outline-none focus:border-eco-green"
+                  className="bg-eco-black text-eco-text border border-eco-dark rounded px-2 py-1 font-code focus:outline-none focus:border-eco-green w-full"
                   autoFocus
                 />
               ) : (
                 <button
                   onClick={() => setIsEditingTitle(true)}
-                  className="hover:text-eco-green transition-colors"
+                  className="hover:text-eco-green transition-colors truncate block w-full text-left"
                 >
                   {selectedConversation?.title || 'New Conversation'}
                 </button>
               )}
-            </span>
-          </div>
-          <div className="flex items-center gap-4">
-            <span className="text-eco-green font-code">
+            </div>
+            
+            {/* Mobile credits display */}
+            <div className="text-eco-green font-code text-sm mt-1">
               {profile?.credits || 0} credits available
-            </span>
-            <UserMenu credits={profile?.credits || 0} />
+            </div>
+          </div>
+
+          {/* Desktop title - hidden on mobile */}
+          <div className="hidden lg:block text-eco-text font-code border-l border-eco-dark pl-4">
+            {isEditingTitle ? (
+              <input
+                type="text"
+                value={newTitle}
+                onChange={(e) => setNewTitle(e.target.value)}
+                onKeyDown={handleTitleEdit}
+                onBlur={() => setIsEditingTitle(false)}
+                className="bg-eco-black text-eco-text border border-eco-dark rounded px-2 py-1 font-code focus:outline-none focus:border-eco-green"
+                autoFocus
+              />
+            ) : (
+              <button
+                onClick={() => setIsEditingTitle(true)}
+                className="hover:text-eco-green transition-colors truncate max-w-[200px] block"
+              >
+                {selectedConversation?.title || 'New Conversation'}
+              </button>
+            )}
           </div>
         </div>
 
-        {/* Messages Area */}
-        <div className="flex-1 overflow-y-auto p-4 bg-eco-black relative">
+        {/* Messages Area - Modified for responsive */}
+        <div className="flex-1 overflow-y-auto p-2 sm:p-4 bg-eco-black relative">
           {/* Welcome Message */}
           <div className="flex items-start gap-2 text-eco-text">
             <Bot className="h-6 w-6 text-eco-green mt-1" />
@@ -220,17 +294,17 @@ export default function AIAssistant() {
             </div>
           </div>
 
-          {/* New Chat Button */}
+          {/* New Chat Button - Modified for responsive */}
           <button
             onClick={handleNewChat}
-            className="fixed bottom-24 right-6 w-12 h-12 bg-eco-green/10 hover:bg-eco-green/20 
-                       text-eco-green rounded-full shadow-lg flex items-center justify-center 
-                       transition-all hover:scale-105 focus:outline-none focus:ring-2 
-                       focus:ring-eco-green focus:ring-offset-2 focus:ring-offset-eco-black
-                       border border-eco-green z-99999"
+            className="fixed bottom-20 right-4 w-10 h-10 lg:w-12 lg:h-12 bg-eco-green/10 hover:bg-eco-green/20 
+                     text-eco-green rounded-full shadow-lg flex items-center justify-center 
+                     transition-all hover:scale-105 focus:outline-none focus:ring-2 
+                     focus:ring-eco-green focus:ring-offset-2 focus:ring-offset-eco-black
+                     border border-eco-green z-10"
             aria-label="New Chat"
           >
-            <Plus className="h-6 w-6" />
+            <Plus className="h-5 w-5 lg:h-6 lg:w-6" />
           </button>
 
           {/* Chat Messages */}
@@ -273,22 +347,25 @@ export default function AIAssistant() {
           )}
         </div>
 
-        {/* Input Area */}
-        <div className="border-t border-eco-dark p-4 bg-eco-darker">
-          <div className="relative">
+        {/* Input Area - Modified for responsive */}
+        <div className="border-t border-eco-dark p-2 sm:p-4 bg-eco-darker">
+          <div className="relative max-w-[1200px] mx-auto">
             <input
               type="text"
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyPress={handleKeyPress}
-              placeholder="Type your message... (Click Enter to send)"
-              className="w-full bg-eco-black text-eco-text border border-eco-dark rounded-lg py-3 px-4 pr-12 font-code focus:outline-none focus:border-eco-green"
+              placeholder="Type your message..."
+              className="w-full bg-eco-black text-eco-text border border-eco-dark rounded-lg 
+                       py-2 sm:py-3 px-3 sm:px-4 pr-10 sm:pr-12 font-code text-sm sm:text-base
+                       focus:outline-none focus:border-eco-green"
             />
             <button
               onClick={handleSend}
-              className="absolute right-2 top-1/2 -translate-y-1/2 text-eco-green hover:text-eco-text transition-colors"
+              className="absolute right-2 top-1/2 -translate-y-1/2 text-eco-green 
+                       hover:text-eco-text transition-colors p-1 sm:p-2"
             >
-              <Send className="h-5 w-5" />
+              <Send className="h-4 w-4 sm:h-5 sm:w-5" />
             </button>
           </div>
         </div>

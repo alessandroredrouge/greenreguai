@@ -84,7 +84,7 @@ export default function Sidebar({ currentConversationId, onConversationSelect })
   };
 
   return (
-    <div className="w-64 bg-eco-darker border-r border-eco-dark flex flex-col h-screen">
+    <div className="w-[280px] lg:w-64 bg-eco-darker border-r border-eco-dark flex flex-col h-full">
       {/* Fixed Header */}
       <div className="p-4 border-b border-eco-dark">
         <h2 className="font-code text-eco-text text-sm mb-4 flex items-center">
@@ -112,7 +112,7 @@ export default function Sidebar({ currentConversationId, onConversationSelect })
               </div>
               <button
                 onClick={(e) => handleDeleteClick(e, conversation)}
-                className="absolute right-2 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 
+                className="absolute right-2 top-1/2 -translate-y-1/2 lg:opacity-0 lg:group-hover:opacity-100 
                          text-eco-gray hover:text-red-500 transition-all p-2"
                 aria-label="Delete conversation"
               >

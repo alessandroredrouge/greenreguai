@@ -42,10 +42,13 @@ export default function UserMenu({ credits }) {
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-64 bg-eco-darker border border-eco-dark rounded-lg shadow-lg py-2 z-50">
-          <div className="px-4 py-2 border-b border-eco-dark">
-            <p className="text-eco-text font-code truncate">{user?.email}</p>
-            <p className="text-eco-green font-code text-sm">{credits} credits available</p>
+        <div className="absolute right-0 mt-2 w-56 sm:w-64 bg-eco-darker border border-eco-dark 
+                        rounded-lg shadow-lg py-2 z-50">
+          <div className="px-3 sm:px-4 py-2 border-b border-eco-dark">
+            <p className="text-eco-text font-code text-sm truncate">{user?.email}</p>
+            <p className="text-eco-green font-code text-xs sm:text-sm">
+              {credits} credits available
+            </p>
           </div>
 
           <div className="py-2">

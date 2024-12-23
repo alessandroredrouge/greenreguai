@@ -8,10 +8,11 @@ async def test_conversation_flow():
     """Test a complete conversation with multiple exchanges"""
     
     test_user_id = "9f4cbd8c-66d0-4387-9443-14c9f20b91f6"
+    test_user_email = 'exampleuser@example.com'
     queries = [
         "What's the RepowerEU act?",
-        "Do you like me?",
-        "What the hell is this?"
+        "What's RED III?",
+        "What did I ask you before?"
     ]
     
     conversation_id = None
@@ -24,7 +25,7 @@ async def test_conversation_flow():
             request = ChatRequest(
                 query=query,
                 conversation_id=conversation_id,
-                user_id=test_user_id
+                email=test_user_email
             )
             
             # Process query using the actual API endpoint

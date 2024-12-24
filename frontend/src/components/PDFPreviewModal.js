@@ -1,9 +1,17 @@
 import React, { useState } from "react";
 import { Document, Page, pdfjs } from "react-pdf";
-// import * as pdfjs from 'pdfjs-dist'; 
-import { X, ZoomIn, ZoomOut, RotateCw, AlertTriangle } from "lucide-react";
+// import * as pdfjs from 'pdfjs-dist';
+import {
+  X,
+  ZoomIn,
+  ZoomOut,
+  RotateCw,
+  Download,
+  AlertTriangle,
+} from "lucide-react";
 import "react-pdf/dist/Page/AnnotationLayer.css";
 import "react-pdf/dist/Page/TextLayer.css";
+import { supabase } from "../lib/supabaseClient";
 
 // Configure PDF.js worker
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
@@ -23,6 +31,7 @@ export default function PDFPreviewModal({
   const [scale, setScale] = useState(1);
   const [rotation, setRotation] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   if (!isOpen) return null;
 
@@ -48,6 +57,30 @@ export default function PDFPreviewModal({
         }}
       />
     );
+  };
+
+  const handleDownload = async () => {
+    try {
+      // Extract file path from the pdfUrl
+      const urlObj = new URL(pdfUrl);
+      const filePath = urlObj.pathname.split("/official_documents/")[1];
+
+      // Get a new signed URL with longer expiry for download
+      const {
+        data: { signedUrl },
+        error,
+      } = await supabase.storage
+        .from("official_documents")
+        .createSignedUrl(filePath, 3600); // 1 hour expiry
+
+      if (error) throw error;
+
+      // Open URL in new window
+      window.open(signedUrl, "_blank");
+    } catch (error) {
+      console.error("Error generating download link:", error);
+      setError("Failed to generate download link");
+    }
   };
 
   return (
@@ -86,6 +119,14 @@ export default function PDFPreviewModal({
               className="text-eco-gray hover:text-eco-text transition-colors"
             >
               <RotateCw className="h-5 w-5" />
+            </button>
+            {/* Download */}
+            <button
+              onClick={handleDownload}
+              className="text-eco-gray hover:text-eco-text transition-colors"
+              title="Download Document"
+            >
+              <Download className="h-5 w-5" />
             </button>
             {/* Close */}
             <button

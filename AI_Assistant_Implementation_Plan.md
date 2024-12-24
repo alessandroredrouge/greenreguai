@@ -121,6 +121,8 @@ Use this checklist to track progress on implementing the AI Assistant functional
     - [ ] Test the process and verify it works smoothly
 
 ### Other improvements
+- [ ] **AI Assistant**
+    - [ ] For new conversations, show a couple of predetermined questions to the user, exctracted randomly from a list of premade questions, that he can click on to copy it in the chat and ask that question, so that the user can then test the functionalities of the software properly
 - [ ] **Document Library**
     - [ ] Introduce pagination when fetching documents
     - [ ] Reach 100 relevant documents saved in the library and processed

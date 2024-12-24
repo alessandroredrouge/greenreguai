@@ -84,54 +84,45 @@ export default function PDFPreviewModal({
   };
 
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-[99999]">
-      <div className="bg-eco-darker border border-eco-dark rounded-lg p-6 max-w-7xl w-full mx-4 max-h-[90vh] flex flex-col">
-        {/* Header */}
-        <div className="flex justify-between items-center mb-4">
-          <div>
-            <h3 className="text-eco-text font-code text-lg">{documentTitle}</h3>
-            <p className="text-eco-gray text-sm">
-              Page {pageNumber} of {numPages || "..."}
-            </p>
-          </div>
-          <div className="flex items-center gap-4">
-            {/* Zoom controls */}
-            <div className="flex items-center gap-2">
-              <button
-                onClick={() => setScale((scale) => Math.max(0.5, scale - 0.1))}
-                className="text-eco-gray hover:text-eco-text transition-colors"
-              >
-                <ZoomOut className="h-5 w-5" />
-              </button>
-              <span className="text-eco-text font-code text-sm">
-                {Math.round(scale * 100)}%
-              </span>
-              <button
-                onClick={() => setScale((scale) => Math.min(2, scale + 0.1))}
-                className="text-eco-gray hover:text-eco-text transition-colors"
-              >
-                <ZoomIn className="h-5 w-5" />
-              </button>
-            </div>
-            {/* Rotate */}
-            <button
-              onClick={() => setRotation((r) => r + 90)}
-              className="text-eco-gray hover:text-eco-text transition-colors"
-            >
-              <RotateCw className="h-5 w-5" />
-            </button>
-            {/* Download */}
+    <div className={`fixed inset-0 z-50 ${isOpen ? "" : "hidden"}`}>
+      <div className="relative w-full h-full max-w-5xl mx-auto bg-eco-darker rounded-lg shadow-xl flex flex-col">
+        {/* Header - Modified for mobile responsiveness */}
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between p-4 border-b border-eco-dark">
+          {/* Title - Full width on mobile */}
+          <h3 className="text-eco-text font-code mb-3 sm:mb-0 break-words">
+            {documentTitle}
+          </h3>
+          
+          {/* Controls - Centered below title on mobile */}
+          <div className="flex items-center justify-center sm:justify-end gap-2">
             <button
               onClick={handleDownload}
-              className="text-eco-gray hover:text-eco-text transition-colors"
+              className="p-2 text-eco-green hover:text-eco-text transition-colors"
               title="Download Document"
             >
               <Download className="h-5 w-5" />
             </button>
-            {/* Close */}
+            <button
+              onClick={() => setScale(prev => Math.max(0.5, prev - 0.2))}
+              className="p-2 text-eco-green hover:text-eco-text transition-colors"
+            >
+              <ZoomOut className="h-5 w-5" />
+            </button>
+            <button
+              onClick={() => setScale(prev => Math.min(2, prev + 0.2))}
+              className="p-2 text-eco-green hover:text-eco-text transition-colors"
+            >
+              <ZoomIn className="h-5 w-5" />
+            </button>
+            <button
+              onClick={() => setRotation(prev => (prev + 90) % 360)}
+              className="p-2 text-eco-green hover:text-eco-text transition-colors"
+            >
+              <RotateCw className="h-5 w-5" />
+            </button>
             <button
               onClick={onClose}
-              className="text-eco-gray hover:text-eco-text transition-colors"
+              className="p-2 text-eco-green hover:text-eco-text transition-colors"
             >
               <X className="h-5 w-5" />
             </button>

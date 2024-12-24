@@ -266,6 +266,7 @@ class DocumentService:
                 metadata = eval(result.content)  # Convert string to dict
                 
                 # Add additional required fields
+                metadata['publication_year'] = str(metadata['publication_year'])
                 metadata['file_size'] = len(file_data)
                 metadata['mime_type'] = 'application/pdf'
                 metadata['processing_status'] = ProcessingStatus.PENDING

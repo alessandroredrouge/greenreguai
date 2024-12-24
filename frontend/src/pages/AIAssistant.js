@@ -27,6 +27,8 @@ export default function AIAssistant() {
   const [selectedCitations, setSelectedCitations] = useState([]);
   const [showPdfModal, setShowPdfModal] = useState(false);
   const [selectedPdfInfo, setSelectedPdfInfo] = useState(null);
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -191,6 +193,7 @@ export default function AIAssistant() {
     setIsMobileSidebarOpen(!isMobileSidebarOpen);
   };
 
+  // FIXME: enhance error handling, cause sometimes bad looking error messages are shown to the user
   const handleCitationClick = async (citationIndices) => {
     // Get the current message's sources
     const currentMessage = messages[messages.length - 1];
@@ -270,7 +273,7 @@ export default function AIAssistant() {
   };
 
   const handleViewSource = async (citation) => {
-    console.log('Citation data:', citation);
+    console.log("Citation data:", citation);
     try {
       // Get document info and signed URL
       const { data: document, error } = await supabase
@@ -298,7 +301,7 @@ export default function AIAssistant() {
         title: document.title,
       });
 
-      console.log('Selected PDF info:', selectedPdfInfo);
+      console.log("Selected PDF info:", selectedPdfInfo);
 
       setShowCitationModal(false);
       setShowPdfModal(true);
@@ -306,6 +309,12 @@ export default function AIAssistant() {
       console.error("Error loading PDF:", error);
       // You might want to show an error message to the user
     }
+  };
+  // FIXME: error handling message currently not used
+  const showTemporaryAlert = (message) => {
+    setAlertMessage(message);
+    setShowAlert(true);
+    setTimeout(() => setShowAlert(false), 5000); // Hide after 5 seconds
   };
 
   return (
@@ -551,6 +560,16 @@ export default function AIAssistant() {
         locationData={selectedPdfInfo?.locationData}
         documentTitle={selectedPdfInfo?.title}
       />
+
+      {showAlert && (
+        <div
+          className="fixed bottom-24 left-1/2 transform -translate-x-1/2 z-50 
+                        bg-red-900 text-red-100 px-4 py-3 rounded-lg shadow-lg 
+                        border border-red-700 font-code text-sm max-w-md text-center"
+        >
+          {alertMessage}
+        </div>
+      )}
     </div>
   );
 }

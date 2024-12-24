@@ -86,10 +86,9 @@ Use this checklist to track progress on implementing the AI Assistant functional
     - [x] Add relevance scoring
 
 ### Conversation Features
-- [ ] **Conversation Control**
-    - [ ] Add conversation saving
-    - [ ] Implement conversation loading
-    - [ ] Create conversation search
+- [x] **Conversation Control**
+    - [x] Add conversation saving
+    - [x] Implement conversation loading
 
 ---
 
@@ -97,28 +96,16 @@ Use this checklist to track progress on implementing the AI Assistant functional
 
 
 ### UI Enhancement
-- [ ] **Citation Display**
-    - [ ] Create citation component
-    - [ ] Implement PDF preview
-    - [ ] Add source navigation
-- [ ] **Conversation Management**
-    - [ ] Add conversation controls
-    - [ ] Implement history browsing
-    - [ ] Create search interface
+- [x] **Citation Display**
+    - [x] Create citation component
+    - [x] Implement PDF preview
+    - [x] Add source navigation
 
 ---
 
 ## Phase 6: Testing & Optimization
 
-### Testing Implementation
-- [ ] **Test Suite**
-    - [ ] Create unit tests
-    - [ ] Implement integration tests
-    - [ ] Add end-to-end tests
-- [ ] **Performance Testing**
-    - [ ] Create load tests
-    - [ ] Implement stress testing
-    - [ ] Add performance monitoring
+
 
 ### System Optimization
 - [ ] **Response Optimization**
@@ -131,6 +118,50 @@ Use this checklist to track progress on implementing the AI Assistant functional
     - [ ] Create alerting system
 
 ---
+
+
+## Phase 7: New additions
+
+
+
+### User Accounts
+- [ ] **New account creation**
+    - [ ] Ensure that new users can signup
+    - [ ] Improve signup / signin page in terms of clarity
+- [ ] **Account signin**
+    - [ ] Add a functioning reset password procedure
+
+### Stripe
+- [ ] **Payments**
+    - [ ] Add stripe component to handle buying credits
+    - [ ] Integrate it with the platform
+    - [ ] Test the process and verify it works smoothly
+
+### Other improvements
+- [ ] **Document Library**
+    - [ ] Introduce pagination when fetching documents
+    - [ ] Reach 100 relevant documents saved in the library and processed
+    - [ ] test the webapp performances and evantually make changes to make it acceptable
+- [ ] **Billing & Credits**
+    - [ ] Update the page with actual prices
+    - [ ] Link it to Stripes component
+- [ ] **Landing page**
+    - [ ] Update prices part with new prices
+    - [ ] Add a section with a video (or multiple gifs with some text describing them on the side in order, so that one by scrolling doen the landing page can see the functionalities of the software in an easy / intuitive way, which is even better) showing the functionalities of the webapp
+
+### Publishing
+- [ ] **Tests**
+    - [ ] test that everything works on desktop
+    - [ ] test that everything works on mobile
+    - [ ] Make eventual changes
+- [ ] **Publish**
+    - [ ] Find a platform where to publish this webapp
+    - [ ] Set it up
+    - [ ] Publish
+    - [ ] Make a few people aware of it, and make them do betatesting
+    - [ ] Fix issues
+    - [ ] Make Linkedin posts and X to make the big public aware of it
+    
 
 ## Notes:
 - Each phase should be completed before moving to the next

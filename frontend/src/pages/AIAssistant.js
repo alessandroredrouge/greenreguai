@@ -6,9 +6,10 @@ import UserMenu from "../components/UserMenu";
 import { Link } from "react-router-dom";
 import { useUserProfile } from "../hooks/useUserProfile";
 import { sendChatMessage } from "../lib/api";
-import { supabase } from '../lib/supabaseClient';
+import { supabase } from "../lib/supabaseClient";
 import CitationHighlight from "../components/CitationHighlight";
 import CitationPreviewModal from "../components/CitationPreviewModal";
+import PDFPreviewModal from "../components/PDFPreviewModal";
 
 export default function AIAssistant() {
   const [messages, setMessages] = useState([]);
@@ -24,6 +25,8 @@ export default function AIAssistant() {
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
   const [showCitationModal, setShowCitationModal] = useState(false);
   const [selectedCitations, setSelectedCitations] = useState([]);
+  const [showPdfModal, setShowPdfModal] = useState(false);
+  const [selectedPdfInfo, setSelectedPdfInfo] = useState(null);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -68,7 +71,6 @@ export default function AIAssistant() {
 
         // Refresh profile to update credits
         await refreshProfile();
-
       } catch (error) {
         console.error("Chat error:", error);
         // Add error message to chat
@@ -100,7 +102,7 @@ export default function AIAssistant() {
     setNewTitle("New Conversation");
     setMessages([]);
     setInput("");
-    
+
     // Scroll to top of messages
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
@@ -114,49 +116,54 @@ export default function AIAssistant() {
       setMessages([]);
       return;
     }
-    
+
     setSelectedConversation(conversation);
     setCurrentConversationId(conversation.conversation_id);
     setNewTitle(conversation.title);
-    
+
     // Fetch conversation messages
     const { data: messages } = await supabase
-      .from('messages')
-      .select('*')
-      .eq('conversation_id', conversation.conversation_id)
-      .order('message_index', { ascending: true });
-      
+      .from("messages")
+      .select("*")
+      .eq("conversation_id", conversation.conversation_id)
+      .order("message_index", { ascending: true });
+
     if (messages) {
-      setMessages(messages.map(msg => ({
-        type: msg.role === 'user' ? 'user' : 'ai',
-        content: msg.content,
-        timestamp: msg.created_at,
-        sources: msg.sources
-      })));
+      setMessages(
+        messages.map((msg) => ({
+          type: msg.role === "user" ? "user" : "ai",
+          content: msg.content,
+          timestamp: msg.created_at,
+          sources: msg.sources,
+        }))
+      );
     }
   };
 
   const handleTitleEdit = async (e) => {
-    if (e.key === 'Enter') {
+    if (e.key === "Enter") {
       e.preventDefault();
       if (currentConversationId && newTitle.trim()) {
         try {
           const { error } = await supabase
-            .from('conversations')
+            .from("conversations")
             .update({ title: newTitle.trim() })
-            .eq('conversation_id', currentConversationId);
-            
+            .eq("conversation_id", currentConversationId);
+
           if (!error) {
-            setSelectedConversation(prev => ({...prev, title: newTitle.trim()}));
+            setSelectedConversation((prev) => ({
+              ...prev,
+              title: newTitle.trim(),
+            }));
             setIsEditingTitle(false);
           }
         } catch (error) {
-          console.error('Error updating title:', error);
+          console.error("Error updating title:", error);
         }
       }
-    } else if (e.key === 'Escape') {
+    } else if (e.key === "Escape") {
       setIsEditingTitle(false);
-      setNewTitle(selectedConversation?.title || 'New Conversation');
+      setNewTitle(selectedConversation?.title || "New Conversation");
     }
   };
 
@@ -171,35 +178,42 @@ export default function AIAssistant() {
 
     try {
       // Get unique document IDs from the citations
-      const documentIds = [...new Set(citationIndices.map(index => 
-        currentMessage.sources[index].document_id
-      ))];
+      const documentIds = [
+        ...new Set(
+          citationIndices.map(
+            (index) => currentMessage.sources[index].document_id
+          )
+        ),
+      ];
 
       // Fetch document titles from Supabase
       // FIXME: the retrieval of title and publication_year through the document_id is a very inefficient approach that slows down significanlty the webapp> Consider saving these values directly in the chunks table to avoid this issue.
       const { data: documents, error } = await supabase
-        .from('documents')
-        .select('document_id, title, publication_year')
-        .in('document_id', documentIds);
+        .from("documents")
+        .select("document_id, title, publication_year")
+        .in("document_id", documentIds);
 
       if (error) throw error;
 
       // Create a map of document_id to title for easy lookup
       const documentInfo = Object.fromEntries(
-        documents.map(doc => [doc.document_id, {
-          title: doc.title,
-          publication_year: doc.publication_year
-        }])
+        documents.map((doc) => [
+          doc.document_id,
+          {
+            title: doc.title,
+            publication_year: doc.publication_year,
+          },
+        ])
       );
 
       // Prepare citation data for the modal
-      const citationData = citationIndices.map(index => {
+      const citationData = citationIndices.map((index) => {
         const source = currentMessage.sources[index];
-        const docInfo = documentInfo[source.document_id] || { 
-          title: 'Unknown Document', 
-          publication_year: 'N/A' 
+        const docInfo = documentInfo[source.document_id] || {
+          title: "Unknown Document",
+          publication_year: "N/A",
         };
-        
+
         return {
           index,
           content: source.content,
@@ -208,17 +222,16 @@ export default function AIAssistant() {
           page_number: source.page_number,
           location_data: source.location_data,
           chunk_id: source.chunk_id,
-          document_id: source.document_id
+          document_id: source.document_id,
         };
       });
 
       setSelectedCitations(citationData);
       setShowCitationModal(true);
-
     } catch (error) {
-      console.error('Error fetching document titles:', error);
+      console.error("Error fetching document titles:", error);
       // Fallback to showing document IDs if fetch fails
-      const citationData = citationIndices.map(index => {
+      const citationData = citationIndices.map((index) => {
         const source = currentMessage.sources[index];
         return {
           index,
@@ -227,7 +240,7 @@ export default function AIAssistant() {
           page_number: source.page_number,
           location_data: source.location_data,
           chunk_id: source.chunk_id,
-          document_id: source.document_id
+          document_id: source.document_id,
         };
       });
 
@@ -236,31 +249,70 @@ export default function AIAssistant() {
     }
   };
 
-  const handleViewSource = (citation) => {
-    console.log("View source for citation:", citation); // For testing
-    setShowCitationModal(false);
-    // We'll implement PDF preview in the next step
+  const handleViewSource = async (citation) => {
+    console.log('Citation data:', citation);
+    try {
+      // Get document info and signed URL
+      const { data: document, error } = await supabase
+        .from("documents")
+        .select("title, file_path")
+        .eq("document_id", citation.document_id)
+        .single();
+
+      if (error) throw error;
+
+      // Get signed URL for the PDF
+      const {
+        data: { signedUrl },
+        error: urlError,
+      } = await supabase.storage
+        .from("official_documents")
+        .createSignedUrl(document.file_path, 3600); // 1 hour expiry
+
+      if (urlError) throw urlError;
+
+      setSelectedPdfInfo({
+        url: signedUrl,
+        pageNumber: citation.page_number,
+        locationData: citation.location_data,
+        title: document.title,
+      });
+
+      console.log('Selected PDF info:', selectedPdfInfo);
+
+      setShowCitationModal(false);
+      setShowPdfModal(true);
+    } catch (error) {
+      console.error("Error loading PDF:", error);
+      // You might want to show an error message to the user
+    }
   };
 
   return (
     <div className="flex h-screen bg-eco-black relative">
       {/* Mobile Sidebar Overlay */}
       {isMobileSidebarOpen && (
-        <div 
+        <div
           className="fixed inset-0 bg-black bg-opacity-50 z-20 lg:hidden"
           onClick={() => setIsMobileSidebarOpen(false)}
         />
       )}
 
       {/* Sidebar - Modified for responsive */}
-      <div className={`
+      <div
+        className={`
         fixed lg:relative
-        ${isMobileSidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
+        ${
+          isMobileSidebarOpen
+            ? "translate-x-0"
+            : "-translate-x-full lg:translate-x-0"
+        }
         transition-transform duration-200 ease-in-out
         z-30 lg:z-auto
         h-full
-      `}>
-        <Sidebar 
+      `}
+      >
+        <Sidebar
           currentConversationId={currentConversationId}
           onConversationSelect={(conv) => {
             handleConversationSelect(conv);
@@ -283,13 +335,15 @@ export default function AIAssistant() {
               >
                 <Menu className="h-6 w-6" />
               </button>
-              
+
               <Link
                 to="/dashboard"
                 className="flex items-center gap-2 text-eco-green hover:text-eco-text transition-colors group"
               >
                 <ArrowLeft className="h-5 w-5 group-hover:-translate-x-1 transition-transform" />
-                <span className="hidden sm:inline font-code">Back to Dashboard</span>
+                <span className="hidden sm:inline font-code">
+                  Back to Dashboard
+                </span>
               </Link>
             </div>
 
@@ -326,11 +380,11 @@ export default function AIAssistant() {
                   onClick={() => setIsEditingTitle(true)}
                   className="hover:text-eco-green transition-colors truncate block w-full text-left"
                 >
-                  {selectedConversation?.title || 'New Conversation'}
+                  {selectedConversation?.title || "New Conversation"}
                 </button>
               )}
             </div>
-            
+
             {/* Mobile credits display */}
             <div className="text-eco-green font-code text-sm mt-1">
               {profile?.credits || 0} credits available
@@ -354,7 +408,7 @@ export default function AIAssistant() {
                 onClick={() => setIsEditingTitle(true)}
                 className="hover:text-eco-green transition-colors truncate max-w-[200px] block"
               >
-                {selectedConversation?.title || 'New Conversation'}
+                {selectedConversation?.title || "New Conversation"}
               </button>
             )}
           </div>
@@ -411,9 +465,9 @@ export default function AIAssistant() {
               >
                 <div className="font-code">
                   {message.type === "ai" ? (
-                    <CitationHighlight 
-                      text={message.content} 
-                      onCitationClick={handleCitationClick} 
+                    <CitationHighlight
+                      text={message.content}
+                      onCitationClick={handleCitationClick}
                     />
                   ) : (
                     message.content
@@ -467,6 +521,15 @@ export default function AIAssistant() {
         onClose={() => setShowCitationModal(false)}
         citations={selectedCitations}
         onViewSource={handleViewSource}
+      />
+
+      <PDFPreviewModal
+        isOpen={showPdfModal}
+        onClose={() => setShowPdfModal(false)}
+        pdfUrl={selectedPdfInfo?.url}
+        pageNumber={selectedPdfInfo?.pageNumber}
+        locationData={selectedPdfInfo?.locationData}
+        documentTitle={selectedPdfInfo?.title}
       />
     </div>
   );

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Document, Page, pdfjs } from "react-pdf";
+// import * as pdfjs from 'pdfjs-dist'; 
 import { X, ZoomIn, ZoomOut, RotateCw, AlertTriangle } from "lucide-react";
 import "react-pdf/dist/Page/AnnotationLayer.css";
 import "react-pdf/dist/Page/TextLayer.css";

@@ -69,6 +69,26 @@ export default function AIAssistant() {
         // Update conversation ID if new
         setCurrentConversationId(response.conversation_id);
 
+        // Force refresh message data by fetching from Supabase
+        if (response.conversation_id) {
+          const { data: messages } = await supabase
+            .from("messages")
+            .select("*")
+            .eq("conversation_id", response.conversation_id)
+            .order("message_index", { ascending: true });
+
+          if (messages) {
+            setMessages(
+              messages.map((msg) => ({
+                type: msg.role === "user" ? "user" : "ai",
+                content: msg.content,
+                timestamp: msg.created_at,
+                sources: msg.sources,
+              }))
+            );
+          }
+        }
+
         // Refresh profile to update credits
         await refreshProfile();
       } catch (error) {

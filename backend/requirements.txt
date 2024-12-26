@@ -1,30 +1,30 @@
 # Core Framework
-fastapi==0.109.0
-uvicorn[standard]==0.27.0  # ASGI server
-python-multipart==0.0.6    # For handling form data
-pydantic==2.6.0           # Data validation
-pydantic-settings==2.1.0  # Settings management
+fastapi>=0.109.0
+uvicorn[standard]>=0.27.0  # ASGI server
+python-multipart>=0.0.6    # For handling form data
+pydantic>=2.6.0           # Data validation
+pydantic-settings>=2.1.0  # Settings management
 
 # Environment
-python-dotenv==1.0.0      # Environment variables
+python-dotenv>=1.0.0      # Environment variables
 
 # Database & Auth
-supabase==2.3.0           # Supabase client
-postgrest==0.13.0         # PostgreSQL interface
+supabase>=2.3.0           # Supabase client
+postgrest>=0.13.0         # PostgreSQL interface
 
 # AI/LLM Integration
 langchain>=0.1.0          # LLM framework
 langchain-openai>=0.0.5   # OpenAI integration
 langchain-pinecone>=0.2.0  # Pinecone integration
-python-magic==0.4.27      # File type detection
+python-magic>=0.4.27      # File type detection
 # python-magic-bin==0.4.14  # Windows support for libmagic
-tiktoken==0.5.2           # Token counting for LLMs
-openai==1.55.1
+tiktoken>=0.5.2           # Token counting for LLMs
+openai>=1.55.1
 
 # Testing
-pytest==7.4.4
+pytest>=7.4.4
 # httpx==0.26.0            # Async HTTP client for testing
-pytest-asyncio==0.23.4
+pytest-asyncio>=0.23.4
 
 # PDF Processing
 langchain-community>=0.0.16   # Community components for Langchain

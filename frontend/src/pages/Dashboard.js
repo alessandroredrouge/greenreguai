@@ -68,7 +68,7 @@ export default function Dashboard() {
               </span>
             </h1>
             <p className="font-code text-eco-gray text-sm sm:text-base">
-              &gt; Ready for your next query? :)
+              &gt; Ready for your next query regarding renewable energy regulations? :)
             </p>
           </div>
           <UserMenu credits={profile?.credits || 0} />

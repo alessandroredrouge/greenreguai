@@ -55,7 +55,6 @@ wheels/
 *.egg-info/
 .installed.cfg
 *.egg
-config.py
 .pytest_cache
 
 # Frontend
@@ -71,6 +70,7 @@ frontend/.env.production.local
 frontend/npm-debug.log*
 frontend/yarn-debug.log*
 frontend/yarn-error.log*
+
 
 # Backend
 backend/venv-greenreguai/

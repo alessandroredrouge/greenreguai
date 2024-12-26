@@ -180,87 +180,89 @@ export default function Billing() {
           <h2 className="font-code text-2xl text-eco-text mb-6">
             Purchase History
           </h2>
-          <div className="bg-eco-darker border border-eco-dark rounded-lg overflow-hidden">
-            <table className="w-full">
-              <thead className="border-b border-eco-dark">
-                <tr>
-                  <th className="text-left p-4 font-code text-eco-gray">
-                    Date
-                  </th>
-                  <th className="text-left p-4 font-code text-eco-gray">
-                    Description
-                  </th>
-                  <th className="text-left p-4 font-code text-eco-gray">
-                    Credits
-                  </th>
-                  <th className="text-left p-4 font-code text-eco-gray">
-                    Amount Paid
-                  </th>
-                  <th className="text-left p-4 font-code text-eco-gray">
-                    Status
-                  </th>
-                  <th className="text-left p-4 font-code text-eco-gray">
-                    Stripe Payment ID
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {transactions.length > 0 ? (
-                  transactions.map((transaction) => (
-                    <tr
-                      key={transaction.id}
-                      className="border-b border-eco-dark"
-                    >
-                      <td className="p-4 font-code text-eco-text">
-                        {new Date(transaction.created_at).toLocaleDateString()}
-                      </td>
-                      <td className="p-4 font-code text-eco-text">
-                        {transaction.description || `Credit Purchase`}
-                      </td>
-                      <td className="p-4 font-code text-eco-green">
-                        {transaction.credits_amount.toLocaleString()}
-                      </td>
-                      <td className="p-4 font-code text-eco-text">
-                        ${transaction.money_amount?.toFixed(2) || "0.00"}
-                      </td>
-                      <td className="p-4">
-                        <span className="bg-eco-green/20 text-eco-green px-2 py-1 rounded-full text-sm font-code">
-                          {transaction.status || "Paid"}
-                        </span>
-                      </td>
-                      <td className="p-4">
-                        <div className="flex items-center gap-2">
-                          {transaction.stripe_payment_id && (
-                            <span className="font-code text-eco-gray text-sm">
-                              {transaction.stripe_payment_id}
-                            </span>
-                          )}
-                          {transaction.invoice_url && (
-                            <a
-                              href={transaction.invoice_url}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="text-eco-green hover:text-eco-text"
-                            >
-                              <Download className="h-5 w-5" />
-                            </a>
-                          )}
-                        </div>
+          <div className="bg-eco-darker border border-eco-dark rounded-lg overflow-x-auto">
+            <div className="min-w-[900px]">
+              <table className="w-full">
+                <thead className="border-b border-eco-dark">
+                  <tr>
+                    <th className="text-left p-4 font-code text-eco-gray">
+                      Date
+                    </th>
+                    <th className="text-left p-4 font-code text-eco-gray">
+                      Description
+                    </th>
+                    <th className="text-left p-4 font-code text-eco-gray">
+                      Credits
+                    </th>
+                    <th className="text-left p-4 font-code text-eco-gray">
+                      Amount Paid
+                    </th>
+                    <th className="text-left p-4 font-code text-eco-gray">
+                      Status
+                    </th>
+                    <th className="text-left p-4 font-code text-eco-gray">
+                      Stripe Payment ID
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {transactions.length > 0 ? (
+                    transactions.map((transaction) => (
+                      <tr
+                        key={transaction.id}
+                        className="border-b border-eco-dark"
+                      >
+                        <td className="p-4 font-code text-eco-text">
+                          {new Date(transaction.created_at).toLocaleDateString()}
+                        </td>
+                        <td className="p-4 font-code text-eco-text">
+                          {transaction.description || `Credit Purchase`}
+                        </td>
+                        <td className="p-4 font-code text-eco-green">
+                          {transaction.credits_amount.toLocaleString()}
+                        </td>
+                        <td className="p-4 font-code text-eco-text">
+                          ${transaction.money_amount?.toFixed(2) || "0.00"}
+                        </td>
+                        <td className="p-4">
+                          <span className="bg-eco-green/20 text-eco-green px-2 py-1 rounded-full text-sm font-code">
+                            {transaction.status || "Paid"}
+                          </span>
+                        </td>
+                        <td className="p-4">
+                          <div className="flex items-center gap-2">
+                            {transaction.stripe_payment_id && (
+                              <span className="font-code text-eco-gray text-sm">
+                                {transaction.stripe_payment_id}
+                              </span>
+                            )}
+                            {transaction.invoice_url && (
+                              <a
+                                href={transaction.invoice_url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-eco-green hover:text-eco-text"
+                              >
+                                <Download className="h-5 w-5" />
+                              </a>
+                            )}
+                          </div>
+                        </td>
+                      </tr>
+                    ))
+                  ) : (
+                    <tr>
+                      <td
+                        colSpan="6"
+                        className="p-4 text-center font-code text-eco-gray"
+                      >
+                        No purchase history available
                       </td>
                     </tr>
-                  ))
-                ) : (
-                  <tr>
-                    <td
-                      colSpan="6"
-                      className="p-4 text-center font-code text-eco-gray"
-                    >
-                      No purchase history available
-                    </td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
+                  )}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>

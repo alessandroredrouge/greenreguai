@@ -143,6 +143,8 @@ Use this checklist to track progress on implementing the AI Assistant functional
     - [ ] Find a platform where to publish this webapp
     - [ ] Set it up
     - [ ] Publish
+    - [ ] add tracking of webpage visits through external tools
+    - [ ] improve SEO by modifying file suggested by AI Assistant
     - [ ] Make a few people aware of it, and make them do betatesting
     - [ ] Fix issues
     - [ ] Make Linkedin posts and X to make the big public aware of it

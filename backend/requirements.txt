@@ -23,7 +23,7 @@ openai==1.55.1
 
 # Testing
 pytest==7.4.4
-httpx==0.26.0            # Async HTTP client for testing
+# httpx==0.26.0            # Async HTTP client for testing
 pytest-asyncio==0.23.4
 
 # PDF Processing

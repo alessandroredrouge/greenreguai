@@ -1,19 +1,29 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowLeft, Check, Download } from "lucide-react";
-import { useUserProfile } from "../hooks/useUserProfile";
-import { supabase } from "../lib/supabaseClient";
 import { useAuth } from "../contexts/AuthContext";
+import { supabase } from "../lib/supabaseClient";
 
 export default function Billing() {
   const { user } = useAuth();
-  const { profile } = useUserProfile();
   const [transactions, setTransactions] = useState([]);
   const [totalCreditsUsed, setTotalCreditsUsed] = useState(0);
+  const [availableCredits, setAvailableCredits] = useState(0);
 
   useEffect(() => {
-    const fetchTransactionHistory = async () => {
+    const fetchUserData = async () => {
       if (!user) return;
+
+      // Fetch available credits from user_profiles
+      const { data: profileData, error: profileError } = await supabase
+        .from("user_profiles")
+        .select("credits")
+        .eq("user_id", user.id)
+        .single();
+
+      if (!profileError && profileData) {
+        setAvailableCredits(profileData.credits);
+      }
 
       // Fetch purchase history
       const { data: purchaseData, error: purchaseError } = await supabase
@@ -43,7 +53,7 @@ export default function Billing() {
       }
     };
 
-    fetchTransactionHistory();
+    fetchUserData();
   }, [user]);
 
   const creditPacks = [
@@ -93,14 +103,23 @@ export default function Billing() {
               <h3 className="font-code text-eco-gray mb-2">
                 Credits Available
               </h3>
-              <p className="text-2xl text-eco-green font-code">2,459</p>
-            </div>
-            <div>
-              <h3 className="font-code text-eco-gray mb-2">Credit Usage</h3>
-              <p className="text-eco-gray font-code">
-                1 credit = 1 Basic AI Query
+              <p className="text-2xl text-eco-green font-code">
+                {availableCredits.toLocaleString()}
               </p>
             </div>
+            <div>
+              <h3 className="font-code text-eco-gray mb-2">Credits Used</h3>
+              <p className="text-2xl text-eco-text font-code">
+                {totalCreditsUsed.toLocaleString()}
+              </p>
+            </div>
+          </div>
+          <div className="text-center mt-4">
+            <p className="text-sm text-eco-gray font-code">
+              <span className="text-eco-green">1 credit</span> = 1 Basic AI
+              Query • <span className="text-eco-green">X credits</span> = 1
+              Advanced AI Query (soon available)
+            </p>
           </div>
         </div>
 

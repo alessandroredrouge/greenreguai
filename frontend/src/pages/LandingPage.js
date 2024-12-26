@@ -207,7 +207,7 @@ export default function LandingPage() {
                   to="/auth"
                   className="w-full bg-eco-green/10 text-eco-green font-code py-2 px-4 rounded-lg inline-flex items-center justify-center hover:bg-eco-green/20 transition-all border border-eco-green"
                 >
-                  Select Plan
+                  Purchase Credits
                 </Link>
               </div>
             ))}

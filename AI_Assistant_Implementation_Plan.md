@@ -128,10 +128,10 @@ Use this checklist to track progress on implementing the AI Assistant functional
     - [ ] Reach 100 relevant documents saved in the library and processed
     - [ ] test the webapp performances and evantually make changes to make it acceptable
 - [ ] **Billing & Credits**
-    - [ ] Update the page with actual prices
+    - [x] Update the page with actual prices
     - [ ] Link it to Stripes component
 - [ ] **Landing page**
-    - [ ] Update prices part with new prices
+    - [x] Update prices part with new prices
     - [ ] Add a section with a video (or multiple gifs with some text describing them on the side in order, so that one by scrolling doen the landing page can see the functionalities of the software in an easy / intuitive way, which is even better) showing the functionalities of the webapp
 
 ### Publishing

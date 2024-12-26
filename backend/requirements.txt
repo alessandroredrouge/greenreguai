@@ -13,9 +13,9 @@ supabase==2.3.0           # Supabase client
 postgrest==0.13.0         # PostgreSQL interface
 
 # AI/LLM Integration
-langchain==0.1.0          # LLM framework
-langchain-openai==0.0.5   # OpenAI integration
-langchain-pinecone==0.2.0  # Pinecone integration
+langchain>=0.1.0          # LLM framework
+langchain-openai>=0.0.5   # OpenAI integration
+langchain-pinecone>=0.2.0  # Pinecone integration
 python-magic==0.4.27      # File type detection
 # python-magic-bin==0.4.14  # Windows support for libmagic
 tiktoken==0.5.2           # Token counting for LLMs

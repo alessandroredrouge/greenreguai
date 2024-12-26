@@ -31,16 +31,16 @@ export default function LandingPage() {
     {
       name: "Starter Pack",
       credits: "100",
-      price: "19",
-      pricePerCredit: "0.19",
-      features: ["Basic & Advanced AI queries", "Access to all the official documents", "Email support"]
+      price: "5",
+      pricePerCredit: "0.05",
+      features: ["Perfect to get a feeling of GreenReguAI"]
     },
     {
-      name: "Professional Pack", 
+      name: "Convenience Pack", 
       credits: "500",
-      price: "79",
-      pricePerCredit: "0.158", // 20% discount per credit
-      features: ["Everything in Starter Pack", "20% discount on credit price", "Priority support"]
+      price: "20",
+      pricePerCredit: "0.04", // 20% discount per credit
+      features: ["For who understood GreenReguAI's value <3"]
     }
   ]
 
@@ -204,7 +204,7 @@ export default function LandingPage() {
                   ))}
                 </ul>
                 <Link
-                  to="/signup"
+                  to="/auth"
                   className="w-full bg-eco-green/10 text-eco-green font-code py-2 px-4 rounded-lg inline-flex items-center justify-center hover:bg-eco-green/20 transition-all border border-eco-green"
                 >
                   Select Plan
@@ -215,7 +215,7 @@ export default function LandingPage() {
           <p className="text-center font-code text-eco-gray mb-8 mt-12">
             <span className="text-matrix-green">&gt;</span> Credit Usage:{" "}
             <span className="text-eco-green">1 credit</span> = 1 Basic AI Query •{" "}
-            <span className="text-eco-green">2 credits</span> = 1 Advanced AI Query (soon available)
+            <span className="text-eco-green">X credits</span> = 1 Advanced AI Query (soon available)
           </p>
         </div>
       </section>

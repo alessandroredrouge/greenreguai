@@ -1,79 +1,52 @@
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import { supabase } from "../lib/supabaseClient";
-import { useAuth } from "../contexts/AuthContext"; // Update import path
+import { useAuth } from "../contexts/AuthContext";
 
 export function useUserProfile() {
   const [profile, setProfile] = useState(null);
-  const [creditInfo, setCreditInfo] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
   const { user } = useAuth();
 
-  const refreshProfile = async () => {
-    if (!user?.id) return;
-    
-    try {
-      const { data: profileData, error: profileError } = await supabase
-        .from("user_profiles")
-        .select("*")
-        .eq("user_id", user.id)
-        .single();
+  useEffect(() => {
+    if (!user) return;
 
-      if (profileError) throw profileError;
-      setProfile(profileData);
-    } catch (err) {
-      console.error('Error refreshing profile:', err);
+    // Initial fetch
+    fetchProfile();
+
+    // Subscribe to changes
+    const channel = supabase
+      .channel(`public:user_profiles:user_id=eq.${user.id}`)
+      .on(
+        "postgres_changes",
+        {
+          event: "*",
+          schema: "public",
+          table: "user_profiles",
+          filter: `user_id=eq.${user.id}`,
+        },
+        (payload) => {
+          setProfile(payload.new);
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [user]);
+
+  const fetchProfile = async () => {
+    if (!user) return;
+
+    const { data, error } = await supabase
+      .from("user_profiles")
+      .select("*")
+      .eq("user_id", user.id)
+      .single();
+
+    if (!error && data) {
+      setProfile(data);
     }
   };
 
-  useEffect(() => {
-    async function fetchData() {
-      if (!user?.id) return;
-
-      try {
-        // Fetch basic profile info
-        const { data: profileData, error: profileError } = await supabase
-          .from("user_profiles")
-          .select("*")
-          .eq("user_id", user.id)
-          .single();
-
-        if (profileError) throw profileError;
-
-        // Fetch credit transactions
-        const { data: transactionsData, error: transactionsError } =
-          await supabase
-            .from("credit_transactions")
-            .select("amount, transaction_type")
-            .eq("user_id", user.id);
-
-        if (transactionsError) throw transactionsError;
-
-        // Calculate credit totals
-        const creditTotals = transactionsData.reduce(
-          (acc, transaction) => {
-            const amount = Math.abs(transaction.amount);
-            if (transaction.transaction_type === "purchase") {
-              acc.total_purchased += amount;
-            } else if (transaction.transaction_type === "usage") {
-              acc.total_used += amount;
-            }
-            return acc;
-          },
-          { total_purchased: 0, total_used: 0 }
-        );
-
-        setProfile(profileData);
-        setCreditInfo(creditTotals);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    fetchData();
-  }, [user?.id]);
-
-  return { profile, creditInfo, loading, error, refreshProfile };
+  return { profile, refreshProfile: fetchProfile };
 }

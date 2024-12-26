@@ -22,7 +22,7 @@ export default function Footer() {
             <h3 className="font-code font-bold text-eco-green text-lg mb-4">
               <span className="text-matrix-green">&gt;_</span>GreenReguAI
             </h3>
-            
+
             <p className="text-eco-gray text-sm">
               AI-powered platform providing instant access to renewable energy
               regulations and compliance guidance. Our service offers
@@ -92,9 +92,8 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                {/* TODO: Placeholder, create related pages in the future */}
                 <Link
-                  to="/"
+                  to="/terms"
                   className="text-eco-gray hover:text-eco-green transition-colors"
                 >
                   ~/terms
@@ -107,8 +106,10 @@ export default function Footer() {
               Customer Support()
             </h4>
             <div className="text-eco-gray">
-              <p className="mb-2">Questions or inquiries? Contact the GreenReguAI team at:</p>
-              <a 
+              <p className="mb-2">
+                Questions or inquiries? Contact the GreenReguAI team at:
+              </p>
+              <a
                 href="mailto:greenreguai@outlook.com"
                 className="text-eco-green hover:text-eco-text transition-colors"
               >

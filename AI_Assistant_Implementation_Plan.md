@@ -109,8 +109,8 @@ Use this checklist to track progress on implementing the AI Assistant functional
 
 ### User Accounts
 - [ ] **New account creation**
-    - [ ] Ensure that new users can signup
-    - [ ] Improve signup / signin page in terms of clarity
+    - [x] Ensure that new users can signup
+    - [x] Improve signup / signin page in terms of clarity
 - [ ] **Account signin**
     - [ ] Add a functioning reset password procedure
 

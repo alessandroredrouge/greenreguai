@@ -1,70 +1,113 @@
-# Getting Started with Create React App
+# GreenReguAI
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+GreenReguAI is an AI-powered platform that provides companies in the renewable energy sector with an accessible, up-to-date repository of global laws and regulations. The platform uses advanced language models to help users navigate complex regulatory frameworks through a natural language interface.
 
-## Available Scripts
+## Features
 
-In the project directory, you can run:
+- 🤖 AI-powered chat interface for regulatory queries
+- 📚 Comprehensive database of renewable energy laws and regulations
+- 🔍 Direct linking to source documents and specific sections
+- 🌐 Support for original language documents
+- 💳 Credit-based system with initial free credits
+- 🔒 Secure authentication and user management
 
-### `npm start`
+## Getting Started
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### Prerequisites
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+- Node.js (v16 or higher)
+- Python 3.9+
+- npm or yarn
+- Supabase account
+- Pinecone account
+- OpenAI API key (for embeddings)
 
-### `npm test`
+### Installation
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+1. Clone the repository:
 
-### `npm run build`
+```bash
+git clone https://github.com/yourusername/greenreguai.git
+cd greenreguai
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+2. Install frontend dependencies:
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+```bash
+cd frontend
+npm install
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+3. Install backend dependencies:
 
-### `npm run eject`
+```bash
+cd backend
+pip install -r requirements.txt
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+4. Set up environment variables:
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Create a `.env` file in both frontend and backend directories with the necessary environment variables.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+Frontend (.env):
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+```
+REACT_APP_SUPABASE_URL=your_supabase_url
+REACT_APP_SUPABASE_ANON_KEY=your_supabase_anon_key
+REACT_APP_STRIPE_PUBLIC_KEY=your_stripe_public_key
+```
 
-## Learn More
+Backend (.env):
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+```
+SUPABASE_URL=your_supabase_url
+SUPABASE_SERVICE_KEY=your_supabase_service_key
+OPENAI_API_KEY=your_openai_api_key
+PINECONE_API_KEY=your_pinecone_api_key
+PINECONE_ENVIRONMENT=your_pinecone_environment
+STRIPE_SECRET_KEY=your_stripe_secret_key
+```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### Running the Application
 
-### Code Splitting
+1. Start the frontend development server:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+```bash
+cd frontend
+npm start
+```
 
-### Analyzing the Bundle Size
+2. Start the backend server:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+```bash
+cd backend
+uvicorn main:app --reload
+```
 
-### Making a Progressive Web App
+The application will be available at http://localhost:3000
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+## Architecture
 
-### Advanced Configuration
+- Frontend: React.js with Redux for state management
+- Backend: FastAPI (Python)
+- Databases:
+  - Supabase (Primary database)
+  - Pinecone (Vector database for semantic search)
+- Authentication: Supabase Auth
+- Payments: Stripe integration
+- AI: LangChain framework with various LLM options
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+## License
 
-### Deployment
+This project is proprietary software. All rights reserved. Unauthorized copying, modification, distribution, or use of this software, via any medium, is strictly prohibited.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+## Support
 
-### `npm run build` fails to minify
+For support, please email greenreguai@outlook.com or open an issue in the GitHub repository.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## Acknowledgments
+
+- Create React App for the initial project setup
+- Supabase for the backend infrastructure
+- OpenAI for embeddings
+- LangChain for the AI framework

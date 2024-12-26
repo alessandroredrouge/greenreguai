@@ -1,40 +1,38 @@
 # Core Framework
-fastapi>=0.109.0
-uvicorn[standard]>=0.27.0  # ASGI server
-python-multipart>=0.0.6    # For handling form data
-pydantic>=2.6.0           # Data validation
-pydantic-settings>=2.1.0  # Settings management
+fastapi==0.115.5
+uvicorn[standard]==0.32.1
+python-multipart==0.0.17
+pydantic==2.9.2
+pydantic-settings==2.6.1
 
 # Environment
-python-dotenv>=1.0.0      # Environment variables
+python-dotenv==1.0.1
 
 # Database & Auth
-supabase>=2.3.0           # Supabase client
-postgrest>=0.13.0         # PostgreSQL interface
+supabase==2.10.0
+postgrest==0.18.0
 
 # AI/LLM Integration
-langchain>=0.1.0          # LLM framework
-langchain-openai>=0.0.5   # OpenAI integration
-langchain-pinecone>=0.2.0  # Pinecone integration
-python-magic>=0.4.27      # File type detection
-# python-magic-bin==0.4.14  # Windows support for libmagic
-tiktoken>=0.5.2           # Token counting for LLMs
-openai>=1.55.1
+langchain==0.3.8
+langchain-openai==0.2.9
+langchain-pinecone==0.2.0
+python-magic==0.4.27
+tiktoken==0.8.0
+openai==1.55.1
 
 # Testing
-pytest>=7.4.4
-# httpx==0.26.0            # Async HTTP client for testing
-pytest-asyncio>=0.23.4
+pytest==8.3.3
+pytest-asyncio==0.24.0
 
 # PDF Processing
-langchain-community>=0.0.16   # Community components for Langchain
-langchain-unstructured>=0.1.2 # Updated Unstructured loader
-unstructured[pdf]>=0.11.0    # For PDF text extraction with all PDF dependencies
-pymupdf>=1.23.8              # PDF processing (fitz)
-pdf2image>=1.16.3            # PDF to image conversion
+langchain-community==0.3.8
+langchain-unstructured==0.1.6
+unstructured[pdf]==0.16.8
+pymupdf==1.24.14
+pdf2image==1.17.0
 
 # Vector Database
-pinecone-client>=5.0.1
+pinecone-client==5.0.1
 
 # APScheduler
-APScheduler>=3.10.4
+APScheduler==3.10.4

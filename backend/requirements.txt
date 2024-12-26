@@ -27,14 +27,14 @@ pytest==7.4.4
 pytest-asyncio==0.23.4
 
 # PDF Processing
-langchain-community==0.0.16   # Community components for Langchain
-langchain-unstructured==0.1.2 # Updated Unstructured loader
-unstructured[pdf]==0.11.0    # For PDF text extraction with all PDF dependencies
-pymupdf==1.23.8              # PDF processing (fitz)
-pdf2image==1.16.3            # PDF to image conversion
+langchain-community>=0.0.16   # Community components for Langchain
+langchain-unstructured>=0.1.2 # Updated Unstructured loader
+unstructured[pdf]>=0.11.0    # For PDF text extraction with all PDF dependencies
+pymupdf>=1.23.8              # PDF processing (fitz)
+pdf2image>=1.16.3            # PDF to image conversion
 
 # Vector Database
-pinecone-client==5.0.1
+pinecone-client>=5.0.1
 
 # APScheduler
-APScheduler==3.10.4
+APScheduler>=3.10.4

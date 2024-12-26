@@ -83,9 +83,8 @@ export default function Footer() {
             </h4>
             <ul className="space-y-2">
               <li>
-                {/* TODO: Placeholder, create related pages in the future */}
                 <Link
-                  to="/"
+                  to="/privacy"
                   className="text-eco-gray hover:text-eco-green transition-colors"
                 >
                   ~/privacy

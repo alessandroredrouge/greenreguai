@@ -17,6 +17,7 @@ import { AuthProvider } from "./contexts/AuthContext";
 import AuthPage from "./pages/AuthPage";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Terms from "./pages/Terms";
+import Privacy from "./pages/Privacy";
 
 // Create a layout component for the landing page
 const LandingLayout = () => {
@@ -38,6 +39,7 @@ function App() {
             <Route path="/" element={<LandingLayout />} />
             <Route path="/auth" element={<AuthPage />} />
             <Route path="/terms" element={<Terms />} />
+            <Route path="/privacy" element={<Privacy />} />
             <Route
               path="/dashboard"
               element={

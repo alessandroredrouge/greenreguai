@@ -1,10 +1,10 @@
 // src/pages/Dashboard.js
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import UserMenu from "../components/UserMenu";
 import { useUserProfile } from "../hooks/useUserProfile";
 import { useAuth } from "../contexts/AuthContext";
-import { supabase } from '../lib/supabaseClient';
+import { supabase } from "../lib/supabaseClient";
 import {
   Bot,
   Search,
@@ -23,32 +23,66 @@ import {
 
 export default function Dashboard() {
   const { user } = useAuth();
-  const { profile, creditInfo } = useUserProfile();
-  const [recentActivity, setRecentActivity] = React.useState([]);
+  const { profile } = useUserProfile();
+  const [recentActivity, setRecentActivity] = useState([]);
+  const [totalCreditsUsed, setTotalCreditsUsed] = useState(0);
+  const [availableCredits, setAvailableCredits] = useState(0);
   const navigate = useNavigate();
 
-  React.useEffect(() => {
-    const fetchRecentActivity = async () => {
+  useEffect(() => {
+    const fetchData = async () => {
       if (!user) return;
-      
+
+      // Fetch available credits from user_profiles
+      const { data: profileData, error: profileError } = await supabase
+        .from("user_profiles")
+        .select("credits")
+        .eq("user_id", user.id)
+        .single();
+
+      if (!profileError && profileData) {
+        setAvailableCredits(profileData.credits);
+      }
+
+      // Fetch total credits used
+      const { data: usageData, error: usageError } = await supabase
+        .from("credit_transactions")
+        .select("credits_amount")
+        .eq("user_id", user.id)
+        .eq("transaction_type", "usage");
+
+      if (!usageError && usageData) {
+        const total = usageData.reduce(
+          (sum, transaction) => sum + transaction.credits_amount,
+          0
+        );
+        setTotalCreditsUsed(total);
+      }
+
+      // Fetch recent activity
       const { data, error } = await supabase
-        .from('conversations')
-        .select('*, messages:messages(credits_used)')
-        .eq('user_id', user.id)
-        .order('updated_at', { ascending: false })
+        .from("conversations")
+        .select("*, messages:messages(credits_used)")
+        .eq("user_id", user.id)
+        .order("updated_at", { ascending: false })
         .limit(5);
-        
+
       if (!error && data) {
-        setRecentActivity(data.map(conv => ({
-          id: conv.conversation_id,
-          title: conv.title,
-          timestamp: conv.updated_at,
-          credits: conv.messages.reduce((sum, msg) => sum + (msg.credits_used || 0), 0)
-        })));
+        setRecentActivity(
+          data.map((conv) => ({
+            id: conv.conversation_id,
+            title: conv.title,
+            timestamp: conv.updated_at,
+            credits: conv.messages.reduce(
+              (sum, msg) => sum + (msg.credits_used || 0),
+              0
+            ),
+          }))
+        );
       }
     };
-    
-    fetchRecentActivity();
+
+    fetchData();
   }, [user]);
 
   const handleViewDetails = (conversationId) => {
@@ -68,7 +102,8 @@ export default function Dashboard() {
               </span>
             </h1>
             <p className="font-code text-eco-gray text-sm sm:text-base">
-              &gt; Ready for your next query regarding renewable energy regulations? :)
+              &gt; Ready for your next query regarding renewable energy
+              regulations? :)
             </p>
           </div>
           <UserMenu credits={profile?.credits || 0} />
@@ -126,30 +161,29 @@ export default function Dashboard() {
             <Clock className="h-5 w-5 text-eco-green" />
             Credit Usage
           </h2>
-          <div className="mb-4">
-            <div className="flex justify-between text-sm text-eco-gray mb-2">
-              <span>{creditInfo?.total_used || 0} used</span>
-              <span>{profile?.credits || 0} remaining</span>
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <div className="text-sm text-eco-gray mb-1 font-code">
+                Credits Available
+              </div>
+              <div className="text-xl text-eco-green font-code">
+                {availableCredits.toLocaleString()}
+              </div>
             </div>
-            <div className="h-2 bg-eco-dark rounded-full">
-              <div
-                className="h-full bg-eco-green rounded-full"
-                style={{
-                  width: `${
-                    creditInfo?.total_purchased
-                      ? (creditInfo.total_used / creditInfo.total_purchased) *
-                        100
-                      : 0
-                  }%`,
-                }}
-              />
+            <div>
+              <div className="text-sm text-eco-gray mb-1 font-code">
+                Credits Used
+              </div>
+              <div className="text-xl text-eco-text font-code">
+                {totalCreditsUsed.toLocaleString()}
+              </div>
             </div>
           </div>
           <Link
             to="/billing"
             className="block text-center bg-eco-green/10 text-eco-green font-code py-2 px-4 
-                       rounded-lg hover:bg-eco-green/20 transition-all border border-eco-green 
-                       group"
+                     rounded-lg hover:bg-eco-green/20 transition-all border border-eco-green 
+                     group mt-4"
           >
             Purchase Credits
             <ArrowRight className="inline ml-2 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />

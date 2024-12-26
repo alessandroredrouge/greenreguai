@@ -3,7 +3,7 @@ FastAPI application entry point. Configures the app, includes routers,
 and sets up middleware and error handlers.
 """
 
-from fastapi import FastAPI, Request
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.trustedhost import TrustedHostMiddleware
 from fastapi.middleware.gzip import GZipMiddleware
@@ -12,6 +12,7 @@ from src.core.config import settings
 from src.api.v1 import documents, chat
 from src.core.background_tasks import background_task_manager
 from src.middleware.rate_limiter import rate_limiter
+from fastapi import Request
 import logging
 
 # Configure logging
@@ -36,17 +37,23 @@ async def add_security_headers(request, call_next):
 # CORS configuration
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Will be restricted in production via settings
+    allow_origins=[
+        "http://localhost:3000",
+        "https://greenreguai.com"  # TODO: Update with your actual domain
+    ] if settings.ENV == "development" else [
+        "https://greenreguai.com",  # TODO: Update with your actual domain
+        "https://*.greenreguai.com"
+    ],
     allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-    expose_headers=["Content-Range", "Range"],
+    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allow_headers=["Content-Type", "Authorization", "X-Requested-With"],
+    expose_headers=["Content-Range", "Range"]
 )
 
 # Compression middleware
 app.add_middleware(GZipMiddleware, minimum_size=1000)
 
-# Add this after other middleware
+# Rate limit middleware
 @app.middleware("http")
 async def rate_limit_middleware(request: Request, call_next):
     await rate_limiter.check_rate_limit(request)

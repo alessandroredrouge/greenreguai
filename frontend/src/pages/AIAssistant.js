@@ -29,6 +29,8 @@ export default function AIAssistant() {
   const [selectedPdfInfo, setSelectedPdfInfo] = useState(null);
   const [showAlert, setShowAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
+  const [error, setError] = useState("");
+  const [sendDisabled, setSendDisabled] = useState(false);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -315,6 +317,29 @@ export default function AIAssistant() {
     setAlertMessage(message);
     setShowAlert(true);
     setTimeout(() => setShowAlert(false), 5000); // Hide after 5 seconds
+  };
+
+  const handleSendMessage = async (message) => {
+    try {
+      const response = await sendChatMessage(
+        message,
+        currentConversationId,
+        user.email
+      );
+      // Handle successful response
+    } catch (error) {
+      if (error.message.includes("Rate limit")) {
+        // Show user-friendly message
+        setError(
+          "You've sent too many messages. Please wait a moment before sending more."
+        );
+        // Optional: Disable send button for a short period
+        setSendDisabled(true);
+        setTimeout(() => setSendDisabled(false), 5000);
+      } else {
+        setError("An error occurred while sending your message.");
+      }
+    }
   };
 
   return (

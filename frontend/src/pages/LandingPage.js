@@ -366,7 +366,7 @@ export default function LandingPage() {
               </a>
 
               <a 
-                href="mailto:SixCleantechAIStartupsinSixMonths@outlook.com"
+                href="mailto:greenreguai@outlook.com"
                 className="p-4 border border-eco-dark rounded-lg bg-eco-black/50 hover:border-eco-green transition-colors group"
               >
                 <div className="text-eco-green text-2xl mb-2">@</div>

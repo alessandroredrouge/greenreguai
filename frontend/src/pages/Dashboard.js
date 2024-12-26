@@ -219,7 +219,7 @@ export default function Dashboard() {
             </a>
 
             <a
-              href="mailto:SixCleantechAIStartupsinSixMonths@outlook.com"
+              href="mailto:greenreguai@outlook.com"
               className="p-2 border border-eco-dark rounded-lg bg-eco-black/50 hover:border-eco-green transition-colors group flex flex-col items-center"
             >
               <div className="text-eco-green text-xl mb-1">@</div>

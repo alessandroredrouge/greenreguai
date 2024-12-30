@@ -56,6 +56,7 @@ wheels/
 .installed.cfg
 *.egg
 .pytest_cache
+requirements copy.txt
 
 # Frontend
 frontend/node_modules

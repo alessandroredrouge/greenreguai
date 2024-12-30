@@ -1,38 +1,41 @@
 # Core Framework
-fastapi==0.115.5
-uvicorn[standard]==0.32.1
-python-multipart==0.0.17
-pydantic==2.9.2
-pydantic-settings==2.6.1
+fastapi>=0.115.0,<0.116.0
+uvicorn[standard]>=0.32.0,<0.33.0
+python-multipart>=0.0.17,<0.1.0
+pydantic>=2.9.0,<2.10.0
+pydantic-settings>=2.6.0,<2.7.0
 
 # Environment
-python-dotenv==1.0.1
+python-dotenv>=1.0.0,<2.0.0
 
 # Database & Auth
-supabase==2.10.0
-postgrest==0.18.0
+supabase>=2.10.0,<2.11.0
+postgrest>=0.18.0,<0.19.0
 
 # AI/LLM Integration
-langchain==0.3.8
-langchain-openai==0.2.9
-langchain-pinecone==0.2.0
-python-magic==0.4.27
-tiktoken==0.8.0
-openai==1.55.1
+langchain>=0.3.0,<0.4.0
+langchain-openai>=0.2.0,<0.3.0
+langchain-pinecone>=0.2.0,<0.3.0
+python-magic>=0.4.27,<0.5.0
+tiktoken>=0.8.0,<0.9.0
+openai>=1.55.0,<1.56.0
 
 # Testing
-pytest==8.3.3
-pytest-asyncio==0.24.0
+pytest>=8.3.0,<8.4.0
+pytest-asyncio>=0.24.0,<0.25.0
 
 # PDF Processing
-langchain-community==0.3.8
-langchain-unstructured==0.1.6
-unstructured[pdf]==0.16.8
-pymupdf==1.24.14
-pdf2image==1.17.0
+langchain-community>=0.3.0,<0.4.0
+langchain-unstructured>=0.1.0,<0.2.0
+unstructured[pdf]>=0.16.0,<0.17.0
+pymupdf>=1.24.0,<1.25.0
+pdf2image>=1.17.0,<1.18.0
 
 # Vector Database
-pinecone-client==5.0.1
+pinecone-client>=5.0.0,<5.1.0
 
 # APScheduler
-APScheduler==3.10.4
+APScheduler>=3.10.0,<3.11.0
+
+# Explicitly pin aiohttp to resolve conflicts
+aiohttp>=3.9.0,<3.10.0  # This version should work with all packages

@@ -34,6 +34,8 @@ env/
 .env
 .venv
 .venv-greenreguai
+venv-test
+packages.txt
 
 # Python
 __pycache__/

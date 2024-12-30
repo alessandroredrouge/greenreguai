@@ -20,11 +20,15 @@ class Settings(BaseSettings):
     # CORS
     # In development, allow all. In production, will be set to actual domain
     CORS_ORIGINS: List[str] = [
-        "http://localhost:3000",
-        "https://greenreguai.com"  # TODO: Update with your actual domain
+        "http://localhost:3000",  # For local development
+        # "https://greenreguai.com",  # Your production frontend domain
+        "https://greenreguai.onrender.com",  # Your frontend on Render
+        "https://greenreguai-api.onrender.com"  # Your backend on Render
     ] if ENV == "development" else [
-        "https://greenreguai.com",  # TODO: Update with your actual domain
-        "https://*.greenreguai.com"
+        # "https://greenreguai.com",  # Your production frontend domain
+        "https://greenreguai.onrender.com",  # Your frontend on Render
+        "https://greenreguai-api.onrender.com",  # Your backend on Render
+        # "https://*.greenreguai.com"
     ]
     
     # Supabase

@@ -375,10 +375,10 @@ export default function AIAssistant() {
         />
       </div>
 
-      {/* Main Chat Area - Modified for responsive */}
+      {/* Main Chat Area - Modified for mobile fixed header/footer */}
       <div className="flex-1 flex flex-col w-full lg:w-auto">
-        {/* Header - Modified for responsive */}
-        <div className="bg-eco-darker border-b border-eco-dark p-4">
+        {/* Header - Added fixed positioning for mobile */}
+        <div className="bg-eco-darker border-b border-eco-dark p-4 fixed top-0 left-0 right-0 lg:relative lg:top-auto lg:left-auto lg:right-auto z-10">
           {/* Top row with menu, back button, and user menu */}
           <div className="flex justify-between items-center mb-2">
             <div className="flex items-center gap-2 lg:gap-4">
@@ -468,8 +468,8 @@ export default function AIAssistant() {
           </div>
         </div>
 
-        {/* Messages Area - Modified for responsive */}
-        <div className="flex-1 overflow-y-auto p-2 sm:p-4 bg-eco-black relative">
+        {/* Messages Area - Modified to account for fixed header and footer on mobile */}
+        <div className="flex-1 overflow-y-auto p-2 sm:p-4 bg-eco-black relative mt-[132px] lg:mt-0 mb-[76px] lg:mb-0">
           {/* Welcome Message */}
           <div className="flex items-start gap-2 text-eco-text">
             <Bot className="h-6 w-6 text-eco-green mt-1" />
@@ -546,8 +546,8 @@ export default function AIAssistant() {
           )}
         </div>
 
-        {/* Input Area - Modified for responsive */}
-        <div className="border-t border-eco-dark p-2 sm:p-4 bg-eco-darker">
+        {/* Input Area - Added fixed positioning for mobile */}
+        <div className="border-t border-eco-dark p-2 sm:p-4 bg-eco-darker fixed bottom-0 left-0 right-0 lg:relative lg:bottom-auto lg:left-auto lg:right-auto">
           <div className="relative max-w-[1200px] mx-auto">
             <input
               type="text"

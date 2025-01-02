@@ -39,11 +39,15 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "http://localhost:3000",
-        "https://greenreguai.onrender.com",  # Your frontend on Render
-        "https://greenreguai-api.onrender.com"  # TODO: Update with your actual domain
+        "https://greenreguai.onrender.com",
+        "https://greenreguai-api.onrender.com",
+        "https://greenreguai.com",
+        "https://www.greenreguai.com"
     ] if settings.ENV == "development" else [
-        "https://greenreguai.onrender.com",  # Your frontend on Render
-        "https://greenreguai-api.onrender.com"
+        "https://greenreguai.onrender.com",
+        "https://greenreguai-api.onrender.com",
+        "https://greenreguai.com",
+        "https://www.greenreguai.com"
     ],
     allow_credentials=True,
     allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],

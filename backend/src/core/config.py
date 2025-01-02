@@ -23,11 +23,15 @@ class Settings(BaseSettings):
         "http://localhost:3000",  # For local development
         # "https://greenreguai.com",  # Your production frontend domain
         "https://greenreguai.onrender.com",  # Your frontend on Render
-        "https://greenreguai-api.onrender.com"  # Your backend on Render
+        "https://greenreguai-api.onrender.com",  # Your backend on Render
+        "https://greenreguai.com",  # Add your new domain
+        "https://www.greenreguai.com"  # Add www version of your domain
     ] if ENV == "development" else [
         # "https://greenreguai.com",  # Your production frontend domain
         "https://greenreguai.onrender.com",  # Your frontend on Render
         "https://greenreguai-api.onrender.com",  # Your backend on Render
+        "https://greenreguai.com",
+        "https://www.greenreguai.com"
         # "https://*.greenreguai.com"
     ]
     

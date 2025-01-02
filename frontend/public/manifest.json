@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "GreenReguAI",
+  "name": "GreenReguAI - Renewable Energy Regulations",
   "icons": [
     {
       "src": "favicon.ico",
@@ -8,18 +8,18 @@
       "type": "image/x-icon"
     },
     {
-      "src": "logo192.png",
-      "type": "image/png",
-      "sizes": "192x192"
-    },
-    {
-      "src": "logo512.png",
-      "type": "image/png",
-      "sizes": "512x512"
+      "src": "GreenReguAI Circle Logo.svg",
+      "type": "image/svg+xml",
+      "sizes": "192x192 512x512",
+      "purpose": "any maskable"
     }
   ],
   "start_url": ".",
   "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#ffffff"
+  "theme_color": "#10B981",
+  "background_color": "#1A1A1A",
+  "description": "AI-powered platform for navigating renewable energy regulations",
+  "categories": ["business", "productivity", "utilities"],
+  "orientation": "any",
+  "prefer_related_applications": false
 }

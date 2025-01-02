@@ -1,3 +1,14 @@
-# https://www.robotstxt.org/robotstxt.html
+# GreenReguAI robots.txt
 User-agent: *
-Disallow:
+Allow: /
+Allow: /terms
+Allow: /privacy
+
+# Protect private/auth-required routes
+Disallow: /dashboard
+Disallow: /ai-assistant
+Disallow: /document-library
+Disallow: /billing
+Disallow: /auth
+
+

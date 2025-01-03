@@ -73,7 +73,8 @@ class SupabaseService:
         except Exception as e:
             logging.error(f"Error getting processed documents: {str(e)}")
             raise
-
+    
+    # FIXME: This approach only works on the local machine, not on the server. Add a way to sync documents on the server, while keeping the local machine as a backup.
     async def sync_unprocessed_documents(self) -> None:
         """
         Check for unprocessed documents and trigger processing.

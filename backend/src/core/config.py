@@ -48,6 +48,10 @@ class Settings(BaseSettings):
     PINECONE_ENVIRONMENT: str = "us-east-1-aws"
     PINECONE_INDEX_NAME: str
     
+    # Stripe
+    STRIPE_SECRET_KEY: str
+    STRIPE_WEBHOOK_SECRET: str
+
     # Background Tasks Configuration
     DOCUMENT_SYNC_INTERVAL: int = 30  # minutes
     

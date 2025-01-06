@@ -37,3 +37,6 @@ pinecone-client==5.0.1
 
 # APScheduler
 APScheduler==3.10.4
+
+# Stripe
+stripe==11.4.1

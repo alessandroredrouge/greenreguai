@@ -9,7 +9,7 @@ from fastapi.middleware.trustedhost import TrustedHostMiddleware
 from fastapi.middleware.gzip import GZipMiddleware
 from fastapi.responses import JSONResponse
 from src.core.config import settings
-from src.api.v1 import documents, chat
+from src.api.v1 import documents, chat, payments
 from src.core.background_tasks import background_task_manager
 from src.middleware.rate_limiter import rate_limiter
 from fastapi import Request
@@ -76,6 +76,7 @@ async def global_exception_handler(request, exc):
 # Include routers
 app.include_router(documents.router, prefix="/api/v1")
 app.include_router(chat.router, prefix="/api/v1")
+app.include_router(payments.router, prefix="/api/v1")
 
 @app.on_event("startup")
 async def startup_event():

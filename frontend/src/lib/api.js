@@ -56,3 +56,17 @@ export const sendChatMessage = async (query, conversationId, email) => {
     throw error; // Re-throw to handle in the component
   }
 };
+
+// New function to create a checkout session
+export const createCheckoutSession = async (userId, packType) => {
+  try {
+    const response = await apiClient.post(`/payments/create-checkout-session`, {
+      user_id: userId,
+      pack_type: packType,
+    });
+    return response.data.sessionUrl;
+  } catch (error) {
+    console.error("Error creating checkout session:", error);
+    throw error;
+  }
+};

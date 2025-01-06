@@ -3,12 +3,14 @@ import { Link } from "react-router-dom";
 import { ArrowLeft, Check, Download } from "lucide-react";
 import { useAuth } from "../contexts/AuthContext";
 import { supabase } from "../lib/supabaseClient";
+import { createCheckoutSession } from "../lib/api";
 
 export default function Billing() {
   const { user } = useAuth();
   const [transactions, setTransactions] = useState([]);
   const [totalCreditsUsed, setTotalCreditsUsed] = useState(0);
   const [availableCredits, setAvailableCredits] = useState(0);
+  const [selectedPack, setSelectedPack] = useState(null);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -73,6 +75,20 @@ export default function Billing() {
       features: ["For who understood GreenReguAI's value <3"],
     },
   ];
+
+  const handlePurchase = (pack) => {
+    const paymentLinks = {
+      "Starter Pack": "https://buy.stripe.com/6oE4i044u18zdVKcMM",
+      "Convenience Pack": "https://buy.stripe.com/dR629S0Sig3t2d24gh",
+    };
+
+    const link = paymentLinks[pack.name];
+    if (link) {
+      window.location.href = link;
+    } else {
+      console.error("Invalid pack selection");
+    }
+  };
 
   return (
     <div className="min-h-screen bg-eco-black p-8">
@@ -156,7 +172,10 @@ export default function Billing() {
                     {pack.credits.toLocaleString()}
                   </div>
                 </div>
-                <button className="w-full py-2 px-4 rounded-lg font-code transition-all bg-eco-green/10 text-eco-green border border-eco-green hover:bg-eco-green/20">
+                <button
+                  onClick={() => handlePurchase(pack)}
+                  className="w-full py-2 px-4 rounded-lg font-code transition-all bg-eco-green/10 text-eco-green border border-eco-green hover:bg-eco-green/20"
+                >
                   Purchase Credits
                 </button>
                 <div className="mt-6 space-y-3">
@@ -213,7 +232,9 @@ export default function Billing() {
                         className="border-b border-eco-dark"
                       >
                         <td className="p-4 font-code text-eco-text">
-                          {new Date(transaction.created_at).toLocaleDateString()}
+                          {new Date(
+                            transaction.created_at
+                          ).toLocaleDateString()}
                         </td>
                         <td className="p-4 font-code text-eco-text">
                           {transaction.description || `Credit Purchase`}

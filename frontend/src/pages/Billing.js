@@ -189,6 +189,11 @@ export default function Billing() {
                     </div>
                   ))}
                 </div>
+                <p className="mt-2 text-sm text-red-500 font-code">
+                  Please use the same email in the Stripe payment process that
+                  you used to create your GreenReguAI account to associate the
+                  added credits to your account.
+                </p>
               </div>
             </div>
           ))}

@@ -34,7 +34,8 @@ async def stripe_webhook(request: Request):
                 return JSONResponse(status_code=400, content={"detail": "Email not found. Contact support at greenreguai@outlook.com."})
 
             # Fetch user_id from Supabase using email
-            user_response = supabase_service.client.from_('user_profiles').select('user_id').eq('email', email).single().execute()
+            user_response = supabase_service.admin_client.from_('user_profiles').select('user_id').eq('email', email).single().execute()
+            print("Supabase response:", user_response)
             user_data = user_response.data
             if not user_data:
                 return JSONResponse(status_code=400, content={"detail": "User not found. Contact support at greenreguai@outlook.com."})
@@ -45,9 +46,11 @@ async def stripe_webhook(request: Request):
             if payment_link == "plink_1Qcgq0B4oMfN7m86VIh7Fvq1":
                 pack_type = "Starter Pack"
                 credits_to_add = 100
+                money_spent = 5
             elif payment_link == "plink_1QcgtUB4oMfN7m86ZRadYxB9":
                 pack_type = "Convenience Pack"
                 credits_to_add = 500
+                money_spent = 20
             else:
                 return JSONResponse(status_code=400, content={"detail": "Unknown pack. Contact support at greenreguai@outlook.com."})
 
@@ -59,6 +62,7 @@ async def stripe_webhook(request: Request):
             supabase_service.admin_client.table('credit_transactions').insert({
                 'user_id': user_id,
                 'credits_amount': credits_to_add,
+                'money_amount': money_spent,
                 'transaction_type': 'purchase',
                 'description': f'{pack_type} Purchase',
                 'stripe_payment_id': session['id'],

@@ -18,7 +18,7 @@ async def search_documents(
     tags: Optional[List[str]] = Query(None, description="Filter by tags"),
     year: Optional[int] = Query(None, description="Filter by publication year"),
     page: int = Query(1, ge=1, description="Page number"),
-    per_page: int = Query(10, ge=1, le=100, description="Items per page")
+    per_page: int = Query(12, ge=1, le=100, description="Items per page")
 ) -> SearchResponse:
     """
     Search documents with filters and pagination.

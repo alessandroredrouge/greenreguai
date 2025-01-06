@@ -1,13 +1,14 @@
-import React, { useState, useEffect } from 'react';
-import { Search, Grid, List, ArrowLeft, Download, X } from 'lucide-react';
-import { Link } from 'react-router-dom';
-import { searchDocuments } from '../lib/api';
-import FiltersDrawer from '../components/FiltersDrawer';
+import React, { useState, useEffect } from "react";
+import { Search, Grid, List, ArrowLeft, Download, X } from "lucide-react";
+import { Link } from "react-router-dom";
+import { searchDocuments } from "../lib/api";
+import FiltersDrawer from "../components/FiltersDrawer";
+import Pagination from "../components/Pagination";
 
 export default function DocumentLibrary() {
-  const [searchInput, setSearchInput] = useState('');
-  const [searchTerm, setSearchTerm] = useState('');
-  const [viewMode, setViewMode] = useState('grid');
+  const [searchInput, setSearchInput] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [viewMode, setViewMode] = useState("grid");
   const [documents, setDocuments] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -19,9 +20,10 @@ export default function DocumentLibrary() {
     tags: [],
     year: null,
     page: 1,
-    per_page: 30
+    per_page: 12,
   });
   const [showMobilePreview, setShowMobilePreview] = useState(false);
+  const [totalPages, setTotalPages] = useState(1);
 
   const fetchDocuments = async () => {
     try {
@@ -32,6 +34,7 @@ export default function DocumentLibrary() {
         ...filters,
       });
       setDocuments(response.items);
+      setTotalPages(response.total_pages);
     } catch (err) {
       setError("Failed to fetch documents");
       console.error(err);
@@ -49,18 +52,25 @@ export default function DocumentLibrary() {
   };
 
   const handleApplyFilters = (newFilters) => {
-    setFilters(prev => ({
+    setFilters((prev) => ({
       ...prev,
       ...newFilters,
-      page: 1 // Reset to first page when filters change
+      page: 1,
     }));
   };
 
   const handleDocumentClick = (doc) => {
     setSelectedDocument(doc);
-    if (window.innerWidth < 768) { // md breakpoint
+    if (window.innerWidth < 768) {
       setShowMobilePreview(true);
     }
+  };
+
+  const handlePageChange = (newPage) => {
+    setFilters((prev) => ({
+      ...prev,
+      page: newPage,
+    }));
   };
 
   return (
@@ -70,21 +80,48 @@ export default function DocumentLibrary() {
         {selectedDocument ? (
           <div className="space-y-6">
             <div>
-              <h2 className="text-2xl font-code text-eco-text mb-1">{selectedDocument.title}</h2>
-              <p className="text-eco-green text-sm mb-3">{selectedDocument.publication_year}</p>
+              <h2 className="text-2xl font-code text-eco-text mb-1">
+                {selectedDocument.title}
+              </h2>
+              <p className="text-eco-green text-sm mb-3">
+                {selectedDocument.publication_year}
+              </p>
               <p className="text-eco-gray">{selectedDocument.description}</p>
             </div>
 
             <div>
               <h3 className="text-eco-text font-code mb-2">Details</h3>
               <div className="space-y-2">
-                <p className="text-eco-gray">Region: <span className="text-eco-text">{selectedDocument.region}</span></p>
-                <p className="text-eco-gray">Category: <span className="text-eco-text">{selectedDocument.category}</span></p>
-                <p className="text-eco-gray">File Size: <span className="text-eco-text">{Math.round(selectedDocument.file_size / 1024)} KB</span></p>
-                <p className="text-eco-gray">Type: <span className="text-eco-text">{selectedDocument.mime_type}</span></p>
-                <p className="text-eco-gray">Updated: <span className="text-eco-text">
-                  {new Date(selectedDocument.updated_at).toLocaleDateString()}
-                </span></p>
+                <p className="text-eco-gray">
+                  Region:{" "}
+                  <span className="text-eco-text">
+                    {selectedDocument.region}
+                  </span>
+                </p>
+                <p className="text-eco-gray">
+                  Category:{" "}
+                  <span className="text-eco-text">
+                    {selectedDocument.category}
+                  </span>
+                </p>
+                <p className="text-eco-gray">
+                  File Size:{" "}
+                  <span className="text-eco-text">
+                    {Math.round(selectedDocument.file_size / 1024)} KB
+                  </span>
+                </p>
+                <p className="text-eco-gray">
+                  Type:{" "}
+                  <span className="text-eco-text">
+                    {selectedDocument.mime_type}
+                  </span>
+                </p>
+                <p className="text-eco-gray">
+                  Updated:{" "}
+                  <span className="text-eco-text">
+                    {new Date(selectedDocument.updated_at).toLocaleDateString()}
+                  </span>
+                </p>
               </div>
             </div>
 
@@ -114,8 +151,12 @@ export default function DocumentLibrary() {
         ) : (
           <div className="h-full flex flex-col items-center justify-center text-center px-6">
             <div className="space-y-4">
-              <h3 className="text-xl font-code text-eco-text">Document Preview</h3>
-              <p className="text-eco-gray">Select a document to view its details</p>
+              <h3 className="text-xl font-code text-eco-text">
+                Document Preview
+              </h3>
+              <p className="text-eco-gray">
+                Select a document to view its details
+              </p>
             </div>
           </div>
         )}
@@ -125,7 +166,7 @@ export default function DocumentLibrary() {
       {showMobilePreview && (
         <div className="md:hidden fixed inset-0 bg-eco-black z-40 overflow-y-auto">
           <div className="p-4">
-            <button 
+            <button
               onClick={() => setShowMobilePreview(false)}
               className="text-eco-green mb-4 flex items-center gap-2"
             >
@@ -135,21 +176,52 @@ export default function DocumentLibrary() {
             {selectedDocument && (
               <div className="space-y-6">
                 <div>
-                  <h2 className="text-2xl font-code text-eco-text mb-1">{selectedDocument.title}</h2>
-                  <p className="text-eco-green text-sm mb-3">{selectedDocument.publication_year}</p>
-                  <p className="text-eco-gray">{selectedDocument.description}</p>
+                  <h2 className="text-2xl font-code text-eco-text mb-1">
+                    {selectedDocument.title}
+                  </h2>
+                  <p className="text-eco-green text-sm mb-3">
+                    {selectedDocument.publication_year}
+                  </p>
+                  <p className="text-eco-gray">
+                    {selectedDocument.description}
+                  </p>
                 </div>
 
                 <div>
                   <h3 className="text-eco-text font-code mb-2">Details</h3>
                   <div className="space-y-2">
-                    <p className="text-eco-gray">Region: <span className="text-eco-text">{selectedDocument.region}</span></p>
-                    <p className="text-eco-gray">Category: <span className="text-eco-text">{selectedDocument.category}</span></p>
-                    <p className="text-eco-gray">File Size: <span className="text-eco-text">{Math.round(selectedDocument.file_size / 1024)} KB</span></p>
-                    <p className="text-eco-gray">Type: <span className="text-eco-text">{selectedDocument.mime_type}</span></p>
-                    <p className="text-eco-gray">Updated: <span className="text-eco-text">
-                      {new Date(selectedDocument.updated_at).toLocaleDateString()}
-                    </span></p>
+                    <p className="text-eco-gray">
+                      Region:{" "}
+                      <span className="text-eco-text">
+                        {selectedDocument.region}
+                      </span>
+                    </p>
+                    <p className="text-eco-gray">
+                      Category:{" "}
+                      <span className="text-eco-text">
+                        {selectedDocument.category}
+                      </span>
+                    </p>
+                    <p className="text-eco-gray">
+                      File Size:{" "}
+                      <span className="text-eco-text">
+                        {Math.round(selectedDocument.file_size / 1024)} KB
+                      </span>
+                    </p>
+                    <p className="text-eco-gray">
+                      Type:{" "}
+                      <span className="text-eco-text">
+                        {selectedDocument.mime_type}
+                      </span>
+                    </p>
+                    <p className="text-eco-gray">
+                      Updated:{" "}
+                      <span className="text-eco-text">
+                        {new Date(
+                          selectedDocument.updated_at
+                        ).toLocaleDateString()}
+                      </span>
+                    </p>
                   </div>
                 </div>
 
@@ -186,7 +258,10 @@ export default function DocumentLibrary() {
         {/* Search Header */}
         <div className="p-4 border-b border-eco-dark">
           <div className="flex flex-col md:flex-row gap-4 items-center mb-4">
-            <Link to="/dashboard" className="text-eco-green hover:text-eco-green/80 flex items-center gap-2">
+            <Link
+              to="/dashboard"
+              className="text-eco-green hover:text-eco-green/80 flex items-center gap-2"
+            >
               <ArrowLeft className="h-5 w-5" />
               Back to Dashboard
             </Link>
@@ -196,7 +271,7 @@ export default function DocumentLibrary() {
                   type="text"
                   value={searchInput}
                   onChange={(e) => setSearchInput(e.target.value)}
-                  onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
+                  onKeyDown={(e) => e.key === "Enter" && handleSearch()}
                   placeholder="Search documents..."
                   className="w-full bg-eco-black border border-eco-dark rounded-lg py-2 pl-4 pr-12 text-eco-text"
                 />
@@ -213,14 +288,22 @@ export default function DocumentLibrary() {
           <div className="flex justify-between items-center">
             <div className="flex gap-2">
               <button
-                onClick={() => setViewMode('grid')}
-                className={`p-2 rounded-lg ${viewMode === 'grid' ? 'text-eco-green bg-eco-green/10' : 'text-eco-gray'}`}
+                onClick={() => setViewMode("grid")}
+                className={`p-2 rounded-lg ${
+                  viewMode === "grid"
+                    ? "text-eco-green bg-eco-green/10"
+                    : "text-eco-gray"
+                }`}
               >
                 <Grid className="h-5 w-5" />
               </button>
               <button
-                onClick={() => setViewMode('list')}
-                className={`p-2 rounded-lg ${viewMode === 'list' ? 'text-eco-green bg-eco-green/10' : 'text-eco-gray'}`}
+                onClick={() => setViewMode("list")}
+                className={`p-2 rounded-lg ${
+                  viewMode === "list"
+                    ? "text-eco-green bg-eco-green/10"
+                    : "text-eco-gray"
+                }`}
               >
                 <List className="h-5 w-5" />
               </button>
@@ -236,7 +319,13 @@ export default function DocumentLibrary() {
 
         {/* Documents Grid/List */}
         <div className="flex-1 overflow-y-auto p-4">
-          <div className={`grid ${viewMode === 'grid' ? 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3' : 'grid-cols-1'} gap-4`}>
+          <div
+            className={`grid ${
+              viewMode === "grid"
+                ? "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"
+                : "grid-cols-1"
+            } gap-4`}
+          >
             {loading ? (
               <div className="flex justify-center items-center h-full">
                 <div className="text-eco-green">Loading...</div>
@@ -251,13 +340,25 @@ export default function DocumentLibrary() {
                   key={doc.document_id}
                   onClick={() => handleDocumentClick(doc)}
                   className={`bg-eco-darker border border-eco-dark rounded-lg p-4 cursor-pointer hover:border-eco-green transition-colors ${
-                    selectedDocument?.document_id === doc.document_id ? 'border-eco-green' : ''
+                    selectedDocument?.document_id === doc.document_id
+                      ? "border-eco-green"
+                      : ""
                   }`}
                 >
-                  <div className={viewMode === 'grid' ? '' : 'flex items-center gap-4 flex-1'}>
+                  <div
+                    className={
+                      viewMode === "grid"
+                        ? ""
+                        : "flex items-center gap-4 flex-1"
+                    }
+                  >
                     <div className="flex-1">
-                      <h3 className="text-eco-text font-code text-lg mb-1">{doc.title}</h3>
-                      <p className="text-eco-green text-sm mb-2">{doc.publication_year}</p>
+                      <h3 className="text-eco-text font-code text-lg mb-1">
+                        {doc.title}
+                      </h3>
+                      <p className="text-eco-green text-sm mb-2">
+                        {doc.publication_year}
+                      </p>
                       <p className="text-eco-gray text-sm">{doc.region}</p>
                     </div>
                     <div className="flex flex-wrap gap-2 my-3">
@@ -271,7 +372,11 @@ export default function DocumentLibrary() {
                       ))}
                     </div>
                   </div>
-                  <div className={`flex ${viewMode === 'grid' ? 'justify-between' : 'gap-4'} items-center mt-4`}>
+                  <div
+                    className={`flex ${
+                      viewMode === "grid" ? "justify-between" : "gap-4"
+                    } items-center mt-4`}
+                  >
                     <div className="flex items-center gap-2">
                       <span className="text-eco-gray text-sm">
                         Updated {new Date(doc.updated_at).toLocaleDateString()}
@@ -293,6 +398,15 @@ export default function DocumentLibrary() {
               ))
             )}
           </div>
+        </div>
+
+        {/* Pagination */}
+        <div className="p-4">
+          <Pagination
+            currentPage={filters.page}
+            totalPages={totalPages}
+            onPageChange={handlePageChange}
+          />
         </div>
       </div>
 

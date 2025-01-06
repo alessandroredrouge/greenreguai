@@ -254,7 +254,7 @@ export default function DocumentLibrary() {
       )}
 
       {/* Main Content */}
-      <div className="flex-1 flex flex-col overflow-hidden">
+      <div className="flex-1 flex flex-col overflow-hidden relative">
         {/* Search Header */}
         <div className="p-4 border-b border-eco-dark">
           <div className="flex flex-col md:flex-row gap-4 items-center mb-4">
@@ -400,8 +400,8 @@ export default function DocumentLibrary() {
           </div>
         </div>
 
-        {/* Pagination */}
-        <div className="p-4">
+        {/* Fixed Pagination */}
+        <div className="p-4 fixed bottom-0 left-0 right-0 bg-eco-black">
           <Pagination
             currentPage={filters.page}
             totalPages={totalPages}

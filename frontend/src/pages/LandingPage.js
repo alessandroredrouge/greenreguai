@@ -157,7 +157,7 @@ export default function LandingPage() {
           <div className="text-center mb-12">
             <p className="font-code text-2xl text-eco-text">
               <span className="text-matrix-green">&gt;</span>{" "}
-              <span className="text-eco-green font-bold">50 FREE CREDITS</span> for your first try, and then
+              <span className="text-eco-green font-bold">20 FREE CREDITS</span> for your first try, and then
             </p>
             <div className="text-eco-green text-4xl mt-2 animate-bounce">↓</div>
           </div>

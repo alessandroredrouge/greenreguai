@@ -97,7 +97,7 @@ export default function Dashboard() {
           <div>
             <h1 className="font-code text-eco-text text-xl sm:text-2xl mb-2 break-words">
               Welcome back,{" "}
-              <span className="text-eco-green">
+              <span className="text-eco-green truncate max-w-[200px] inline-block align-bottom">
                 {profile?.email || user?.email || "User"}
               </span>
             </h1>
@@ -265,7 +265,8 @@ export default function Dashboard() {
 
           {/* Product Hunt Rating */}
           <a
-            href="https://www.producthunt.com/posts/your-product"
+            href="https://www.producthunt.com/posts/greenreguai?embed=true&utm_source=badge-featured&utm_medium=badge&utm_souce=badge-greenreguai"
+            alt="GreenReguAI - AI platform for instant renewable energy compliance guidance |  Product Hunt"
             target="_blank"
             rel="noopener noreferrer"
             className="w-full bg-eco-green/10 text-eco-green font-code py-2 px-4 rounded-lg hover:bg-eco-green/20 transition-all border border-eco-green flex items-center justify-center gap-2 group"

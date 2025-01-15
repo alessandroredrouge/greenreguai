@@ -130,7 +130,7 @@ export default function Header() {
                 <MessageSquare className="w-4 h-4 mr-1" />~/contact
               </button>
               <Link 
-                to="/login" 
+                to="/auth" 
                 className="font-code bg-eco-green/10 text-eco-green px-4 py-2 rounded hover:bg-eco-green/20 transition-colors border border-eco-green inline-flex items-center justify-center w-full"
                 onClick={() => setIsMobileMenuOpen(false)}
               >

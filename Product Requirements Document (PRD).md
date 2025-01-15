@@ -94,7 +94,7 @@ GreenReguAI aims to solve this problem by providing a centralized, continually u
     - Credit balance tracking.
 6. **Payment System:**
     - Integration with Stripe for credit purchases.
-    - Initial 50 free credits for new users.
+    - Initial 20 free credits for new users.
     - Credit consumption tracking.
     - Feedback system with credit rewards.
     - Refund request system for unsatisfactory responses.
@@ -154,7 +154,7 @@ GreenReguAI aims to solve this problem by providing a centralized, continually u
 
 1. **Credit System:**
     - 1 credit = 1 standard LLM query
-    - New users receive 50 free credits
+    - New users receive 20 free credits
     - Premium features (future scope) may cost additional credits
     - Competitive pricing strategy to balance accessibility and profitability
 

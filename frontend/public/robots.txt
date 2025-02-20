@@ -11,4 +11,7 @@ Disallow: /document-library
 Disallow: /billing
 Disallow: /auth
 
+# Sitemap location
+Sitemap: https://greenreguai.com/sitemap.xml
+
 

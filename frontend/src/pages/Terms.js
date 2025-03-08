@@ -4,24 +4,24 @@ import { ArrowLeft } from "lucide-react";
 
 export default function Terms() {
   return (
-    <div className="min-h-screen bg-eco-black p-8">
+    <div className="min-h-screen bg-harvey-bg p-8">
       {/* Back Button */}
       <Link
         to="/"
-        className="inline-flex items-center gap-2 text-eco-green hover:text-eco-text transition-colors mb-8"
+        className="inline-flex items-center gap-2 text-gray-700 hover:text-harvey-text transition-colors mb-8"
       >
         <ArrowLeft className="h-5 w-5" />
-        <span className="font-code">Back to Home</span>
+        <span>Back to Home</span>
       </Link>
 
       <div className="max-w-4xl mx-auto">
-        <h1 className="font-code text-3xl text-eco-text mb-8">
+        <h1 className="text-3xl text-harvey-text mb-8 font-medium">
           Terms and Conditions
         </h1>
 
-        <div className="space-y-8 text-eco-gray">
+        <div className="space-y-8 text-harvey-text-light">
           <section>
-            <h2 className="text-xl text-eco-text mb-4">
+            <h2 className="text-xl text-harvey-text mb-4 font-medium">
               1. Service Description
             </h2>
             <p>
@@ -33,16 +33,19 @@ export default function Terms() {
           </section>
 
           <section>
-            <h2 className="text-xl text-eco-text mb-4">2. Credit System</h2>
+            <h2 className="text-xl text-harvey-text mb-4 font-medium">
+              2. Credit System
+            </h2>
             <p>
               Credits are non-refundable once used. Each query consumes a
-              specific number of credits based on the complexity of the
-              question (1 credit per query if not explicited otherwise). New users receive 50 free credits upon registration.
+              specific number of credits based on the complexity of the question
+              (1 credit per query if not explicited otherwise). New users
+              receive 50 free credits upon registration.
             </p>
           </section>
 
           <section>
-            <h2 className="text-xl text-eco-text mb-4">
+            <h2 className="text-xl text-harvey-text mb-4 font-medium">
               3. User Responsibilities
             </h2>
             <p>
@@ -53,7 +56,7 @@ export default function Terms() {
           </section>
 
           <section>
-            <h2 className="text-xl text-eco-text mb-4">
+            <h2 className="text-xl text-harvey-text mb-4 font-medium">
               4. Service Availability
             </h2>
             <p>
@@ -64,7 +67,9 @@ export default function Terms() {
           </section>
 
           <section>
-            <h2 className="text-xl text-eco-text mb-4">5. Refund Policy</h2>
+            <h2 className="text-xl text-harvey-text mb-4 font-medium">
+              5. Refund Policy
+            </h2>
             <p>
               Unused credits may be refunded within 30 days of purchase. Refunds
               for used credits may be considered in cases of service malfunction
@@ -73,7 +78,9 @@ export default function Terms() {
           </section>
 
           <section>
-            <h2 className="text-xl text-eco-text mb-4">6. Data Usage</h2>
+            <h2 className="text-xl text-harvey-text mb-4 font-medium">
+              6. Data Usage
+            </h2>
             <p>
               We collect and process user data in accordance with our Privacy
               Policy. Query history and usage patterns may be analyzed to
@@ -82,14 +89,14 @@ export default function Terms() {
           </section>
 
           <section>
-            <h2 className="text-xl text-eco-text mb-4">
+            <h2 className="text-xl text-harvey-text mb-4 font-medium">
               7. Contact Information
             </h2>
             <p>
               For any questions regarding these terms, please contact us at:{" "}
               <a
                 href="mailto:greenreguai@outlook.com"
-                className="text-eco-green hover:underline"
+                className="text-gray-700 hover:underline"
               >
                 greenreguai@outlook.com
               </a>
@@ -97,7 +104,7 @@ export default function Terms() {
           </section>
         </div>
 
-        <div className="mt-12 text-eco-gray text-sm">
+        <div className="mt-12 text-harvey-text-light text-sm">
           <p>Last updated: {new Date().toLocaleDateString()}</p>
         </div>
       </div>

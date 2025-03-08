@@ -1,24 +1,24 @@
-import { Auth } from '@supabase/auth-ui-react'
-import { ThemeSupa } from '@supabase/auth-ui-shared'
-import { supabase } from '../lib/supabaseClient'
-import { useNavigate } from 'react-router-dom'
-import { useAuth } from '../contexts/AuthContext'
-import { useEffect } from 'react'
+import { Auth } from "@supabase/auth-ui-react";
+import { ThemeSupa } from "@supabase/auth-ui-shared";
+import { supabase } from "../lib/supabaseClient";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../contexts/AuthContext";
+import { useEffect } from "react";
 
 export default function AuthPage() {
-  const navigate = useNavigate()
-  const { user } = useAuth()
+  const navigate = useNavigate();
+  const { user } = useAuth();
 
   useEffect(() => {
     if (user) {
-      navigate('/dashboard')
+      navigate("/dashboard");
     }
-  }, [user, navigate])
+  }, [user, navigate]);
 
   return (
-    <div className="min-h-screen bg-eco-black flex items-center justify-center px-4">
+    <div className="min-h-screen bg-harvey-bg flex items-center justify-center px-4">
       <div className="max-w-md w-full">
-        <div className="bg-eco-darker border border-eco-dark p-8 rounded-lg">
+        <div className="bg-harvey-bg-lighter border border-harvey-border p-8 rounded-lg shadow-sm">
           <Auth
             supabaseClient={supabase}
             appearance={{
@@ -26,10 +26,10 @@ export default function AuthPage() {
               variables: {
                 default: {
                   colors: {
-                    brand: '#10B981',
-                    brandAccent: '#059669',
-                    inputBackground: '#1F2937',
-                    inputText: '#F9FAFB',
+                    brand: "#6B7280",
+                    brandAccent: "#4B5563",
+                    inputBackground: "#FFFFFF",
+                    inputText: "#111827",
                   },
                 },
               },
@@ -40,5 +40,5 @@ export default function AuthPage() {
         </div>
       </div>
     </div>
-  )
+  );
 }

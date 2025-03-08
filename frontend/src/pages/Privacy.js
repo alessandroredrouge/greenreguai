@@ -4,24 +4,26 @@ import { ArrowLeft } from "lucide-react";
 
 export default function Privacy() {
   return (
-    <div className="min-h-screen bg-eco-black p-8">
+    <div className="min-h-screen bg-harvey-bg p-8">
       {/* Back Button */}
       <Link
         to="/"
-        className="inline-flex items-center gap-2 text-eco-green hover:text-eco-text transition-colors mb-8"
+        className="inline-flex items-center gap-2 text-gray-700 hover:text-harvey-text transition-colors mb-8"
       >
         <ArrowLeft className="h-5 w-5" />
-        <span className="font-code">Back to Home</span>
+        <span>Back to Home</span>
       </Link>
 
       <div className="max-w-4xl mx-auto">
-        <h1 className="font-code text-3xl text-eco-text mb-8">
+        <h1 className="text-3xl text-harvey-text mb-8 font-medium">
           Privacy Policy
         </h1>
 
-        <div className="space-y-8 text-eco-gray">
+        <div className="space-y-8 text-harvey-text-light">
           <section>
-            <h2 className="text-xl text-eco-text mb-4">1. Data Collection</h2>
+            <h2 className="text-xl text-harvey-text mb-4 font-medium">
+              1. Data Collection
+            </h2>
             <p>
               GreenReguAI collects and stores only essential data required for
               service operation:
@@ -36,7 +38,7 @@ export default function Privacy() {
           </section>
 
           <section>
-            <h2 className="text-xl text-eco-text mb-4">
+            <h2 className="text-xl text-harvey-text mb-4 font-medium">
               2. Third-Party Services
             </h2>
             <p>
@@ -59,7 +61,9 @@ export default function Privacy() {
           </section>
 
           <section>
-            <h2 className="text-xl text-eco-text mb-4">3. Data Usage</h2>
+            <h2 className="text-xl text-harvey-text mb-4 font-medium">
+              3. Data Usage
+            </h2>
             <p>Your data is used exclusively for:</p>
             <ul className="list-disc pl-6 mt-2 space-y-2">
               <li>Providing and maintaining your service access</li>
@@ -72,15 +76,19 @@ export default function Privacy() {
           </section>
 
           <section>
-            <h2 className="text-xl text-eco-text mb-4">4. Data Protection</h2>
+            <h2 className="text-xl text-harvey-text mb-4 font-medium">
+              4. Data Protection
+            </h2>
             <p>
-              We implement security measures to protect your
-              data thanks to our partners.
+              We implement security measures to protect your data thanks to our
+              partners.
             </p>
           </section>
 
           <section>
-            <h2 className="text-xl text-eco-text mb-4">5. Data Retention</h2>
+            <h2 className="text-xl text-harvey-text mb-4 font-medium">
+              5. Data Retention
+            </h2>
             <p>
               We retain your data for as long as your account is active. You can
               request data deletion by contacting our support team.
@@ -88,7 +96,9 @@ export default function Privacy() {
           </section>
 
           <section>
-            <h2 className="text-xl text-eco-text mb-4">6. Your Rights</h2>
+            <h2 className="text-xl text-harvey-text mb-4 font-medium">
+              6. Your Rights
+            </h2>
             <p>You have the right to:</p>
             <ul className="list-disc pl-6 mt-2 space-y-2">
               <li>Access your personal data</li>
@@ -99,14 +109,14 @@ export default function Privacy() {
           </section>
 
           <section>
-            <h2 className="text-xl text-eco-text mb-4">
+            <h2 className="text-xl text-harvey-text mb-4 font-medium">
               7. Contact Information
             </h2>
             <p>
               For privacy-related questions, please contact us at:{" "}
               <a
                 href="mailto:greenreguai@outlook.com"
-                className="text-eco-green hover:underline"
+                className="text-gray-700 hover:underline"
               >
                 greenreguai@outlook.com
               </a>
@@ -114,7 +124,7 @@ export default function Privacy() {
           </section>
         </div>
 
-        <div className="mt-12 text-eco-gray text-sm">
+        <div className="mt-12 text-harvey-text-light text-sm">
           <p>Last updated: {new Date().toLocaleDateString()}</p>
         </div>
       </div>

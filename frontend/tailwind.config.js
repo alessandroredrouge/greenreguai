@@ -4,16 +4,6 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        "eco-dark": "#0A2F2F",
-        "eco-darker": "#0D1F1F",
-        "eco-black": "#081616",
-        "eco-green": "#00CF91",
-        "eco-blue": "#00B4D8",
-        "eco-yellow": "#FFD60A",
-        "eco-leaf": "#4CAF50",
-        "matrix-green": "#00FF41",
-        "eco-gray": "#7A8F8F",
-        "eco-text": "#E0F2F1",
         "harvey-dark": "#0F1419",
         "harvey-sidebar": "#0F1419",
         "harvey-bg": "#F8F5F1",

@@ -91,50 +91,48 @@ export default function Billing() {
   };
 
   return (
-    <div className="min-h-screen bg-eco-black p-8">
+    <div className="min-h-screen bg-harvey-bg p-8">
       {/* Back Button */}
       <Link
         to="/dashboard"
-        className="inline-flex items-center gap-2 text-eco-green hover:text-eco-text transition-colors mb-8"
+        className="inline-flex items-center gap-2 text-gray-700 hover:text-harvey-text transition-colors mb-8"
       >
         <ArrowLeft className="h-5 w-5" />
-        <span className="font-code">Back to Dashboard</span>
+        <span>Back to Dashboard</span>
       </Link>
 
       {/* Header Section */}
       <div className="max-w-7xl mx-auto">
         <div className="mb-8">
-          <h1 className="font-code text-3xl text-eco-text mb-2">
-            Billing <span className="text-eco-green">& Credits</span>
+          <h1 className="text-3xl text-harvey-text mb-2 font-medium">
+            Billing & Credits
           </h1>
-          <p className="text-eco-gray font-code">
+          <p className="text-harvey-text-light">
             Purchase credits to use GreenReguAI
           </p>
         </div>
 
         {/* Current Credits Status */}
-        <div className="bg-eco-darker border border-eco-dark rounded-lg p-6 mb-8">
+        <div className="bg-harvey-bg-lighter border border-harvey-border rounded-lg p-6 mb-8 shadow-sm">
           <div className="grid md:grid-cols-2 gap-6">
             <div>
-              <h3 className="font-code text-eco-gray mb-2">
-                Credits Available
-              </h3>
-              <p className="text-2xl text-eco-green font-code">
+              <h3 className="text-harvey-text-light mb-2">Credits Available</h3>
+              <p className="text-2xl text-gray-700 font-medium">
                 {availableCredits.toLocaleString()}
               </p>
             </div>
             <div>
-              <h3 className="font-code text-eco-gray mb-2">Credits Used</h3>
-              <p className="text-2xl text-eco-text font-code">
+              <h3 className="text-harvey-text-light mb-2">Credits Used</h3>
+              <p className="text-2xl text-harvey-text font-medium">
                 {totalCreditsUsed.toLocaleString()}
               </p>
             </div>
           </div>
           <div className="text-center mt-4">
-            <p className="text-sm text-eco-gray font-code">
-              <span className="text-eco-green">1 credit</span> = 1 Basic AI
-              Query • <span className="text-eco-green">X credits</span> = 1
-              Advanced AI Query (soon available)
+            <p className="text-sm text-harvey-text-light">
+              <span className="text-gray-700">1 credit</span> = 1 Basic AI Query
+              • <span className="text-gray-700">X credits</span> = 1 Advanced AI
+              Query (soon available)
             </p>
           </div>
         </div>
@@ -144,37 +142,37 @@ export default function Billing() {
           {creditPacks.map((pack) => (
             <div
               key={pack.name}
-              className={`bg-eco-darker border rounded-lg transition-all ${
+              className={`bg-harvey-bg-lighter border rounded-lg transition-all shadow-sm ${
                 pack.popular
-                  ? "border-eco-green shadow-lg shadow-eco-green/20 scale-105"
-                  : "border-eco-dark hover:border-eco-green"
+                  ? "border-gray-400 shadow-md scale-105"
+                  : "border-harvey-border hover:border-gray-400"
               }`}
             >
               {pack.popular && (
-                <div className="bg-eco-green/20 text-eco-green text-center py-2 rounded-t-lg font-code text-sm">
+                <div className="bg-gray-100 text-gray-700 text-center py-2 rounded-t-lg text-sm font-medium">
                   Most Popular
                 </div>
               )}
               <div className="p-6">
-                <h3 className="font-code text-xl text-eco-text mb-2">
+                <h3 className="text-xl text-harvey-text mb-2 font-medium">
                   {pack.name}
                 </h3>
                 <div className="mb-4">
-                  <span className="text-3xl font-code text-eco-text">
+                  <span className="text-3xl text-harvey-text font-medium">
                     ${pack.price}
                   </span>
                 </div>
                 <div className="mb-6">
-                  <div className="font-code text-eco-gray mb-2">
+                  <div className="text-harvey-text-light mb-2">
                     Credits Included
                   </div>
-                  <div className="text-xl text-eco-green font-code">
+                  <div className="text-xl text-gray-700 font-medium">
                     {pack.credits.toLocaleString()}
                   </div>
                 </div>
                 <button
                   onClick={() => handlePurchase(pack)}
-                  className="w-full py-2 px-4 rounded-lg font-code transition-all bg-eco-green/10 text-eco-green border border-eco-green hover:bg-eco-green/20"
+                  className="w-full py-2 px-4 rounded-lg transition-all bg-gray-100 text-gray-700 border border-gray-300 hover:bg-gray-200"
                 >
                   Purchase Credits
                 </button>
@@ -182,14 +180,14 @@ export default function Billing() {
                   {pack.features.map((feature) => (
                     <div
                       key={feature}
-                      className="flex items-center text-eco-gray"
+                      className="flex items-center text-harvey-text-light"
                     >
-                      <Check className="h-5 w-5 text-eco-green mr-2" />
-                      <span className="font-code text-sm">{feature}</span>
+                      <Check className="h-5 w-5 text-gray-700 mr-2" />
+                      <span className="text-sm">{feature}</span>
                     </div>
                   ))}
                 </div>
-                <p className="mt-2 text-sm text-red-500 font-code">
+                <p className="mt-2 text-sm text-red-600">
                   Please use the same email in the Stripe payment process that
                   you used to create your GreenReguAI account to associate the
                   added credits to your account.
@@ -201,30 +199,30 @@ export default function Billing() {
 
         {/* Purchase History */}
         <div>
-          <h2 className="font-code text-2xl text-eco-text mb-6">
+          <h2 className="text-2xl text-harvey-text mb-6 font-medium">
             Purchase History
           </h2>
-          <div className="bg-eco-darker border border-eco-dark rounded-lg overflow-x-auto">
+          <div className="bg-harvey-bg-lighter border border-harvey-border rounded-lg overflow-x-auto shadow-sm">
             <div className="min-w-[900px]">
               <table className="w-full">
-                <thead className="border-b border-eco-dark">
+                <thead className="border-b border-harvey-border">
                   <tr>
-                    <th className="text-left p-4 font-code text-eco-gray">
+                    <th className="text-left p-4 text-harvey-text-light">
                       Date
                     </th>
-                    <th className="text-left p-4 font-code text-eco-gray">
+                    <th className="text-left p-4 text-harvey-text-light">
                       Description
                     </th>
-                    <th className="text-left p-4 font-code text-eco-gray">
+                    <th className="text-left p-4 text-harvey-text-light">
                       Credits
                     </th>
-                    <th className="text-left p-4 font-code text-eco-gray">
+                    <th className="text-left p-4 text-harvey-text-light">
                       Amount Paid
                     </th>
-                    <th className="text-left p-4 font-code text-eco-gray">
+                    <th className="text-left p-4 text-harvey-text-light">
                       Status
                     </th>
-                    <th className="text-left p-4 font-code text-eco-gray">
+                    <th className="text-left p-4 text-harvey-text-light">
                       Stripe Payment ID
                     </th>
                   </tr>
@@ -234,31 +232,31 @@ export default function Billing() {
                     transactions.map((transaction) => (
                       <tr
                         key={transaction.id}
-                        className="border-b border-eco-dark"
+                        className="border-b border-harvey-border"
                       >
-                        <td className="p-4 font-code text-eco-text">
+                        <td className="p-4 text-harvey-text">
                           {new Date(
                             transaction.created_at
                           ).toLocaleDateString()}
                         </td>
-                        <td className="p-4 font-code text-eco-text">
+                        <td className="p-4 text-harvey-text">
                           {transaction.description || `Credit Purchase`}
                         </td>
-                        <td className="p-4 font-code text-eco-green">
+                        <td className="p-4 text-gray-700 font-medium">
                           {transaction.credits_amount.toLocaleString()}
                         </td>
-                        <td className="p-4 font-code text-eco-text">
+                        <td className="p-4 text-harvey-text">
                           ${transaction.money_amount?.toFixed(2) || "0.00"}
                         </td>
                         <td className="p-4">
-                          <span className="bg-eco-green/20 text-eco-green px-2 py-1 rounded-full text-sm font-code">
+                          <span className="bg-gray-100 text-gray-700 px-2 py-1 rounded-full text-sm">
                             {transaction.status || "Paid"}
                           </span>
                         </td>
                         <td className="p-4">
                           <div className="flex items-center gap-2">
                             {transaction.stripe_payment_id && (
-                              <span className="font-code text-eco-gray text-sm">
+                              <span className="text-harvey-text-light text-sm">
                                 {transaction.stripe_payment_id}
                               </span>
                             )}
@@ -267,7 +265,7 @@ export default function Billing() {
                                 href={transaction.invoice_url}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="text-eco-green hover:text-eco-text"
+                                className="text-gray-700 hover:text-harvey-text"
                               >
                                 <Download className="h-5 w-5" />
                               </a>
@@ -280,7 +278,7 @@ export default function Billing() {
                     <tr>
                       <td
                         colSpan="6"
-                        className="p-4 text-center font-code text-eco-gray"
+                        className="p-4 text-center text-harvey-text-light"
                       >
                         No purchase history available
                       </td>

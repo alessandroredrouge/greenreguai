@@ -16,8 +16,8 @@ export default function Pagination({ currentPage, totalPages, onPageChange }) {
         disabled={currentPage === 1}
         className={`flex items-center gap-1 ${
           currentPage === 1
-            ? "text-eco-gray cursor-not-allowed"
-            : "text-eco-green hover:text-eco-text"
+            ? "text-harvey-text-light cursor-not-allowed"
+            : "text-gray-700 hover:text-harvey-text"
         }`}
       >
         <ChevronLeft className="h-4 w-4" />
@@ -28,18 +28,18 @@ export default function Pagination({ currentPage, totalPages, onPageChange }) {
         type="number"
         value={currentPage}
         onChange={handleInputChange}
-        className="w-12 text-center text-eco-text font-code bg-eco-darker border border-eco-dark rounded-lg"
+        className="w-12 text-center text-harvey-text bg-harvey-bg-lighter border border-harvey-border rounded-lg"
       />
 
-      <span className="text-eco-text font-code">of {totalPages}</span>
+      <span className="text-harvey-text">of {totalPages}</span>
 
       <button
         onClick={() => onPageChange(currentPage + 1)}
         disabled={currentPage === totalPages}
         className={`flex items-center gap-1 ${
           currentPage === totalPages
-            ? "text-eco-gray cursor-not-allowed"
-            : "text-eco-green hover:text-eco-text"
+            ? "text-harvey-text-light cursor-not-allowed"
+            : "text-gray-700 hover:text-harvey-text"
         }`}
       >
         Next

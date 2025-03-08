@@ -74,51 +74,51 @@ export default function DocumentLibrary() {
   };
 
   return (
-    <div className="flex flex-col md:flex-row h-screen bg-eco-black">
+    <div className="flex flex-col md:flex-row h-screen bg-harvey-bg">
       {/* Desktop Preview Sidebar */}
-      <div className="hidden md:block w-1/4 border-r border-eco-dark bg-eco-darker overflow-y-auto p-6">
+      <div className="hidden md:block w-1/4 border-r border-gray-800 bg-harvey-sidebar overflow-y-auto p-6">
         {selectedDocument ? (
           <div className="space-y-6">
             <div>
-              <h2 className="text-2xl font-code text-eco-text mb-1">
+              <h2 className="text-2xl text-white mb-1 font-medium">
                 {selectedDocument.title}
               </h2>
-              <p className="text-eco-green text-sm mb-3">
+              <p className="text-gray-300 text-sm mb-3">
                 {selectedDocument.publication_year}
               </p>
-              <p className="text-eco-gray">{selectedDocument.description}</p>
+              <p className="text-gray-400">{selectedDocument.description}</p>
             </div>
 
             <div>
-              <h3 className="text-eco-text font-code mb-2">Details</h3>
+              <h3 className="text-white mb-2 font-medium">Details</h3>
               <div className="space-y-2">
-                <p className="text-eco-gray">
+                <p className="text-gray-400">
                   Region:{" "}
-                  <span className="text-eco-text">
+                  <span className="text-gray-300">
                     {selectedDocument.region}
                   </span>
                 </p>
-                <p className="text-eco-gray">
+                <p className="text-gray-400">
                   Category:{" "}
-                  <span className="text-eco-text">
+                  <span className="text-gray-300">
                     {selectedDocument.category}
                   </span>
                 </p>
-                <p className="text-eco-gray">
+                <p className="text-gray-400">
                   File Size:{" "}
-                  <span className="text-eco-text">
+                  <span className="text-gray-300">
                     {Math.round(selectedDocument.file_size / 1024)} KB
                   </span>
                 </p>
-                <p className="text-eco-gray">
+                <p className="text-gray-400">
                   Type:{" "}
-                  <span className="text-eco-text">
+                  <span className="text-gray-300">
                     {selectedDocument.mime_type}
                   </span>
                 </p>
-                <p className="text-eco-gray">
+                <p className="text-gray-400">
                   Updated:{" "}
-                  <span className="text-eco-text">
+                  <span className="text-gray-300">
                     {new Date(selectedDocument.updated_at).toLocaleDateString()}
                   </span>
                 </p>
@@ -126,12 +126,12 @@ export default function DocumentLibrary() {
             </div>
 
             <div>
-              <h3 className="text-eco-text font-code mb-2">Tags</h3>
+              <h3 className="text-white mb-2 font-medium">Tags</h3>
               <div className="flex flex-wrap gap-2">
                 {selectedDocument.tags.map((tag) => (
                   <span
                     key={tag}
-                    className="bg-eco-green/10 text-eco-green text-sm px-2 py-1 rounded-full"
+                    className="bg-gray-800 text-gray-300 text-sm px-2 py-1 rounded-full"
                   >
                     {tag}
                   </span>
@@ -143,7 +143,7 @@ export default function DocumentLibrary() {
               href={selectedDocument.download_url}
               target="_blank"
               rel="noopener noreferrer"
-              className="block w-full bg-eco-green/10 text-eco-green border border-eco-green px-4 py-2 rounded-lg hover:bg-eco-green/20 transition-colors text-center"
+              className="block w-full bg-gray-800 text-gray-300 border border-gray-700 px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors text-center"
             >
               Download Document
             </a>
@@ -151,10 +151,10 @@ export default function DocumentLibrary() {
         ) : (
           <div className="h-full flex flex-col items-center justify-center text-center px-6">
             <div className="space-y-4">
-              <h3 className="text-xl font-code text-eco-text">
+              <h3 className="text-xl text-white font-medium">
                 Document Preview
               </h3>
-              <p className="text-eco-gray">
+              <p className="text-gray-400">
                 Select a document to view its details
               </p>
             </div>
@@ -164,11 +164,11 @@ export default function DocumentLibrary() {
 
       {/* Mobile Preview Overlay */}
       {showMobilePreview && (
-        <div className="md:hidden fixed inset-0 bg-eco-black z-40 overflow-y-auto">
+        <div className="md:hidden fixed inset-0 bg-harvey-sidebar z-40 overflow-y-auto">
           <div className="p-4">
             <button
               onClick={() => setShowMobilePreview(false)}
-              className="text-eco-green mb-4 flex items-center gap-2"
+              className="text-gray-300 mb-4 flex items-center gap-2"
             >
               <X className="h-5 w-5" />
               Close Preview
@@ -176,47 +176,47 @@ export default function DocumentLibrary() {
             {selectedDocument && (
               <div className="space-y-6">
                 <div>
-                  <h2 className="text-2xl font-code text-eco-text mb-1">
+                  <h2 className="text-2xl text-white mb-1 font-medium">
                     {selectedDocument.title}
                   </h2>
-                  <p className="text-eco-green text-sm mb-3">
+                  <p className="text-gray-300 text-sm mb-3">
                     {selectedDocument.publication_year}
                   </p>
-                  <p className="text-eco-gray">
+                  <p className="text-gray-400">
                     {selectedDocument.description}
                   </p>
                 </div>
 
                 <div>
-                  <h3 className="text-eco-text font-code mb-2">Details</h3>
+                  <h3 className="text-white mb-2 font-medium">Details</h3>
                   <div className="space-y-2">
-                    <p className="text-eco-gray">
+                    <p className="text-gray-400">
                       Region:{" "}
-                      <span className="text-eco-text">
+                      <span className="text-gray-300">
                         {selectedDocument.region}
                       </span>
                     </p>
-                    <p className="text-eco-gray">
+                    <p className="text-gray-400">
                       Category:{" "}
-                      <span className="text-eco-text">
+                      <span className="text-gray-300">
                         {selectedDocument.category}
                       </span>
                     </p>
-                    <p className="text-eco-gray">
+                    <p className="text-gray-400">
                       File Size:{" "}
-                      <span className="text-eco-text">
+                      <span className="text-gray-300">
                         {Math.round(selectedDocument.file_size / 1024)} KB
                       </span>
                     </p>
-                    <p className="text-eco-gray">
+                    <p className="text-gray-400">
                       Type:{" "}
-                      <span className="text-eco-text">
+                      <span className="text-gray-300">
                         {selectedDocument.mime_type}
                       </span>
                     </p>
-                    <p className="text-eco-gray">
+                    <p className="text-gray-400">
                       Updated:{" "}
-                      <span className="text-eco-text">
+                      <span className="text-gray-300">
                         {new Date(
                           selectedDocument.updated_at
                         ).toLocaleDateString()}
@@ -226,12 +226,12 @@ export default function DocumentLibrary() {
                 </div>
 
                 <div>
-                  <h3 className="text-eco-text font-code mb-2">Tags</h3>
+                  <h3 className="text-white mb-2 font-medium">Tags</h3>
                   <div className="flex flex-wrap gap-2">
                     {selectedDocument.tags.map((tag) => (
                       <span
                         key={tag}
-                        className="bg-eco-green/10 text-eco-green text-sm px-2 py-1 rounded-full"
+                        className="bg-gray-800 text-gray-300 text-sm px-2 py-1 rounded-full"
                       >
                         {tag}
                       </span>
@@ -243,7 +243,7 @@ export default function DocumentLibrary() {
                   href={selectedDocument.download_url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="block w-full bg-eco-green/10 text-eco-green border border-eco-green px-4 py-2 rounded-lg hover:bg-eco-green/20 transition-colors text-center"
+                  className="block w-full bg-gray-800 text-gray-300 border border-gray-700 px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors text-center"
                 >
                   Download Document
                 </a>
@@ -256,11 +256,11 @@ export default function DocumentLibrary() {
       {/* Main Content */}
       <div className="flex-1 flex flex-col overflow-hidden relative">
         {/* Search Header */}
-        <div className="p-4 border-b border-eco-dark">
+        <div className="p-4 border-b border-harvey-border">
           <div className="flex flex-col md:flex-row gap-4 items-center mb-4">
             <Link
               to="/dashboard"
-              className="text-eco-green hover:text-eco-green/80 flex items-center gap-2"
+              className="text-gray-700 hover:text-gray-900 flex items-center gap-2"
             >
               <ArrowLeft className="h-5 w-5" />
               Back to Dashboard
@@ -273,11 +273,11 @@ export default function DocumentLibrary() {
                   onChange={(e) => setSearchInput(e.target.value)}
                   onKeyDown={(e) => e.key === "Enter" && handleSearch()}
                   placeholder="Search documents..."
-                  className="w-full bg-eco-black border border-eco-dark rounded-lg py-2 pl-4 pr-12 text-eco-text"
+                  className="w-full bg-harvey-bg-lighter border border-harvey-border rounded-lg py-2 pl-4 pr-12 text-harvey-text"
                 />
                 <button
                   onClick={handleSearch}
-                  className="absolute right-2 top-1/2 -translate-y-1/2 text-eco-gray hover:text-eco-green p-2"
+                  className="absolute right-2 top-1/2 -translate-y-1/2 text-harvey-text-light hover:text-harvey-text p-2"
                 >
                   <Search className="h-5 w-5" />
                 </button>
@@ -291,8 +291,8 @@ export default function DocumentLibrary() {
                 onClick={() => setViewMode("grid")}
                 className={`p-2 rounded-lg ${
                   viewMode === "grid"
-                    ? "text-eco-green bg-eco-green/10"
-                    : "text-eco-gray"
+                    ? "text-gray-700 bg-gray-100"
+                    : "text-harvey-text-light"
                 }`}
               >
                 <Grid className="h-5 w-5" />
@@ -301,8 +301,8 @@ export default function DocumentLibrary() {
                 onClick={() => setViewMode("list")}
                 className={`p-2 rounded-lg ${
                   viewMode === "list"
-                    ? "text-eco-green bg-eco-green/10"
-                    : "text-eco-gray"
+                    ? "text-gray-700 bg-gray-100"
+                    : "text-harvey-text-light"
                 }`}
               >
                 <List className="h-5 w-5" />
@@ -310,7 +310,7 @@ export default function DocumentLibrary() {
             </div>
             <button
               onClick={() => setIsFiltersOpen(true)}
-              className="text-eco-green border border-eco-green px-4 py-2 rounded-lg hover:bg-eco-green/10"
+              className="text-gray-700 border border-gray-300 px-4 py-2 rounded-lg hover:bg-gray-100"
             >
               Filters
             </button>
@@ -328,20 +328,20 @@ export default function DocumentLibrary() {
           >
             {loading ? (
               <div className="flex justify-center items-center h-full">
-                <div className="text-eco-green">Loading...</div>
+                <div className="text-gray-700">Loading...</div>
               </div>
             ) : error ? (
               <div className="flex justify-center items-center h-full">
-                <div className="text-red-500">{error}</div>
+                <div className="text-red-600">{error}</div>
               </div>
             ) : (
               documents.map((doc) => (
                 <div
                   key={doc.document_id}
                   onClick={() => handleDocumentClick(doc)}
-                  className={`bg-eco-darker border border-eco-dark rounded-lg p-4 cursor-pointer hover:border-eco-green transition-colors ${
+                  className={`bg-harvey-bg-lighter border border-harvey-border rounded-lg p-4 cursor-pointer hover:border-gray-400 transition-colors shadow-sm ${
                     selectedDocument?.document_id === doc.document_id
-                      ? "border-eco-green"
+                      ? "border-gray-500"
                       : ""
                   }`}
                 >
@@ -353,19 +353,21 @@ export default function DocumentLibrary() {
                     }
                   >
                     <div className="flex-1">
-                      <h3 className="text-eco-text font-code text-lg mb-1">
+                      <h3 className="text-harvey-text text-lg mb-1 font-medium">
                         {doc.title}
                       </h3>
-                      <p className="text-eco-green text-sm mb-2">
+                      <p className="text-gray-700 text-sm mb-2">
                         {doc.publication_year}
                       </p>
-                      <p className="text-eco-gray text-sm">{doc.region}</p>
+                      <p className="text-harvey-text-light text-sm">
+                        {doc.region}
+                      </p>
                     </div>
                     <div className="flex flex-wrap gap-2 my-3">
                       {doc.tags.map((tag) => (
                         <span
                           key={tag}
-                          className="bg-eco-green/10 text-eco-green text-sm px-2 py-1 rounded-full"
+                          className="bg-gray-100 text-gray-700 text-sm px-2 py-1 rounded-full"
                         >
                           {tag}
                         </span>
@@ -378,7 +380,7 @@ export default function DocumentLibrary() {
                     } items-center mt-4`}
                   >
                     <div className="flex items-center gap-2">
-                      <span className="text-eco-gray text-sm">
+                      <span className="text-harvey-text-light text-sm">
                         Updated {new Date(doc.updated_at).toLocaleDateString()}
                       </span>
                     </div>
@@ -387,7 +389,7 @@ export default function DocumentLibrary() {
                         href={doc.download_url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="p-2 text-eco-gray hover:text-eco-green"
+                        className="p-2 text-harvey-text-light hover:text-gray-700"
                         onClick={(e) => e.stopPropagation()}
                       >
                         <Download className="h-5 w-5" />
@@ -401,7 +403,7 @@ export default function DocumentLibrary() {
         </div>
 
         {/* Fixed Pagination */}
-        <div className="p-4 fixed bottom-0 left-0 right-0 bg-eco-black">
+        <div className="p-4 fixed bottom-0 left-0 right-0 bg-harvey-bg border-t border-harvey-border">
           <Pagination
             currentPage={filters.page}
             totalPages={totalPages}

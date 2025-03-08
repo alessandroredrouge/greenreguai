@@ -1,11 +1,14 @@
-import React from 'react';
-import { Clock, Trash2 } from 'lucide-react';
-import { useEffect, useState } from 'react';
-import { supabase } from '../lib/supabaseClient';
-import { useAuth } from '../contexts/AuthContext';
-import ConfirmationModal from './ConfirmationModal';
+import React from "react";
+import { Clock, Trash2 } from "lucide-react";
+import { useEffect, useState } from "react";
+import { supabase } from "../lib/supabaseClient";
+import { useAuth } from "../contexts/AuthContext";
+import ConfirmationModal from "./ConfirmationModal";
 
-export default function Sidebar({ currentConversationId, onConversationSelect }) {
+export default function Sidebar({
+  currentConversationId,
+  onConversationSelect,
+}) {
   const [conversations, setConversations] = useState([]);
   const { user } = useAuth();
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -16,10 +19,10 @@ export default function Sidebar({ currentConversationId, onConversationSelect })
       // Fetch conversations
       const fetchConversations = async () => {
         const { data, error } = await supabase
-          .from('conversations')
-          .select('*')
-          .eq('user_id', user.id)
-          .order('updated_at', { ascending: false });
+          .from("conversations")
+          .select("*")
+          .eq("user_id", user.id)
+          .order("updated_at", { ascending: false });
 
         if (!error) {
           setConversations(data);
@@ -30,14 +33,15 @@ export default function Sidebar({ currentConversationId, onConversationSelect })
 
       // Subscribe to changes
       const channel = supabase
-        .channel('conversations_changes')
-        .on('postgres_changes', 
-          { 
-            event: '*', 
-            schema: 'public', 
-            table: 'conversations',
-            filter: `user_id=eq.${user.id}`
-          }, 
+        .channel("conversations_changes")
+        .on(
+          "postgres_changes",
+          {
+            event: "*",
+            schema: "public",
+            table: "conversations",
+            filter: `user_id=eq.${user.id}`,
+          },
           () => fetchConversations()
         )
         .subscribe();
@@ -58,62 +62,66 @@ export default function Sidebar({ currentConversationId, onConversationSelect })
     if (conversationToDelete) {
       try {
         const { error } = await supabase
-          .from('conversations')
+          .from("conversations")
           .delete()
-          .eq('conversation_id', conversationToDelete.conversation_id);
+          .eq("conversation_id", conversationToDelete.conversation_id);
 
         if (error) throw error;
 
         // Fetch conversations immediately after deletion
         const { data: updatedConversations } = await supabase
-          .from('conversations')
-          .select('*')
-          .eq('user_id', user.id)
-          .order('updated_at', { ascending: false });
-        
+          .from("conversations")
+          .select("*")
+          .eq("user_id", user.id)
+          .order("updated_at", { ascending: false });
+
         setConversations(updatedConversations || []);
-        
+
         onConversationSelect(null);
-        
+
         setShowDeleteModal(false);
         setConversationToDelete(null);
       } catch (error) {
-        console.error('Error deleting conversation:', error);
+        console.error("Error deleting conversation:", error);
       }
     }
   };
 
   return (
-    <div className="w-[280px] lg:w-64 bg-eco-darker border-r border-eco-dark flex flex-col h-full">
+    <div className="w-[280px] lg:w-64 bg-harvey-sidebar flex flex-col h-full">
       {/* Fixed Header */}
-      <div className="p-4 border-b border-eco-dark">
-        <h2 className="font-code text-eco-text text-sm mb-4 flex items-center">
-          <Clock className="h-4 w-4 mr-2 text-eco-green" />
+      <div className="p-4">
+        <h2 className="text-gray-300 text-sm flex items-center">
+          <Clock className="h-4 w-4 mr-2 text-gray-300" />
           Recent Chats
         </h2>
       </div>
-      
+
       {/* Scrollable Conversations */}
       <div className="flex-1 overflow-y-auto">
-        <div className="p-4 space-y-2">
+        <div className="px-2 space-y-1">
           {conversations.map((conversation) => (
             <button
               key={conversation.conversation_id}
               onClick={() => onConversationSelect(conversation)}
-              className={`w-full text-left p-3 rounded-lg transition-colors group relative ${
+              className={`w-full text-left px-2 py-3 rounded transition-colors group relative ${
                 currentConversationId === conversation.conversation_id
-                  ? 'bg-eco-green/10 text-eco-green border border-eco-green'
-                  : 'text-eco-gray hover:text-eco-text hover:bg-eco-black/50'
+                  ? "text-white"
+                  : "text-gray-400 hover:text-gray-300"
               }`}
             >
-              <div className="font-code truncate">{conversation.title}</div>
-              <div className="text-xs mt-1 opacity-70">
-                {new Date(conversation.updated_at).toLocaleString()}
+              <div className="truncate text-sm">{conversation.title}</div>
+              <div className="text-xs mt-1 text-gray-500">
+                {new Date(conversation.updated_at).toLocaleDateString()}{" "}
+                {new Date(conversation.updated_at).toLocaleTimeString([], {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                })}
               </div>
               <button
                 onClick={(e) => handleDeleteClick(e, conversation)}
-                className="absolute right-2 top-1/2 -translate-y-1/2 lg:opacity-0 lg:group-hover:opacity-100 
-                         text-eco-gray hover:text-red-500 transition-all p-2"
+                className="absolute right-2 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 
+                         text-gray-500 hover:text-gray-300 transition-all p-1"
                 aria-label="Delete conversation"
               >
                 <Trash2 className="h-4 w-4" />

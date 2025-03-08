@@ -343,11 +343,11 @@ export default function AIAssistant() {
   };
 
   return (
-    <div className="flex h-screen bg-eco-black relative">
+    <div className="flex h-screen bg-harvey-bg relative">
       {/* Mobile Sidebar Overlay */}
       {isMobileSidebarOpen && (
         <div
-          className="fixed inset-0 bg-black bg-opacity-50 z-20 lg:hidden"
+          className="fixed inset-0 bg-black bg-opacity-20 z-20 lg:hidden"
           onClick={() => setIsMobileSidebarOpen(false)}
         />
       )}
@@ -378,32 +378,30 @@ export default function AIAssistant() {
       {/* Main Chat Area - Modified for mobile fixed header/footer */}
       <div className="flex-1 flex flex-col w-full lg:w-auto">
         {/* Header - Added fixed positioning for mobile */}
-        <div className="bg-eco-darker border-b border-eco-dark p-4 fixed top-0 left-0 right-0 lg:relative lg:top-auto lg:left-auto lg:right-auto z-10">
+        <div className="bg-harvey-bg border-b border-harvey-border p-4 fixed top-0 left-0 right-0 lg:relative lg:top-auto lg:left-auto lg:right-auto z-10">
           {/* Top row with menu, back button, and user menu */}
-          <div className="flex justify-between items-center mb-2">
+          <div className="flex justify-between items-center">
             <div className="flex items-center gap-2 lg:gap-4">
               {/* Mobile Menu Button */}
               <button
                 onClick={toggleMobileSidebar}
-                className="lg:hidden text-eco-green hover:text-eco-text transition-colors"
+                className="lg:hidden text-harvey-text hover:text-harvey-text-light transition-colors"
               >
                 <Menu className="h-6 w-6" />
               </button>
 
               <Link
                 to="/dashboard"
-                className="flex items-center gap-2 text-eco-green hover:text-eco-text transition-colors group"
+                className="flex items-center gap-2 text-harvey-text-light hover:text-harvey-text transition-colors group"
               >
                 <ArrowLeft className="h-5 w-5 group-hover:-translate-x-1 transition-transform" />
-                <span className="hidden sm:inline font-code">
-                  Back to Dashboard
-                </span>
+                <span className="hidden sm:inline">Back to Dashboard</span>
               </Link>
             </div>
 
             {/* Desktop credits and user menu */}
             <div className="hidden lg:flex items-center gap-4">
-              <span className="text-eco-green font-code">
+              <span className="text-harvey-text-light">
                 {profile?.credits || 0} credits available
               </span>
               <UserMenu credits={profile?.credits || 0} />
@@ -415,38 +413,8 @@ export default function AIAssistant() {
             </div>
           </div>
 
-          {/* Bottom row with title and mobile credits */}
-          <div className="flex flex-col lg:hidden">
-            {/* Title */}
-            <div className="text-eco-text font-code">
-              {isEditingTitle ? (
-                <input
-                  type="text"
-                  value={newTitle}
-                  onChange={(e) => setNewTitle(e.target.value)}
-                  onKeyDown={handleTitleEdit}
-                  onBlur={() => setIsEditingTitle(false)}
-                  className="bg-eco-black text-eco-text border border-eco-dark rounded px-2 py-1 font-code focus:outline-none focus:border-eco-green w-full"
-                  autoFocus
-                />
-              ) : (
-                <button
-                  onClick={() => setIsEditingTitle(true)}
-                  className="hover:text-eco-green transition-colors truncate block w-full text-left"
-                >
-                  {selectedConversation?.title || "New Conversation"}
-                </button>
-              )}
-            </div>
-
-            {/* Mobile credits display */}
-            <div className="text-eco-green font-code text-sm mt-1">
-              {profile?.credits || 0} credits available
-            </div>
-          </div>
-
-          {/* Desktop title - hidden on mobile */}
-          <div className="hidden lg:block text-eco-text font-code border-l border-eco-dark pl-4">
+          {/* Title */}
+          <div className="mt-4">
             {isEditingTitle ? (
               <input
                 type="text"
@@ -454,32 +422,51 @@ export default function AIAssistant() {
                 onChange={(e) => setNewTitle(e.target.value)}
                 onKeyDown={handleTitleEdit}
                 onBlur={() => setIsEditingTitle(false)}
-                className="bg-eco-black text-eco-text border border-eco-dark rounded px-2 py-1 font-code focus:outline-none focus:border-eco-green"
+                className="bg-harvey-bg-lighter text-harvey-text border border-harvey-border rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-gray-300 w-full"
                 autoFocus
               />
             ) : (
               <button
                 onClick={() => setIsEditingTitle(true)}
-                className="hover:text-eco-green transition-colors truncate max-w-[200px] block"
+                className="text-harvey-text text-xl font-medium hover:text-harvey-text-light transition-colors truncate block w-full text-left"
               >
                 {selectedConversation?.title || "New Conversation"}
               </button>
             )}
           </div>
+
+          {/* Mobile credits display */}
+          <div className="text-harvey-text-light text-sm mt-1 lg:hidden">
+            {profile?.credits || 0} credits available
+          </div>
         </div>
 
         {/* Messages Area - Modified to account for fixed header and footer on mobile */}
-        <div className="flex-1 overflow-y-auto p-2 sm:p-4 bg-eco-black relative mt-[132px] lg:mt-0 mb-[76px] lg:mb-0">
+        <div className="flex-1 overflow-y-auto p-4 sm:p-6 bg-harvey-bg relative mt-[132px] lg:mt-0 mb-[76px] lg:mb-0">
           {/* Welcome Message */}
-          <div className="flex items-start gap-2 text-eco-text">
-            <Bot className="h-6 w-6 text-eco-green mt-1" />
-            <div className="bg-eco-darker rounded-lg p-4 max-w-3xl">
-              <div className="font-code">
+          <div className="flex items-start gap-4 mb-6">
+            <div className="w-8 h-8 flex items-center justify-center flex-shrink-0">
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <rect width="24" height="24" rx="4" fill="#F2F2F2" />
+                <path
+                  d="M17 11C17 14.3137 14.3137 17 11 17C7.68629 17 5 14.3137 5 11C5 7.68629 7.68629 5 11 5C14.3137 5 17 7.68629 17 11Z"
+                  fill="#D9D9D9"
+                />
+              </svg>
+            </div>
+            <div className="bg-harvey-bg-darker rounded-lg p-4 max-w-3xl">
+              <div>
                 Welcome to GreenReguAI. How can I assist you with renewable
                 energy regulations today?
               </div>
-              <div className="text-xs text-eco-gray mt-2">
-                2024-03-15 14:30:00
+              <div className="text-xs text-harvey-text-light mt-2">
+                {new Date("2024-03-15T14:30:00").toLocaleString()}
               </div>
             </div>
           </div>
@@ -487,11 +474,10 @@ export default function AIAssistant() {
           {/* New Chat Button - Modified for responsive */}
           <button
             onClick={handleNewChat}
-            className="fixed bottom-20 right-4 w-10 h-10 lg:w-12 lg:h-12 bg-eco-green/10 hover:bg-eco-green/20 
-                     text-eco-green rounded-full shadow-lg flex items-center justify-center 
+            className="fixed bottom-20 right-4 w-10 h-10 lg:w-12 lg:h-12 bg-harvey-bg-lighter hover:bg-harvey-hover 
+                     text-harvey-text rounded-full shadow-md flex items-center justify-center 
                      transition-all hover:scale-105 focus:outline-none focus:ring-2 
-                     focus:ring-eco-green focus:ring-offset-2 focus:ring-offset-eco-black
-                     border border-eco-green z-10"
+                     focus:ring-gray-300 z-10 border border-harvey-border"
             aria-label="New Chat"
           >
             <Plus className="h-5 w-5 lg:h-6 lg:w-6" />
@@ -501,23 +487,37 @@ export default function AIAssistant() {
           {messages.map((message, index) => (
             <div
               key={index}
-              className={`flex items-start gap-2 ${
+              className={`flex items-start gap-4 mb-6 ${
                 message.type === "user" ? "justify-end" : ""
               }`}
             >
               {message.type === "ai" && (
-                <Bot className="h-6 w-6 text-eco-green mt-1" />
+                <div className="w-8 h-8 flex items-center justify-center flex-shrink-0">
+                  <svg
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <rect width="24" height="24" rx="4" fill="#F2F2F2" />
+                    <path
+                      d="M17 11C17 14.3137 14.3137 17 11 17C7.68629 17 5 14.3137 5 11C5 7.68629 7.68629 5 11 5C14.3137 5 17 7.68629 17 11Z"
+                      fill="#D9D9D9"
+                    />
+                  </svg>
+                </div>
               )}
               <div
                 className={`rounded-lg p-4 max-w-3xl ${
                   message.type === "user"
-                    ? "bg-eco-green text-eco-black"
+                    ? "bg-gray-800 text-white"
                     : message.type === "error"
-                    ? "bg-red-500/10 text-red-500"
-                    : "bg-eco-darker text-eco-text"
+                    ? "bg-red-50 text-red-600 border border-red-200"
+                    : "bg-harvey-bg-darker text-harvey-text"
                 }`}
               >
-                <div className="font-code">
+                <div>
                   {message.type === "ai" ? (
                     <CitationHighlight
                       text={message.content}
@@ -527,7 +527,7 @@ export default function AIAssistant() {
                     message.content
                   )}
                 </div>
-                <div className="text-xs mt-2 opacity-70">
+                <div className="text-xs mt-2 text-harvey-text-light">
                   {new Date(message.timestamp).toLocaleString()}
                 </div>
               </div>
@@ -537,17 +537,31 @@ export default function AIAssistant() {
 
           {/* Loading Indicator */}
           {isTyping && (
-            <div className="flex items-start gap-2">
-              <Bot className="h-6 w-6 text-eco-green mt-1" />
-              <div className="bg-eco-darker rounded-lg p-4">
-                <div className="font-code">Thinking...</div>
+            <div className="flex items-start gap-4 mb-6">
+              <div className="w-8 h-8 flex items-center justify-center flex-shrink-0">
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <rect width="24" height="24" rx="4" fill="#F2F2F2" />
+                  <path
+                    d="M17 11C17 14.3137 14.3137 17 11 17C7.68629 17 5 14.3137 5 11C5 7.68629 7.68629 5 11 5C14.3137 5 17 7.68629 17 11Z"
+                    fill="#D9D9D9"
+                  />
+                </svg>
+              </div>
+              <div className="bg-harvey-bg-darker rounded-lg p-4">
+                <div>Thinking...</div>
               </div>
             </div>
           )}
         </div>
 
         {/* Input Area - Added fixed positioning for mobile */}
-        <div className="border-t border-eco-dark p-2 sm:p-4 bg-eco-darker fixed bottom-0 left-0 right-0 lg:relative lg:bottom-auto lg:left-auto lg:right-auto">
+        <div className="border-t border-harvey-border p-3 sm:p-4 bg-harvey-bg fixed bottom-0 left-0 right-0 lg:relative lg:bottom-auto lg:left-auto lg:right-auto">
           <div className="relative max-w-[1200px] mx-auto">
             <input
               type="text"
@@ -555,16 +569,17 @@ export default function AIAssistant() {
               onChange={(e) => setInput(e.target.value)}
               onKeyPress={handleKeyPress}
               placeholder="Type your message..."
-              className="w-full bg-eco-black text-eco-text border border-eco-dark rounded-lg 
-                       py-2 sm:py-3 px-3 sm:px-4 pr-10 sm:pr-12 font-code text-sm sm:text-base
-                       focus:outline-none focus:border-eco-green"
+              className="w-full bg-harvey-bg-lighter text-harvey-text border border-harvey-border rounded-lg 
+                       py-3 px-4 pr-12
+                       focus:outline-none focus:ring-1 focus:ring-gray-300"
             />
             <button
               onClick={handleSend}
-              className="absolute right-2 top-1/2 -translate-y-1/2 text-eco-green 
-                       hover:text-eco-text transition-colors p-1 sm:p-2"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-harvey-text-light 
+                       hover:text-harvey-text transition-colors p-2"
+              disabled={sendDisabled}
             >
-              <Send className="h-4 w-4 sm:h-5 sm:w-5" />
+              <Send className="h-5 w-5" />
             </button>
           </div>
         </div>
@@ -589,8 +604,8 @@ export default function AIAssistant() {
       {showAlert && (
         <div
           className="fixed bottom-24 left-1/2 transform -translate-x-1/2 z-50 
-                        bg-red-900 text-red-100 px-4 py-3 rounded-lg shadow-lg 
-                        border border-red-700 font-code text-sm max-w-md text-center"
+                        bg-red-50 text-red-600 px-4 py-3 rounded-lg shadow-lg 
+                        border border-red-200 text-sm max-w-md text-center"
         >
           {alertMessage}
         </div>

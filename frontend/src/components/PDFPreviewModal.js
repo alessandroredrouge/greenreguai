@@ -85,44 +85,44 @@ export default function PDFPreviewModal({
 
   return (
     <div className={`fixed inset-0 z-50 ${isOpen ? "" : "hidden"}`}>
-      <div className="relative w-full h-full max-w-5xl mx-auto bg-eco-darker rounded-lg shadow-xl flex flex-col">
+      <div className="relative w-full h-full max-w-5xl mx-auto bg-harvey-bg-lighter rounded-lg shadow-xl flex flex-col">
         {/* Header - Modified for mobile responsiveness */}
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between p-4 border-b border-eco-dark">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between p-4 border-b border-harvey-border">
           {/* Title - Full width on mobile */}
-          <h3 className="text-eco-text font-code mb-3 sm:mb-0 break-words">
+          <h3 className="text-harvey-text font-medium mb-3 sm:mb-0 break-words">
             {documentTitle}
           </h3>
-          
+
           {/* Controls - Centered below title on mobile */}
           <div className="flex items-center justify-center sm:justify-end gap-2">
             <button
               onClick={handleDownload}
-              className="p-2 text-eco-green hover:text-eco-text transition-colors"
+              className="p-2 text-gray-600 hover:text-gray-900 transition-colors"
               title="Download Document"
             >
               <Download className="h-5 w-5" />
             </button>
             <button
-              onClick={() => setScale(prev => Math.max(0.5, prev - 0.2))}
-              className="p-2 text-eco-green hover:text-eco-text transition-colors"
+              onClick={() => setScale((prev) => Math.max(0.5, prev - 0.2))}
+              className="p-2 text-gray-600 hover:text-gray-900 transition-colors"
             >
               <ZoomOut className="h-5 w-5" />
             </button>
             <button
-              onClick={() => setScale(prev => Math.min(2, prev + 0.2))}
-              className="p-2 text-eco-green hover:text-eco-text transition-colors"
+              onClick={() => setScale((prev) => Math.min(2, prev + 0.2))}
+              className="p-2 text-gray-600 hover:text-gray-900 transition-colors"
             >
               <ZoomIn className="h-5 w-5" />
             </button>
             <button
-              onClick={() => setRotation(prev => (prev + 90) % 360)}
-              className="p-2 text-eco-green hover:text-eco-text transition-colors"
+              onClick={() => setRotation((prev) => (prev + 90) % 360)}
+              className="p-2 text-gray-600 hover:text-gray-900 transition-colors"
             >
               <RotateCw className="h-5 w-5" />
             </button>
             <button
               onClick={onClose}
-              className="p-2 text-eco-green hover:text-eco-text transition-colors"
+              className="p-2 text-gray-600 hover:text-gray-900 transition-colors"
             >
               <X className="h-5 w-5" />
             </button>
@@ -130,17 +130,21 @@ export default function PDFPreviewModal({
         </div>
 
         {/* PDF Viewer */}
-        <div className="flex-1 overflow-auto relative bg-eco-black rounded-lg">
+        <div className="flex-1 overflow-auto relative bg-harvey-bg rounded-lg">
           <div className="min-h-full flex items-center justify-center">
-            {isLoading && <div className="text-eco-gray">Loading PDF...</div>}
+            {isLoading && (
+              <div className="text-harvey-text-light">Loading PDF...</div>
+            )}
 
             <div className="relative">
               <Document
                 file={pdfUrl}
                 onLoadSuccess={onDocumentLoadSuccess}
-                loading={<div className="text-eco-gray">Loading PDF...</div>}
+                loading={
+                  <div className="text-harvey-text-light">Loading PDF...</div>
+                }
                 error={
-                  <div className="text-red-500 flex items-center gap-2">
+                  <div className="text-red-600 flex items-center gap-2">
                     <AlertTriangle className="h-5 w-5" />
                     Failed to load PDF
                   </div>
@@ -150,7 +154,11 @@ export default function PDFPreviewModal({
                   pageNumber={pageNumber}
                   scale={scale}
                   rotate={rotation}
-                  loading={<div className="text-eco-gray">Loading page...</div>}
+                  loading={
+                    <div className="text-harvey-text-light">
+                      Loading page...
+                    </div>
+                  }
                 />
                 {!isLoading && locationData && (
                   <HighlightOverlay locationData={locationData} />
@@ -159,7 +167,7 @@ export default function PDFPreviewModal({
 
               {/* Missing location data warning */}
               {!locationData?.bbox && !isLoading && (
-                <div className="absolute top-4 left-1/2 -translate-x-1/2 bg-yellow-500/10 text-yellow-500 px-4 py-2 rounded-lg border border-yellow-500/50 flex items-center gap-2">
+                <div className="absolute top-4 left-1/2 -translate-x-1/2 bg-yellow-50 text-yellow-700 px-4 py-2 rounded-lg border border-yellow-200 flex items-center gap-2">
                   <AlertTriangle className="h-4 w-4" />
                   <span className="text-sm">
                     Exact location within the page couldn't be determined

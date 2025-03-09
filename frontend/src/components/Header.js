@@ -32,9 +32,9 @@ export default function Header() {
       <div className="container mx-auto flex justify-between items-center p-4">
         <Link to="/" className="flex items-center">
           <img
-            src="/Gregolo - Logo Main Inverted.svg"
-            alt="Gregolo"
-            className="h-24 w-auto my-0"
+            src="/GreenReguAI Logo Horizontal No Background with Writing.svg"
+            alt="GreenReguAI"
+            className="h-20 w-auto my-0"
           />
         </Link>
 

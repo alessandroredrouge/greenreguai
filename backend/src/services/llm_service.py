@@ -26,6 +26,7 @@ class LLMService:
         self.rag_prompt = ChatPromptTemplate.from_messages([
             ("system", """You are an AI assistant specialized in renewable energy regulations. 
 Your task is to provide accurate, well-sourced answers based on the provided context.
+ANSWER THE QUESTION IN THE LANGUAGE OF THE QUESTION.
 
 Guidelines:
 - Use ONLY the information from the provided context

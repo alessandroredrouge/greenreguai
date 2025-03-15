@@ -3,7 +3,7 @@ Application configuration management including environment variables,
 API keys, and other settings.
 """
 from pydantic_settings import BaseSettings
-from typing import List
+from typing import List, Optional
 import os
 
 class Settings(BaseSettings):
@@ -47,6 +47,12 @@ class Settings(BaseSettings):
     PINECONE_API_KEY: str
     PINECONE_ENVIRONMENT: str = "us-east-1-aws"
     PINECONE_INDEX_NAME: str
+
+    # Add LangSmith settings
+    LANGSMITH_TRACING: Optional[str] = None
+    LANGSMITH_ENDPOINT: Optional[str] = None
+    LANGSMITH_API_KEY: Optional[str] = None
+    LANGSMITH_PROJECT: Optional[str] = None
     
     # Stripe
     STRIPE_SECRET_KEY: str

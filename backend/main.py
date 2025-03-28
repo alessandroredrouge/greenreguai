@@ -48,7 +48,7 @@ app.add_middleware(
         "https://greenreguai.onrender.com",
         "https://greenreguai-api.onrender.com",
         "https://greenreguai.com",
-        "https://www.greenreguai.com"
+        "https://www.greenreguai.com",
         "https://nothingness-narrative.lovable.app"
     ],
     allow_credentials=True,

@@ -39,13 +39,15 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "http://localhost:3000",
+        "http://localhost:8080",
         "https://greenreguai.onrender.com",
         "https://greenreguai-api.onrender.com",
         "https://greenreguai.com",
         "https://www.greenreguai.com",
         "https://nothingness-narrative.lovable.app",
         "https://greenreguaichallenge.lovable.app",
-        "https://preview--greenreguaichallenge.lovable.app"
+        "https://preview--greenreguaichallenge.lovable.app",
+        "https://lovable.dev/projects/a62e1b24-49c6-4e98-8ac5-7f07d91d2b5a"
     ] if settings.ENV == "development" else [
         "https://greenreguai.onrender.com",
         "https://greenreguai-api.onrender.com",
@@ -53,7 +55,8 @@ app.add_middleware(
         "https://www.greenreguai.com",
         "https://nothingness-narrative.lovable.app",
         "https://greenreguaichallenge.lovable.app",
-        "https://preview--greenreguaichallenge.lovable.app"
+        "https://preview--greenreguaichallenge.lovable.app",
+        "https://lovable.dev/projects/a62e1b24-49c6-4e98-8ac5-7f07d91d2b5a"
     ],
     allow_credentials=True,
     allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],

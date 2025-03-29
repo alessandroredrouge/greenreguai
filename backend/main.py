@@ -43,13 +43,15 @@ app.add_middleware(
         "https://greenreguai-api.onrender.com",
         "https://greenreguai.com",
         "https://www.greenreguai.com",
-        "https://nothingness-narrative.lovable.app"
+        "https://nothingness-narrative.lovable.app",
+        "https://greenreguai.lovable.app/"
     ] if settings.ENV == "development" else [
         "https://greenreguai.onrender.com",
         "https://greenreguai-api.onrender.com",
         "https://greenreguai.com",
         "https://www.greenreguai.com",
-        "https://nothingness-narrative.lovable.app"
+        "https://nothingness-narrative.lovable.app",
+        "https://greenreguai.lovable.app/"
     ],
     allow_credentials=True,
     allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],

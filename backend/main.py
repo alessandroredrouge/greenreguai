@@ -44,7 +44,7 @@ app.add_middleware(
         "https://greenreguai.com",
         "https://www.greenreguai.com",
         "https://nothingness-narrative.lovable.app",
-        "https://greenreguaichallenge.lovable.app/",
+        "https://greenreguaichallenge.lovable.app",
         "https://preview--greenreguaichallenge.lovable.app"
     ] if settings.ENV == "development" else [
         "https://greenreguai.onrender.com",
@@ -52,7 +52,7 @@ app.add_middleware(
         "https://greenreguai.com",
         "https://www.greenreguai.com",
         "https://nothingness-narrative.lovable.app",
-        "https://greenreguaichallenge.lovable.app/",
+        "https://greenreguaichallenge.lovable.app",
         "https://preview--greenreguaichallenge.lovable.app"
     ],
     allow_credentials=True,

@@ -47,7 +47,8 @@ app.add_middleware(
         "https://nothingness-narrative.lovable.app",
         "https://greenreguaichallenge.lovable.app",
         "https://preview--greenreguaichallenge.lovable.app",
-        "https://lovable.dev/projects/a62e1b24-49c6-4e98-8ac5-7f07d91d2b5a"
+        "https://lovable.dev/projects/a62e1b24-49c6-4e98-8ac5-7f07d91d2b5a",
+        "https://a62e1b24-49c6-4e98-8ac5-7f07d91d2b5a.lovableproject.com"
     ] if settings.ENV == "development" else [
         "https://greenreguai.onrender.com",
         "https://greenreguai-api.onrender.com",
@@ -56,7 +57,8 @@ app.add_middleware(
         "https://nothingness-narrative.lovable.app",
         "https://greenreguaichallenge.lovable.app",
         "https://preview--greenreguaichallenge.lovable.app",
-        "https://lovable.dev/projects/a62e1b24-49c6-4e98-8ac5-7f07d91d2b5a"
+        "https://lovable.dev/projects/a62e1b24-49c6-4e98-8ac5-7f07d91d2b5a",
+        "https://a62e1b24-49c6-4e98-8ac5-7f07d91d2b5a.lovableproject.com"
     ],
     allow_credentials=True,
     allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],

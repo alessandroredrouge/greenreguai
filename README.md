@@ -2,6 +2,8 @@
 
 GreenReguAI is an AI-powered platform that provides companies in the renewable energy sector with an accessible, up-to-date repository of global laws and regulations. The platform uses advanced language models to help users navigate complex regulatory frameworks through a natural language interface.
 
+[![IMAGE ALT TEXT](GreenReguAI-Pitch-Deck.jpg)](https://www.youtube.com/watch?v=F8rSHf1doeo)
+
 ## Features
 
 - 🤖 AI-powered chat interface for regulatory queries
